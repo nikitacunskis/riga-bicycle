@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use App\Http\Controllers\PlaceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,37 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::prefix("dashboard")->group(function(){
+
+        Route::get('/', function () {
+            return Inertia::render('Dashboard');
+        })->name('dashboard');
+
+        // Route::resource('places', PlaceController::class);
+        Route::prefix("/places")->group(function () {
+
+            Route::get('/', [PlaceController::class, 'index'])->name('dashboard.places');
+            Route::get('/create', [PlaceController::class, 'create'])->name('dashboard.places.create');
+            Route::get('/edit/{id}', [PlaceController::class, 'edit'])->name('dashboard.places.edit');
+
+            Route::post('/store', [PlaceController::class, 'store'])->name('dashboard.places.store');
+            Route::patch('/update/{id}', [PlaceController::class, 'update'])->name('dashboard.places.update');
+            Route::delete('/destroy/{id}', [PlaceController::class, 'destroy'])->name('dashboard.places.destroy');
+
+            Route::get('/places-list', [PlaceController::class, 'getPlaces'])->name('api.places.getplaces');
+        });
+    });
 });
