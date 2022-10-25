@@ -1,25 +1,26 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import PlaceItem from '@/Components/Places/PlaceItem.vue';
+import EventItem from '@/Components/Events/EventItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import route from '../../../../vendor/tightenco/ziggy/src/js';
 
 const props = defineProps({
-    places: Array,
+    events: Array,
 });
 
-const createPlace = () => {
-    window.open(route("dashboard.places.create"));
+
+const createEvent = () => {
+    window.open(route("dashboard.events.create"));
 }
 </script>
 <template>
-    <AppLayout title="Places">
+    <AppLayout title="Events">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Places
+                Events
             </h2>
-            <PrimaryButton class="ml-4" @click="createPlace">
+            <PrimaryButton class="ml-4" @click="createEvent">
                 Create
             </PrimaryButton>
         </template>
@@ -27,12 +28,12 @@ const createPlace = () => {
         <BodySection>
             
             <div class="grid grid-cols-3 gap-3">
-                <div>Location</div>
-                <div>Coordinates</div>
-                <div>Functions</div>
-                <PlaceItem 
-                    v-for="place in places"
-                    :place="place" />
+                <div>Date</div>
+                <div>Weather</div>
+                <div>Action</div>
+                <EventItem 
+                    v-for="event in events"
+                    :event="event" />
             </div>
         </BodySection>
     </AppLayout>
