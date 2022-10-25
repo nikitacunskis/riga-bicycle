@@ -9,7 +9,7 @@
                 <Link href="/dashboard/places" method="get" as="button" type="button">Places</Link>
             </td>
             <td class="px-4 py-2 w-20">
-                <Link href="/dashboard/counts" method="get" as="button" type="button">Counts</Link>
+                <Link href="/dashboard/events" method="get" as="button" type="button">Events</Link>
             </td>
         </tr>
     </table>
