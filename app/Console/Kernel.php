@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\App;
+use App\Actions\OpenWeatherMap\GetTodayWeather;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,6 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('daily:weather')->dailyAt('08:00')->timezone('Europe/Riga');
         // $schedule->command('inspire')->hourly();
     }
 

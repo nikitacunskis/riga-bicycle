@@ -29,7 +29,7 @@ const submit = () => {
 <template>
     <AppLayout title="Dashboard - Create Place">
         <AuthenticationCard>
-            <h2>Create Place</h2>
+            <h2>Edit Place</h2>
             <form @submit.prevent="submit">
                 <div>
                     <InputLabel for="location" value="Location" />
