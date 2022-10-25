@@ -11,7 +11,7 @@ const props = defineProps({
 
 
 const createEvent = () => {
-    window.open(route("dashboard.events.create"));
+    window.open(route("dashboard.events.create"),"_self");
 }
 </script>
 <template>

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\WeatherController;
 
 /*
@@ -58,6 +59,16 @@ Route::middleware([
             Route::get('/events-list', [EventController::class, 'getEvents'])->name('api.events.getevents');
         });
 
+        Route::prefix("/reports")->group(function () {
+            Route::get('/', [ReportController::class, 'index'])->name('dashboard.reports');
+            Route::get('/create', [ReportController::class, 'create'])->name('dashboard.reports.create');
+            Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('dashboard.reports.edit');
+            Route::post('/store', [ReportController::class, 'store'])->name('dashboard.reports.store');
+            Route::patch('/update/{id}', [ReportController::class, 'update'])->name('dashboard.reports.update');
+            Route::delete('/destroy/{id}', [ReportController::class, 'destroy'])->name('dashboard.reports.destroy');
+            Route::get('/reports-list', [ReportController::class, 'getReports'])->name('api.reports.getreports');
+        });
+        
         Route::prefix("/weather")->group(function(){
             Route::post('/get', [WeatherController::class, 'getWeather'])->name('dashboard.weather.get');
         });
