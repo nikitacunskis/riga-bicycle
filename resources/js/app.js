@@ -1,10 +1,23 @@
-require('./bootstrap')
+import './bootstrap';
+import '../css/app.css';
 
-import { createApp } from 'vue'
-import MainPage from './components/MainPage/index'
+import { createApp, h } from 'vue';
+import { createInertiaApp } from '@inertiajs/inertia-vue3';
+import { InertiaProgress } from '@inertiajs/progress';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
-const app = createApp({})
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
-app.component('Main Page', MainPage)
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    setup({ el, app, props, plugin }) {
+        return createApp({ render: () => h(app, props) })
+            .use(plugin)
+            .use(ZiggyVue, Ziggy)
+            .mount(el);
+    },
+});
 
-app.mount('#app')
+InertiaProgress.init({ color: '#4B5563' });
