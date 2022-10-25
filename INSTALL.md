@@ -2,6 +2,8 @@ PHP:
 PHP 8.1.2
 sudo apt-get install php-xml
 sudo apt get ext-curl
+sudo apt-get install php-mysql
+sudo apt-get install php-dom
 
 Laravel:
 composer create-project --prefer-dist laravel/laravel counter
