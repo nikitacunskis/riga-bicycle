@@ -1,7 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PlaceItem from '@/Components/Places/PlaceItem.vue';
-import { Link } from '@inertiajs/inertia-vue3';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import route from '../../../../vendor/tightenco/ziggy/src/js';
@@ -23,7 +22,6 @@ const createPlace = () => {
             <PrimaryButton class="ml-4" @click="createPlace">
                 Create
             </PrimaryButton>
-            <!-- <Link :href="'/dashboard/places/create'" method="get" as="button" type="button">Create</Link> -->
         </template>
 
         <BodySection>
