@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const createPlace = () => {
-    window.open(route("dashboard.places.create"));
+    window.open(route("dashboard.places.create"),"_self");
 }
 </script>
 <template>
