@@ -19,7 +19,7 @@ class GetDailyWeather extends Command
     public function handle()
     {
         $date = Carbon::now();
-        $json_data = file_get_contents("https://api.openweathermap.org/data/2.5/weather?lat=56.96&lon=24.10&appid=" . env('OPENWEATHERMAP_APIKEY'));
+        $json_data = file_get_contents("https://api.openweathermap.org/data/2.5/weather?lat=56.96&lon=24.10&lang=la&appid=" . env('OPENWEATHERMAP_APIKEY'));
         $weather = new Weather;
         $weather->date = $date;
         $weather->json_data = $json_data;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Report;
 use App\Models\Place;
@@ -29,11 +30,22 @@ class ReportController extends Controller
     /**
      * create page
      */
-    public function create()
+    public function create(Request $request)
     {
+        if(isset($request->prev_event_id))
+        {
+            $prev_event_id = $request->prev_event_id;
+        }
+        else
+        {
+            $prev_event_id = "";
+        }
+        // dd($request->prev_event_id);
         $placeCollection = Place::all();
         $eventCollection = Event::all();
-        return Inertia::render('Reports/Create', ['places' => $placeCollection, 'events' => $eventCollection]);
+        return Inertia::render('Reports/Create', ['places' => $placeCollection, 'events' => $eventCollection, 
+        'prev_event_id' => $prev_event_id
+    ]);
     }
 
     /**
@@ -62,10 +74,9 @@ class ReportController extends Controller
      */
     public function store(StoreReportRequest $request)
     {
-        // dd($request);
         $report = new Report($request->validated());
         $report->save();
-        return Redirect::route('dashboard.reports');
+        return Redirect::route('dashboard.reports.create', ['prev_event_id' => $report->event_id]);
     }
     /**
      * Update Report in storage.
