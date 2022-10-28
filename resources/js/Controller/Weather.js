@@ -2,6 +2,7 @@ export default class Weather {
 
     description = {
             'clear sky' : 'skaidrs',
+            'overcast clouds' : '', 
             'few clouds' : 'nedaudz mākoņains',
             'scattered clouds' : 'mākoņains',
             'broken clouds' : 'negaiss',
