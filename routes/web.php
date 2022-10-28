@@ -7,6 +7,7 @@ use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\WeatherController;
+use App\Http\Controllers\DatasetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,14 +20,7 @@ use App\Http\Controllers\WeatherController;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [DatasetController::class, 'generateAvarageOverall'])->name('page.welcome');
 
 Route::middleware([
     'auth:sanctum',

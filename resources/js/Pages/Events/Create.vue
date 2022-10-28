@@ -6,12 +6,13 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import Weather from '@/Controller/Weather.js';
 
 const form = useForm({
     date: '',
     weather: '',
 });
+
+let error = '';
 
 const todayDate = () => {
     var today = new Date();
@@ -22,16 +23,40 @@ const todayDate = () => {
     form.date = yyyy + '-' + mm + '-' + dd;
 }
 
+const dateCanBeFound = () => {
+    let formDate = new Date(form.date).toISOString();
+    var today = new Date();
+    if(formDate != 'NaN')
+    {
+        if(today <= formDate)
+        {
+            return true;
+        }
+        error = "Date can't be found if you set future date";
+    }
+    return false;
+}
 
 const getWeather = () => {
-    axios.post('/dashboard/weather/get/', {date: form.date})
-        .then(response => {
-            let weather = new Weather();
-            let data = JSON.parse(response.data[0].json_data);
-            let temperature = data.main.temp - 273.15; 
-            let temperature_max = data.main.temp_max - 273.15; 
-            form.weather = "Gaisa temperatūra: " + temperature.toFixed(2) + " " + weather.description[data.weather[0].description] + "(Maksimālā temperatūra: " + temperature_max.toFixed(2) + " )";
+    if(form.date !== '' || dateCanBeFound())
+    {
+        axios.post('/dashboard/weather/get/', {date: form.date})
+            .then(response => {
+                //id on BE isn't static
+                let id = Object.keys(response.data)[Object.keys(response.data).length - 1];
+
+                let data = JSON.parse(response.data[id].json_data);
+                let temperature = data.main.temp - 273.15; 
+                let temperature_max = data.main.temp_max - 273.15; 
+                form.weather = "Gaisa temperatūra: " + temperature.toFixed(2) + " " + data.weather[0].description + "(Maksimālā temperatūra: " + temperature_max.toFixed(2) + " )";
         });
+
+    }
+}
+
+const autoComplete = () => {
+    todayDate();
+    getWeather();
 }
 
 const submit = () => {
@@ -39,6 +64,8 @@ const submit = () => {
         onFinish: () => console.log('event created'),
     });
 };
+
+autoComplete();
 </script>
 
 <template>
@@ -57,7 +84,7 @@ const submit = () => {
                         autofocus
                         autocomplete="date"
                     />
-                    <PrimaryButton @click="todayDate">
+                    <PrimaryButton @click="todayDate" type="button">
                         Today
                     </PrimaryButton>
                     <InputError class="mt-2" :message="form.errors.date" />
@@ -73,7 +100,7 @@ const submit = () => {
                         required
                     />
 
-                    <PrimaryButton @click="getWeather">
+                    <PrimaryButton @click="getWeather" type="button">
                         Get weather
                     </PrimaryButton>
                     <InputError class="mt-2" :message="form.errors.weather" />
@@ -85,6 +112,7 @@ const submit = () => {
                     </PrimaryButton>
                 </div>
             </form>
+            {{ error }}
         </AuthenticationCard>
     </AppLayout>
 </template>

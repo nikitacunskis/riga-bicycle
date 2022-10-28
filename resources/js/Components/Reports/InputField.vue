@@ -1,7 +1,6 @@
 <script setup>
 
 import TextInput from '@/Components/TextInput.vue';
-import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 const props = defineProps({
     field: Object,

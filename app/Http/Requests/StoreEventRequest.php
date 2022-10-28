@@ -25,7 +25,7 @@ class StoreEventRequest extends FormRequest
     {
         return [        
             'date' => 'required',
-            'weather' => 'required',
+            'weather' => '',
         ];
     }
 }
