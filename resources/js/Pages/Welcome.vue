@@ -1,5 +1,6 @@
 
 <script setup>
+    import { useForm } from '@inertiajs/inertia-vue3';
     import LineChart from '@/Components/Graphs/LineChart.vue';
 
     const props = defineProps({
@@ -21,16 +22,7 @@
         }
         return palette;
     }
-    let data = [
-        {
-            label: '2019',
-            data: [55,33,56,23,21,1,44,2,12,62,19,11],
-        },
-        {
-            label: '2018',
-            data: [49,21,55,64,83,21,99,1,66,19,41,21],
-        }
-    ];
+
     const generateDataset = () => {
         let colorPalette = randomColorPalette();
         let generatedDataset = [];
@@ -51,14 +43,21 @@
     let chartOptions = {
         responsive : true,
     }
+    
+    const form = useForm({
+        years: '',
+    });
 
-    console.log(chartData);
+
 </script>
 <template>
-
-    <LineChart 
-        :chartData = "chartData"
-        :chartOptions = "chartOptions"
-    />
+    <div>
+        <div>
+            <LineChart 
+                :chartData = "chartData"
+                :chartOptions = "chartOptions"
+            />
+        </div>
+    </div>
 
 </template>

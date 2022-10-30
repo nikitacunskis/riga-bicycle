@@ -6,27 +6,19 @@ use App\Models\Report;
 use App\Models\Event;
 use App\Models\Place;
 use Inertia\Inertia;
+use DB;
 
 class DatasetController extends Controller 
 {
-    public function generateAvarageOverall()
-    {
-        /**
-        *
-        // {
-        //     label: '2019',
-        //     data: [55,33,56,23,21,1,44,2,12,62,19,11],
-        // },
-        // {
-        //     label: '2018',
-        //     data: [49,21,55,64,83,21,99,1,66,19,41,21],
-        // }
-         */
+    public function generateDataset(array $selected)
+    {   
+        $filters = $this->filterArray($selected);
+
         $eventCollection = Event::all();
         $events = $eventCollection->toArray();
+        $this->filterEvents($events, $filters);
 
         $dataset = [];
-        $countable = ['womens', 'man', 'children_self', 'children_passanger'];
         $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         foreach($events as $event)
         {
@@ -34,28 +26,14 @@ class DatasetController extends Controller
             $date = [
                 'year' => $date[0],
                 'month' => $date[1],
-                'day' => $date[2],
             ];
             $reports = Report::where('event_id', $event['id'])->get()->toArray();
-            $sum = 0;
-            foreach($reports as $report)
-            {
-                foreach($countable as $key)
-                {
-                    $sum += $report[$key];
-                }
-            }
-            $avarage = $sum/(sizeof($reports) - 1);
-            $dataset[$date['year']][$month[(int)$date['month']-1]] = $avarage;
+
+            $value = $this->avarage($reports, $filters);
+
+            $dataset[$date['year']][$month[(int)$date['month']-1]] = $value;
         }
 
-        /**
-         * 
-        {
-            label: '2019',
-            data: [55,33,56,23,21,1,44,2,12,62,19,11],
-        },
-         */
         $returnDataset = [];
         foreach($dataset as $year => $d)
         {
@@ -69,13 +47,71 @@ class DatasetController extends Controller
                 $returnDataset[$key]['data'][] = $monthData;
             }
         }
-            
-        return Inertia::render('Welcome', [
-            // 'canLogin' => Route::has('login'),
-            // 'canRegister' => Route::has('register'),
-            // 'laravelVersion' => Application::VERSION,
-            // 'phpVersion' => PHP_VERSION,
-            'dataset' => $returnDataset,
-        ]);
+        return $returnDataset;
+    }
+
+    private function filterArray(array $selected)
+    {
+        $filters = [
+            'years' => [],
+            'objects' => [],
+            'direction' => [],
+            'roadType' => [],
+            'attributes' => []
+        ];
+
+        foreach($selected as $k => $e)
+        {
+            if(preg_match("/year_(\d*)/", $e, $match))
+            {
+                $filters['years'][] = $match[1];
+            }
+
+            if(in_array($e,['womens','man','children_self','children_passanger']))
+            {
+                $filters['objects'][] = $e;
+            }
+
+            if(in_array($e, ['to_center', 'from_center']))
+            {
+                $filters['direction'][] = $e;
+            }
+
+            if(in_array($e, ['radway', 'pavement', 'biekpath']))
+            {
+                $filters['roadType'][] = $e;
+            }
+
+            if(in_array($e, ['child_chairs', 'supermobility']))
+            {
+                $filters['attributes'][] = $e;
+            }
+        }
+
+        return $filters;
+    }
+
+    private function filterEvents(&$events, array $filters)
+    {
+        foreach($events as $key => $event)
+        {
+            if(!in_array(explode('-',$event['date'])[0], $filters['years']))
+            {
+                unset($events[$key]);
+            }
+        }
+    }
+
+    private function avarage($reports, $filters)
+    {
+        $sum = 0;
+        foreach($reports as $report)
+        {
+            foreach($filters['objects'] as $key)
+            {
+                $sum += $report[$key];
+            }
+        }
+        return $sum/(sizeof($reports) - 1);
     }
 }
