@@ -8,6 +8,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\DatasetController;
+use App\Http\Controllers\SelectorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,9 @@ use App\Http\Controllers\DatasetController;
 |
 */
 
-Route::get('/', [DatasetController::class, 'generateAvarageOverall'])->name('page.welcome');
+// Route::get('/', [MainpageController::class, 'index'])->name('page.welcome');
+Route::get('/report', [SelectorController::class, 'index'])->name('page.report.get');
+Route::post('/report', [SelectorController::class, 'report'])->name('page.report.post');
 
 Route::middleware([
     'auth:sanctum',
