@@ -60,49 +60,49 @@ class SelectorController extends Controller
                         ], 
                     ],
                 ],
-                // 'direction' => [
-                //     'label' => 'Directions',
-                //     'options' => [
-                //         [
-                //             'id' => 'to_center', 
-                //             'label' => 'To center',
-                //         ], 
-                //         [
-                //             'id' => 'from_center',
-                //             'label' => 'From center',
-                //         ], 
-                //     ],
-                // ],
-                // 'roadType' => [
-                //     'label' => "Road Type",
-                //     'options' => [
-                //         [
-                //             'id' => 'radway', 
-                //             'label' => 'Roadway',
-                //         ], 
-                //         [
-                //             'id' => 'pavement', 
-                //             'label' => 'Pavement',
-                //         ], 
-                //         [
-                //             'id' => 'biekpath',
-                //             'label' => 'Bikepath',
-                //         ],
-                //     ],
-                // ],
-                // 'attributes' => [
-                //     'label' => 'Attributes',
-                //     'options' => [
-                //         [
-                //             'id' => 'child_chairs',
-                //             'label' => 'Child chairs',
-                //         ], 
-                //         [ 
-                //             'id' => 'supermobility',
-                //             'label' => 'Supermobility',
-                //         ], 
-                //     ],
-                // ],
+                'direction' => [
+                    'label' => 'Directions',
+                    'options' => [
+                        [
+                            'id' => 'to_center', 
+                            'label' => 'To center',
+                        ], 
+                        [
+                            'id' => 'from_center',
+                            'label' => 'From center',
+                        ], 
+                    ],
+                ],
+                'roadType' => [
+                    'label' => "Road Type",
+                    'options' => [
+                        [
+                            'id' => 'radway', 
+                            'label' => 'Roadway',
+                        ], 
+                        [
+                            'id' => 'pavement', 
+                            'label' => 'Pavement',
+                        ], 
+                        [
+                            'id' => 'biekpath',
+                            'label' => 'Bikepath',
+                        ],
+                    ],
+                ],
+                'attributes' => [
+                    'label' => 'Attributes',
+                    'options' => [
+                        [
+                            'id' => 'child_chairs',
+                            'label' => 'Child chairs',
+                        ], 
+                        [ 
+                            'id' => 'supermobility',
+                            'label' => 'Supermobility',
+                        ], 
+                    ],
+                ],
             ],
             'fields' => [],
         ];
