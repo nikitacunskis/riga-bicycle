@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -69,7 +69,7 @@ autoComplete();
 </script>
 
 <template>
-    <AppLayout title="Dashboard - Create Event">
+    <AdminLayout title="Dashboard - Create Event">
         <AuthenticationCard>
             <h2>Create Event</h2>
             <form @submit.prevent="submit">
@@ -114,5 +114,5 @@ autoComplete();
             </form>
             {{ error }}
         </AuthenticationCard>
-    </AppLayout>
+    </AdminLayout>
 </template>

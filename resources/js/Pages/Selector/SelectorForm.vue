@@ -1,7 +1,7 @@
-
 <script setup>
     import { useForm } from '@inertiajs/inertia-vue3';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
+    import FrontLayout from '@/Layouts/FrontLayout.vue';
 
     const props = defineProps({
         fields: Object,
@@ -28,27 +28,37 @@
     };
 </script>
 <template>
-    <div>
+    <FrontLayout>
         <div>
-                <table>
-                    <tr>
-                        <td v-for="field in fields.options">
-                            <div class="dropdown-check-list" tabindex="100">
+            <div>
+                <table class="table-auto border-collapse border border-slate-400">
+                    <thead>
+                        <tr>
+                            <th v-for="field in fields.options" class="border border-slate-300">
                                 <span class="anchor">{{field.label}}</span>
-                                <ul class="items">
-                                    <li v-for="o in field.options">    
-                                        <input type="checkbox" :id="'checkbox_'+o.id" :name="o.id"/>{{ o.label }} 
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td v-for="field in fields.options" class="border border-slate-300">
+                                <div class="dropdown-check-list" tabindex="100">
+                                    <ul class="items">
+                                        <li v-for="o in field.options">    
+                                            <input type="checkbox" :id="'checkbox_'+o.id" :name="o.id" checked/>{{ o.label }} 
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-            <form @submit.prevent="submit">
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Create
-                </PrimaryButton>
-            </form>
+                <form @submit.prevent="submit">
+                    <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                        Rādīt grafiku
+                    </PrimaryButton>
+                </form>
+            </div>
         </div>
-    </div>
+    </FrontLayout>
 </template>
