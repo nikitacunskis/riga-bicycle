@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Event;
 use App\Models\Report;
+use App\Models\Place;
 use App\Http\Requests\ReportRequest;
 
 class SelectorController extends Controller
@@ -103,10 +104,39 @@ class SelectorController extends Controller
                         ], 
                     ],
                 ],
+                'places' => [
+                    'label' => 'Places',
+                    'options' => [],
+                ],
+                'method' => [
+                    'label' => 'Datu apkopošanas metode',
+                    'options' => [
+                        [
+                            'id' => 'average',
+                            'label' => 'Vidējais',
+                        ],
+                        [
+                            'id' => 'sum',
+                            'label' => 'Summa',
+                        ],
+                        [
+                            'id' => 'prc',
+                            'label' => 'Procents no kopējā',
+                        ],
+                    ],
+                ],
             ],
             'fields' => [],
         ];
         $fields = [];
+        $places = Place::all()->toArray();
+        foreach($places as $place)
+        {
+            $form['options']['places']['options'][] = [
+                'id' => "place_" . $place['id'],
+                'label' => $place['location'],
+            ];
+        }
         foreach($form['options'] as $key => $field)
         {
             foreach($field['options'] as $option)
@@ -115,7 +145,6 @@ class SelectorController extends Controller
             }
         }
         $form['fields'] = $fields;
-        
 
         return Inertia::render('Selector/SelectorForm', ['fields' => $form]);
     }

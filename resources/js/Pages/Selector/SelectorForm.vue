@@ -17,6 +17,7 @@
     });
 
     const submit = () => {
+        form.selected = []; //in some undetected cases form.selected saves it's state. 
         props.fields.fields.forEach(e =>
         {
             if(document.getElementById('checkbox_'+e).checked)
@@ -26,6 +27,13 @@
         });
         form.post(route('page.report.post'));
     };
+
+    const checkAll = (field) => {
+        field.options.forEach(e => {
+            document.getElementById('checkbox_'+e.id).checked = !document.getElementById('checkbox_'+e.id).checked;
+        });
+    }
+
 </script>
 <template>
     <FrontLayout>
@@ -35,7 +43,8 @@
                     <thead>
                         <tr>
                             <th v-for="field in fields.options" class="border border-slate-300">
-                                <span class="anchor">{{field.label}}</span>
+                                <span class="anchor">{{field.label}}</span><br>
+                                (<button type="button" @click="checkAll(field)"><i class="fa-solid fa-square-check"></i>visus</button>)
                             </th>
                         </tr>
                     </thead>
