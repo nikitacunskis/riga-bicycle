@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import ReportItem from '@/Components/Reports/ReportItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -20,7 +20,7 @@ const createReport = () => {
 }
 </script>
 <template>
-    <AppLayout title="Reports">
+    <AdminLayout title="Reports">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Reports
@@ -41,5 +41,5 @@ const createReport = () => {
                     :report="report" />
             </table>
         </BodySection>
-    </AppLayout>
+    </AdminLayout>
 </template>

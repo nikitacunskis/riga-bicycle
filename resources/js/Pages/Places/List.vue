@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import PlaceItem from '@/Components/Places/PlaceItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -14,7 +14,7 @@ const createPlace = () => {
 }
 </script>
 <template>
-    <AppLayout title="Places">
+    <AdminLayout title="Places">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Places
@@ -35,5 +35,5 @@ const createPlace = () => {
                     :place="place" />
             </div>
         </BodySection>
-    </AppLayout>
+    </AdminLayout>
 </template>

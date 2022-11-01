@@ -1,7 +1,6 @@
-
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3';
 import LineChart from '@/Components/Graphs/LineChart.vue';
+import FrontLayout from '@/Layouts/FrontLayout.vue';
 
 const props = defineProps({
     dataset: Object,
@@ -37,27 +36,21 @@ const generateDataset = () => {
 }
 
 let chartData = {
-    labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+    labels: ['Janvāris', 'Februāris', 'Marts', 'Aprīlis', 'Maijs', 'Jūnis', 'Jūlijs', 'Augusts', 'Septembirs', 'Oktobris', 'Novembris', 'Decembris'],
     datasets: generateDataset(),
 }
 let chartOptions = {
     responsive : true,
 }
 
-const form = useForm({
-    years: '',
-});
-
 
 </script>
 <template>
-<div>
-    <div>
+
+<FrontLayout>
         <LineChart 
             :chartData = "chartData"
             :chartOptions = "chartOptions"
         />
-    </div>
-</div>
-
+</FrontLayout>
 </template>

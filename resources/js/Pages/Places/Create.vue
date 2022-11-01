@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Checkbox.vue';
@@ -22,7 +22,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AppLayout title="Dashboard - Create Place">
+    <AdminLayout title="Dashboard - Create Place">
         <AuthenticationCard>
             <h2>Create Place</h2>
             <form @submit.prevent="submit">
@@ -59,5 +59,5 @@ const submit = () => {
                 </div>
             </form>
         </AuthenticationCard>
-    </AppLayout>
+    </AdminLayout>
 </template>

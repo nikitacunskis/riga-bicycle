@@ -4,6 +4,6 @@ import FrontLayout from '@/Layouts/FrontLayout.vue';
 </script>
 <template>
     <FrontLayout>
-        Welcome page
+        Join page
     </FrontLayout>
 </template>
