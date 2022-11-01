@@ -27,9 +27,26 @@ class DatasetController extends Controller
                 'year' => $date[0],
                 'month' => $date[1],
             ];
-            $reports = Report::where('event_id', $event['id'])->get()->toArray();
+            $reports = Report::where('event_id', $event['id'])
+            ->whereIn('place_id', $filters['places'])
+            ->get()
+            ->toArray();
 
-            $value = $this->avarage($reports, $filters);
+            switch($filters['method'])
+            {
+                case 'average':
+                    $value = $this->avarage($reports, $filters);
+                    break;
+                case 'sum':
+                    $value = $this->sum($reports, $filters);
+                    break;
+                case 'prc':
+                    $value = $this->prc($reports, $filters);
+                    break;
+                default:
+                    $value = $this->avarage($reports, $filters);
+                    break;
+            }
 
             $dataset[$date['year']][$month[(int)$date['month']-1]] = $value;
         }
@@ -57,7 +74,9 @@ class DatasetController extends Controller
             'objects' => [],
             'direction' => [],
             'roadType' => [],
-            'attributes' => []
+            'attributes' => [],
+            'places' => [],
+            'method' => '',
         ];
 
         foreach($selected as $k => $e)
@@ -86,6 +105,16 @@ class DatasetController extends Controller
             {
                 $filters['attributes'][] = $e;
             }
+
+            if(preg_match("/place_(\d*)/", $e, $match))
+            {
+                $filters['places'][] = $match[1];
+            }
+
+            if(in_array($e, ['average', 'sum', 'prc']))
+            {
+                $filters['method'] = $e;
+            }
         }
 
         return $filters;
@@ -112,6 +141,48 @@ class DatasetController extends Controller
                 $sum += $report[$key];
             }
         }
-        return $sum/(sizeof($reports) - 1);
+
+        $avg = 0;
+        if(sizeof($reports) !== 0)
+        {
+            $avg = $sum/sizeof($reports);
+        }
+        return $avg;
+    }
+
+    private function sum($reports, $filters)
+    {
+        $sum = 0;
+        foreach($reports as $report)
+        {
+            foreach($filters['objects'] as $key)
+            {
+                $sum += $report[$key];
+            }
+        }
+
+        return $sum;
+    }
+
+    private function prc($reports, $filters)
+    {
+        $prcOverall = 0;
+        foreach($reports as $report)
+        {
+            $fullSum = $report['womens'] + $report['man'] + $report['children_self'] + $report['children_passanger'];
+
+            $selectedSum = 0;
+            foreach($filters['objects'] as $key)
+            {
+                $selectedSum += $report[$key];
+            }
+            if($fullSum !== 0 && $selectedSum !== 0)
+            {
+                $prcOverall += $selectedSum/$fullSum * 100;
+            }
+        }
+        $prcOverall = $prcOverall/sizeof($reports);
+
+        return $prcOverall;
     }
 }

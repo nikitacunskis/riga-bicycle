@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Event;
 use App\Models\Report;
+use App\Models\Place;
 use App\Http\Requests\ReportRequest;
 
 class SelectorController extends Controller
@@ -60,53 +61,82 @@ class SelectorController extends Controller
                         ], 
                     ],
                 ],
-                // 'direction' => [
-                //     'label' => 'Directions',
-                //     'options' => [
-                //         [
-                //             'id' => 'to_center', 
-                //             'label' => 'To center',
-                //         ], 
-                //         [
-                //             'id' => 'from_center',
-                //             'label' => 'From center',
-                //         ], 
-                //     ],
-                // ],
-                // 'roadType' => [
-                //     'label' => "Road Type",
-                //     'options' => [
-                //         [
-                //             'id' => 'radway', 
-                //             'label' => 'Roadway',
-                //         ], 
-                //         [
-                //             'id' => 'pavement', 
-                //             'label' => 'Pavement',
-                //         ], 
-                //         [
-                //             'id' => 'biekpath',
-                //             'label' => 'Bikepath',
-                //         ],
-                //     ],
-                // ],
-                // 'attributes' => [
-                //     'label' => 'Attributes',
-                //     'options' => [
-                //         [
-                //             'id' => 'child_chairs',
-                //             'label' => 'Child chairs',
-                //         ], 
-                //         [ 
-                //             'id' => 'supermobility',
-                //             'label' => 'Supermobility',
-                //         ], 
-                //     ],
-                // ],
+                'direction' => [
+                    'label' => 'Directions',
+                    'options' => [
+                        [
+                            'id' => 'to_center', 
+                            'label' => 'To center',
+                        ], 
+                        [
+                            'id' => 'from_center',
+                            'label' => 'From center',
+                        ], 
+                    ],
+                ],
+                'roadType' => [
+                    'label' => "Road Type",
+                    'options' => [
+                        [
+                            'id' => 'radway', 
+                            'label' => 'Roadway',
+                        ], 
+                        [
+                            'id' => 'pavement', 
+                            'label' => 'Pavement',
+                        ], 
+                        [
+                            'id' => 'biekpath',
+                            'label' => 'Bikepath',
+                        ],
+                    ],
+                ],
+                'attributes' => [
+                    'label' => 'Attributes',
+                    'options' => [
+                        [
+                            'id' => 'child_chairs',
+                            'label' => 'Child chairs',
+                        ], 
+                        [ 
+                            'id' => 'supermobility',
+                            'label' => 'Supermobility',
+                        ], 
+                    ],
+                ],
+                'places' => [
+                    'label' => 'Places',
+                    'options' => [],
+                ],
+                'method' => [
+                    'label' => 'Datu apkopošanas metode',
+                    'options' => [
+                        [
+                            'id' => 'average',
+                            'label' => 'Vidējais',
+                        ],
+                        [
+                            'id' => 'sum',
+                            'label' => 'Summa',
+                        ],
+                        [
+                            'id' => 'prc',
+                            'label' => 'Procents no kopējā',
+                        ],
+                    ],
+                ],
             ],
             'fields' => [],
         ];
         $fields = [];
+        $places = Place::all()->toArray();
+        foreach($places as $place)
+        {
+            $form['options']['places']['options'][] = [
+                'id' => "place_" . $place['id'],
+                'label' => $place['location'],
+            ];
+        }
         foreach($form['options'] as $key => $field)
         {
             foreach($field['options'] as $option)
@@ -115,7 +145,6 @@ class SelectorController extends Controller
             }
         }
         $form['fields'] = $fields;
-        
 
         return Inertia::render('Selector/SelectorForm', ['fields' => $form]);
     }

@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import EventItem from '@/Components/Events/EventItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -15,7 +15,7 @@ const createEvent = () => {
 }
 </script>
 <template>
-    <AppLayout title="Events">
+    <AdminLayout title="Events">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Events
@@ -36,5 +36,5 @@ const createEvent = () => {
                     :event="event" />
             </div>
         </BodySection>
-    </AppLayout>
+    </AdminLayout>
 </template>
