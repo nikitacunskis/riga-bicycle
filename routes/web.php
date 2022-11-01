@@ -9,6 +9,8 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\DatasetController;
 use App\Http\Controllers\SelectorController;
+use App\Http\Controllers\WelcomepageController;
+use App\Http\Controllers\JoinpageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +23,8 @@ use App\Http\Controllers\SelectorController;
 |
 */
 
-// Route::get('/', [MainpageController::class, 'index'])->name('page.welcome');
+Route::get('/', [WelcomepageController::class, 'index'])->name('page.welcome');
+Route::get('/join', [JoinpageController::class, 'index'])->name('page.join');
 Route::get('/report', [SelectorController::class, 'index'])->name('page.report.get');
 Route::post('/report', [SelectorController::class, 'report'])->name('page.report.post');
 
