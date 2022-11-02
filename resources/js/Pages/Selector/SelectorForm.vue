@@ -36,7 +36,7 @@
 
 </script>
 <template>
-    <FrontLayout>
+    <FrontLayout title="Atskaites">
         <div>
             <div>
                 <table class="table-auto border-collapse border border-slate-400">

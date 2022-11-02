@@ -14,8 +14,7 @@ class DatasetController extends Controller
     {   
         $filters = $this->filterArray($selected);
 
-        $eventCollection = Event::all();
-        $events = $eventCollection->toArray();
+        $events  = Event::all()->toArray();
         $this->filterEvents($events, $filters);
 
         $dataset = [];
@@ -27,31 +26,23 @@ class DatasetController extends Controller
                 'year' => $date[0],
                 'month' => $date[1],
             ];
+
             $reports = Report::where('event_id', $event['id'])
             ->whereIn('place_id', $filters['places'])
             ->get()
             ->toArray();
 
-            switch($filters['method'])
-            {
-                case 'average':
-                    $value = $this->avarage($reports, $filters);
-                    break;
-                case 'sum':
-                    $value = $this->sum($reports, $filters);
-                    break;
-                case 'prc':
-                    $value = $this->prc($reports, $filters);
-                    break;
-                default:
-                    $value = $this->avarage($reports, $filters);
-                    break;
-            }
-
-            $dataset[$date['year']][$month[(int)$date['month']-1]] = $value;
+            $dataset[$date['year']][$month[(int)$date['month']-1]] = [
+                'value' => $this->value($reports, $filters),
+                'report' => $this->datasetReport($reports, $filters),
+            ];
         }
 
         $returnDataset = [];
+        $returnReport = [
+            'places' => [],
+            'objects' => [],
+        ];
         foreach($dataset as $year => $d)
         {
             $returnDataset[] = [
@@ -59,12 +50,35 @@ class DatasetController extends Controller
                 'data' => [],
             ];
             $key = sizeof($returnDataset) - 1;
-            foreach($d as $monthData)
+            foreach($d as $data)
             {
-                $returnDataset[$key]['data'][] = $monthData;
+                $returnDataset[$key]['data'][] = $data['value'];
+                $returnReport['places'] = array_merge($returnReport['places'], $data['report']['places']);
+                $returnReport['objects'] = array_merge($returnReport['objects'], $data['report']['objects']);
+                $returnReport['method'] = $data['report']['method'];
             }
         }
-        return $returnDataset;
+        $returnReport['places'] = array_unique($returnReport['places']);
+        $returnReport['objects'] = array_unique($returnReport['objects']);
+        return [
+            'dataset' => $returnDataset,
+            'report' => $returnReport
+        ];
+    }
+
+    private function value($reports, $filters)
+    {
+        switch($filters['method'])
+        {
+            case 'average':
+                return $this->avarage($reports, $filters);
+            case 'sum':
+                return $this->sum($reports, $filters);
+            case 'prc':
+                return $this->prc($reports, $filters);
+            default:
+                return $this->avarage($reports, $filters);
+        }
     }
 
     private function filterArray(array $selected)
@@ -131,7 +145,7 @@ class DatasetController extends Controller
         }
     }
 
-    private function avarage($reports, $filters)
+    private function avarage(array $reports, array $filters)
     {
         $sum = 0;
         foreach($reports as $report)
@@ -150,7 +164,7 @@ class DatasetController extends Controller
         return $avg;
     }
 
-    private function sum($reports, $filters)
+    private function sum(array $reports, array $filters)
     {
         $sum = 0;
         foreach($reports as $report)
@@ -164,7 +178,7 @@ class DatasetController extends Controller
         return $sum;
     }
 
-    private function prc($reports, $filters)
+    private function prc(array $reports, array $filters)
     {
         $prcOverall = 0;
         foreach($reports as $report)
@@ -181,8 +195,57 @@ class DatasetController extends Controller
                 $prcOverall += $selectedSum/$fullSum * 100;
             }
         }
-        $prcOverall = $prcOverall/sizeof($reports);
+        if(sizeof($reports) !== 0)
+        {
+            $prcOverall = $prcOverall/sizeof($reports);
+        }
 
         return $prcOverall;
+    }
+
+    private function datasetReport(array $reports, array $filters) : array
+    {
+        $allPlaces = Place::all()->pluck('location')->toArray();
+        $places = Place::whereIn('id', $filters['places'])->pluck('location')->toArray();
+
+        if(sizeof($allPlaces) === sizeof($places))
+        {
+            $places = ['visi skaitīšanas punkti visā Rīga'];
+        }
+        if(sizeof($places) === 0)
+        {
+            $places = ['nav izvēlēts neviens punkts'];
+        }
+
+        $objects = [];
+        $ids = ['womens', 'man', 'children_self', 'children_passanger'];
+        $labels = ['Sievietes', 'Vīrieši', 'Bērni paši', 'Bērni, kā pasažieri'];
+        if(sizeof($filters['objects']) === 0)
+        {
+            $objects = ['nav izvēlēta neviena pētījuma kategorija'];
+        }
+        else
+        {
+            foreach($filters['objects'] as $obj)
+            {
+                $objects[] = $labels[array_search($obj, $ids)];          
+            }
+        }
+
+        $methods = ['average' => 'Vidējais', 'sum' => 'Summēšana', 'prc' => 'Procents no visiem'];
+        if(!isset($filters['method']))
+        {
+            $method = $methods['average'];
+        }
+        else
+        {
+            $method = $methods[$filters['method']];
+        }
+
+        return [
+            'places' => $places,
+            'objects' => $objects,
+            'method' => $method,
+        ];
     }
 }

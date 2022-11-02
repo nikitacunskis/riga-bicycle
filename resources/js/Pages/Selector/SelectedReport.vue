@@ -4,7 +4,10 @@ import FrontLayout from '@/Layouts/FrontLayout.vue';
 
 const props = defineProps({
     dataset: Object,
+    report: Object,
 });
+
+
 const randomColorPalette = () => {
     let colorPalette = ["#086788","#07a0c3","#f0c808","#fff1d0","#dd1c1a"];
     var palette = [];
@@ -43,14 +46,24 @@ let chartOptions = {
     responsive : true,
 }
 
-
+console.log(props.report);
 </script>
 <template>
 
-<FrontLayout>
-        <LineChart 
-            :chartData = "chartData"
-            :chartOptions = "chartOptions"
-        />
+<FrontLayout title="Atskaites">
+    <p>Dati tiek ievākti katra mēneša 15. datumam tuvākajā piektdienā 8:00 - 9:00</p>
+    <p>Redzamajā grafikā ir ievākti dati no sekojošiem punktiem:</p>
+    <ul>
+        <li v-for="place in props.report.places">- {{place}}</li>
+    </ul>
+    <p>Grafikā ir apkopotas sekojošas velosipēdīstu grupas:</p>
+    <ul>
+        <li v-for="object in props.report.objects">- {{object}}</li>
+    </ul>
+    <p>Apkopojot, tika izmantota metode "{{props.report.method}}"</p>
+    <LineChart 
+        :chartData = "chartData"
+        :chartOptions = "chartOptions"
+    />
 </FrontLayout>
 </template>
