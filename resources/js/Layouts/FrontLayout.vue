@@ -32,6 +32,9 @@
             <li class="mr-3">
                 <a class="link-regular" href="/join">Pievienojies</a>
             </li>
+            <li class="mr-3">
+                <a class="link-regular" href="/raw">Neapstrādāti dati</a>
+            </li>
         </ul>
     </div>
 </div>
