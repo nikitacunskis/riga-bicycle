@@ -1,4 +1,10 @@
 <script setup>
+    const props = defineProps({
+        title: {
+            type: String,
+            default: ""
+        },
+    });
 </script>
 
 <template>
@@ -18,10 +24,10 @@
     <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto lg:block mt-2 lg:mt-0 bg-gray-100 md:bg-transparent z-20" id="nav-content">
         <ul class="list-reset lg:flex justify-end flex-1 items-center">
             <li class="mr-3">
-                <a class="link-regular" href="/">Main</a>
+                <a class="link-regular" href="/">Sākums</a>
             </li>
             <li class="mr-3">
-                <a class="link-active" href="/report">Report</a>
+                <a class="link-active" href="/report">Atskaites</a>
             </li>
             <li class="mr-3">
                 <a class="link-regular" href="/join">Pievienojies</a>
@@ -36,15 +42,17 @@
 
 <div class="w-full px-4 md:px-6 text-xl text-gray-800 leading-normal" style="font-family:Georgia,serif;">
 
-    <div class="content-center">
-        <slot />
-
-    </div>
+{{ props.title }}
 
 </div>
 
 <!--Divider-->
 <hr class="border-b-2 border-gray-400 mb-8 mx-4">
+
+    <div class="content-center">
+        <slot />
+
+    </div>
 
 <!--Divider-->
 <hr class="border-b-2 border-gray-400 mb-8 mx-4">
@@ -57,7 +65,7 @@
 
     <div class="w-full mx-auto flex flex-wrap">
         <div class="flex w-full md:w-1/3 ">
-            <img class="w-20 h-20 rounded-full mr-4" src="https://i.pravatar.cc/300?img=6" alt="Avatar of Author">
+            <img class="w-20 h-20 rounded-full mr-4" src="img/nikitacunskis.png" alt="Nikita Cunskis profila bilde">
             <div class="flex-1 px-2">
                 <h3 class="font-bold text-gray-900">Ņikita Cunskis</h3>
                 <p class="text-gray-600 text-xs md:text-base">IT risinājuma izveide 
@@ -68,7 +76,7 @@
         </div>
 
         <div class="flex w-full md:w-1/3 ">
-            <img class="w-20 h-20 rounded-full mr-4" src="https://i.pravatar.cc/300?img=25" alt="Avatar of Author">
+            <img class="w-20 h-20 rounded-full mr-4" src="img/pilsēta-cilvēkiem-logo.jpg" alt="Pilsēta Cilvēkiem logotips">
             <div class="flex-1 px-2">
                 <h3 class="font-bold text-gray-900">Pilsēta Cilvēkiem</h3>
                 <p class="text-gray-600 text-xs md:text-base">
