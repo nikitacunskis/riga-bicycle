@@ -11,6 +11,7 @@ use App\Http\Controllers\DatasetController;
 use App\Http\Controllers\SelectorController;
 use App\Http\Controllers\WelcomepageController;
 use App\Http\Controllers\JoinpageController;
+use App\Http\Controllers\RawpageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ Route::get('/', [WelcomepageController::class, 'index'])->name('page.welcome');
 Route::get('/join', [JoinpageController::class, 'index'])->name('page.join');
 Route::get('/report', [SelectorController::class, 'index'])->name('page.report.get');
 Route::post('/report', [SelectorController::class, 'report'])->name('page.report.post');
+Route::get('/raw', [RawpageController::class, 'index'])->name('page.raw');
 
 Route::middleware([
     'auth:sanctum',
