@@ -19,6 +19,7 @@ class DatasetController extends Controller
 
         $dataset = [];
         $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        $raw = [];
         foreach($events as $event)
         {
             $date = explode('-', $event['date']);
@@ -32,11 +33,22 @@ class DatasetController extends Controller
             ->get()
             ->toArray();
 
+            $raw = array_merge($raw, $reports);
+
             $dataset[$date['year']][$month[(int)$date['month']-1]] = [
                 'value' => $this->value($reports, $filters),
                 'report' => $this->datasetReport($reports, $filters),
             ];
         }
+
+
+        foreach($raw as $key => $rawReport)
+        {
+            $raw[$key]['place'] = Place::where('id', $rawReport['place_id'])->pluck('location')[0];
+            $raw[$key]['event'] = Event::where('id', $rawReport['event_id'])->pluck('date')[0];
+            $raw[$key]['weather'] = Event::where('id', $rawReport['event_id'])->pluck('weather')[0];
+        }
+
 
         $returnDataset = [];
         $returnReport = [
@@ -62,7 +74,8 @@ class DatasetController extends Controller
         $returnReport['objects'] = array_unique($returnReport['objects']);
         return [
             'dataset' => $returnDataset,
-            'report' => $returnReport
+            'report' => $returnReport,
+            'raw' => $raw,
         ];
     }
 

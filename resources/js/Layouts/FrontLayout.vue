@@ -73,6 +73,7 @@
                 <h3 class="font-bold text-gray-900">Ņikita Cunskis</h3>
                 <p class="text-gray-600 text-xs md:text-base">IT risinājuma izveide 
                 <a class="text-green-500 no-underline hover:underline" href="https://github.com/nikitacunskis/riga-bicycle">GitHub</a><br>
+                <a class="text-green-500 no-underline hover:underline" href="https://twitter.com/nikitacunskis">Twitter</a><br>
                 <a class="text-green-500 no-underline hover:underline" href="mailto:nikita.cunskis@gmail.com">nikita.cunskis@gmail.com</a>
                 </p>
             </div>
