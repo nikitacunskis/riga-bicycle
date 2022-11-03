@@ -152,6 +152,6 @@ class SelectorController extends Controller
     public function report(Request $request)
     {
         $dataset = (new DatasetController())->generateDataset($request->selected);
-        return Inertia::render('Selector/SelectedReport', ['dataset' => $dataset['dataset'], 'report' => $dataset['report']]);
+        return Inertia::render('Selector/SelectedReport', ['dataset' => $dataset['dataset'], 'report' => $dataset['report'], 'raw' => $dataset['raw']]);
     }
 }

@@ -1,10 +1,12 @@
 <script setup>
 import LineChart from '@/Components/Graphs/LineChart.vue';
 import FrontLayout from '@/Layouts/FrontLayout.vue';
+import RawTable from '@/Components/RawTable.vue';
 
 const props = defineProps({
     dataset: Object,
     report: Object,
+    raw: Object,
 });
 
 
@@ -46,7 +48,7 @@ let chartOptions = {
     responsive : true,
 }
 
-console.log(props.report);
+console.log(props.raw);
 </script>
 <template>
 
@@ -65,5 +67,6 @@ console.log(props.report);
         :chartData = "chartData"
         :chartOptions = "chartOptions"
     />
+    <RawTable :reports="props.raw"/>
 </FrontLayout>
 </template>
