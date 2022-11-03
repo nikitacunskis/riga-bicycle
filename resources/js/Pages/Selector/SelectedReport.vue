@@ -67,16 +67,11 @@ const breadcrumbs = [
         href: '/report'
     },
 ];
-
-console.log(props.raw);
 </script>
 <template>
 
 <FrontLayout title="Atskaites" :breadcrumbs="breadcrumbs">
-    <div v-if="props.e.length !== 0">
-        {{e[0]}}
-    </div>
-    <div v-else>
+        <div class="sharethis-inline-share-buttons"></div>
         <p>Dati tiek ievākti katra mēneša 15. datumam tuvākajā piektdienā 8:00 - 9:00</p>
         <p>Redzamajā grafikā ir ievākti dati no sekojošiem punktiem:</p>
         <ul class="space-y-1 max-w-md list-disc list-inside">
@@ -91,8 +86,7 @@ console.log(props.raw);
             :chartData = "chartData"
             :chartOptions = "chartOptions"
         />
-        <RawTable :reports="props.raw"/>
-    </div>
+        <RawTable :reports="props.raw"/>    
     
 </FrontLayout>
 </template>
