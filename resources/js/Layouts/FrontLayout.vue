@@ -10,6 +10,7 @@
             default: []
         }
     });
+
 </script>
 
 <template>
