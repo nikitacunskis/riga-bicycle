@@ -6,9 +6,15 @@ const props = defineProps({
     reports: Object,
 });
 
+const breadcrumbs = [
+    {
+        text: 'Neapstrādāti (RAW) dati',
+        href: '/raw'
+    }
+];
 </script>
 <template>
-    <FrontLayout title="Neapstrādāti (RAW) dati">
+    <FrontLayout title="Neapstrādāti (RAW) dati" :breadcrumbs="breadcrumbs">
         <RawTable :reports="props.reports"/>
     </FrontLayout>
 </template>

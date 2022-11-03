@@ -246,7 +246,7 @@ class DatasetController extends Controller
         }
 
         $methods = ['average' => 'Vidējais', 'sum' => 'Summēšana', 'prc' => 'Procents no visiem'];
-        if(!isset($filters['method']))
+        if($filters['method'] === "")
         {
             $method = $methods['average'];
         }
