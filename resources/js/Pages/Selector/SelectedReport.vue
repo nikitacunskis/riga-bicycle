@@ -4,9 +4,22 @@ import FrontLayout from '@/Layouts/FrontLayout.vue';
 import RawTable from '@/Components/RawTable.vue';
 
 const props = defineProps({
-    dataset: Object,
-    report: Object,
-    raw: Object,
+    dataset: {
+        type: Object,
+        default: {}
+    },
+    report: {
+        type: Object,
+        default: {}
+    },
+    raw: {
+        type: Object,
+        default: {}
+    },
+    e: {
+        type: Array,
+        default: []
+    }
 });
 
 
@@ -48,25 +61,38 @@ let chartOptions = {
     responsive : true,
 }
 
+const breadcrumbs = [
+    {
+        text: 'Atskaites',
+        href: '/report'
+    },
+];
+
 console.log(props.raw);
 </script>
 <template>
 
-<FrontLayout title="Atskaites">
-    <p>Dati tiek ievākti katra mēneša 15. datumam tuvākajā piektdienā 8:00 - 9:00</p>
-    <p>Redzamajā grafikā ir ievākti dati no sekojošiem punktiem:</p>
-    <ul>
-        <li v-for="place in props.report.places">- {{place}}</li>
-    </ul>
-    <p>Grafikā ir apkopotas sekojošas velosipēdīstu grupas:</p>
-    <ul>
-        <li v-for="object in props.report.objects">- {{object}}</li>
-    </ul>
-    <p>Apkopojot, tika izmantota metode "{{props.report.method}}"</p>
-    <LineChart 
-        :chartData = "chartData"
-        :chartOptions = "chartOptions"
-    />
-    <RawTable :reports="props.raw"/>
+<FrontLayout title="Atskaites" :breadcrumbs="breadcrumbs">
+    <div v-if="props.e.length !== 0">
+        {{e[0]}}
+    </div>
+    <div v-else>
+        <p>Dati tiek ievākti katra mēneša 15. datumam tuvākajā piektdienā 8:00 - 9:00</p>
+        <p>Redzamajā grafikā ir ievākti dati no sekojošiem punktiem:</p>
+        <ul class="space-y-1 max-w-md list-disc list-inside">
+            <li v-for="place in props.report.places">- {{place}}</li>
+        </ul>
+        <p>Grafikā ir apkopotas sekojošas velosipēdīstu grupas:</p>
+        <ul class="space-y-1 max-w-md list-disc list-inside">
+            <li v-for="object in props.report.objects">- {{object}}</li>
+        </ul>
+        <p>Apkopojot, tika izmantota metode "{{props.report.method}}"</p>
+        <LineChart 
+            :chartData = "chartData"
+            :chartOptions = "chartOptions"
+        />
+        <RawTable :reports="props.raw"/>
+    </div>
+    
 </FrontLayout>
 </template>

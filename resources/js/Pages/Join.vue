@@ -7,9 +7,15 @@ const props = defineProps({
         default: ""
     },
 });
+const breadcrumbs = [
+    {
+        text: 'Pievienojies',
+        href: '/join'
+    }
+];
 </script>
 <template>
-    <FrontLayout>
+    <FrontLayout :breadcrumbs="breadcrumbs">
         <video autoplay muted loop>
             <source src="img/pexels-kindel-media-6774055.mp4" type="video/mp4">
             <img src="img/strudel_solinsh.jpg" />
