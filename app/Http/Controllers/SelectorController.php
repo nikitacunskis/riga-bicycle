@@ -37,75 +37,75 @@ class SelectorController extends Controller
         $form = [
             'options' => [
                 'years' => [
-                    'label' => 'Years',
+                    'label' => 'Gadi',
                     'options' => $yearsOptions,
                 ],
                 'objects' => [
-                    'label' => 'Objects',
+                    'label' => 'Objekti',
                     'options' => [
                         [
                             'id' => 'womens',
-                            'label' => 'Womans',
+                            'label' => 'Sievietes',
                         ], 
                         [
                             'id' => 'man', 
-                            'label' => 'Man',
+                            'label' => 'Vīrieši',
                         ], 
                         [
                             'id' => 'children_self', 
-                            'label' => 'Child self',
+                            'label' => 'Bērni paši',
                         ], 
                         [
                             'id' => 'children_passanger',
-                            'label' => 'Child as passanger',
+                            'label' => 'Bērni, kā pasažieri',
                         ], 
                     ],
                 ],
                 'direction' => [
-                    'label' => 'Directions',
+                    'label' => 'Virzieni',
                     'options' => [
                         [
                             'id' => 'to_center', 
-                            'label' => 'To center',
+                            'label' => 'Uz centru',
                         ], 
                         [
                             'id' => 'from_center',
-                            'label' => 'From center',
+                            'label' => 'No centra',
                         ], 
                     ],
                 ],
                 'roadType' => [
-                    'label' => "Road Type",
+                    'label' => "Ceļa tips",
                     'options' => [
                         [
                             'id' => 'radway', 
-                            'label' => 'Roadway',
+                            'label' => 'Brauktuve',
                         ], 
                         [
                             'id' => 'pavement', 
-                            'label' => 'Pavement',
+                            'label' => 'Ietve',
                         ], 
                         [
                             'id' => 'biekpath',
-                            'label' => 'Bikepath',
+                            'label' => 'Velojosla/ veloceļš',
                         ],
                     ],
                 ],
                 'attributes' => [
-                    'label' => 'Attributes',
+                    'label' => 'Cits',
                     'options' => [
                         [
                             'id' => 'child_chairs',
-                            'label' => 'Child chairs',
+                            'label' => 'Bērnu krēsls',
                         ], 
                         [ 
                             'id' => 'supermobility',
-                            'label' => 'Supermobility',
+                            'label' => 'Supermobilitāte ',
                         ], 
                     ],
                 ],
                 'places' => [
-                    'label' => 'Places',
+                    'label' => 'Vietas',
                     'options' => [],
                 ],
                 'method' => [
