@@ -34,7 +34,7 @@
                     <a class="link-active" href="/report">Atskaites</a>
                 </li>
                 <li class="mr-3">
-                    <a class="link-regular" href="/join">Pievienojies</a>
+                    <a class="text-black bg-blue-100 hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3  py-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" href="/join">Pievienojies</a>
                 </li>
                 <li class="mr-3">
                     <a class="link-regular" href="/raw">Neapstrādāti dati</a>
@@ -98,7 +98,7 @@
 
         <div class="flex w-full md:w-1/3">
             <div class="px-8">
-                <h3 class="font-bold text-gray-900">Social</h3>
+                <h3 class="font-bold text-gray-900">Saites</h3>
                 <ul class="list-reset items-center text-sm pt-3">
                     <li>
                         <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="https://www.facebook.com/PilsetaCilvekiem/">Facebook</a>
