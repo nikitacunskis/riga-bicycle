@@ -28,6 +28,7 @@
         "chart.js": "^3.9.1",
         "vue": "^3.2.36",
         "vue-chartjs": "^4.1.2",
+        "vue-cookies": "^1.8.2",
         "vue-laravel-csrf": "^1.0.0"
     },
     "name": "counter",
