@@ -1,10 +1,6 @@
 <script setup>
 import FrontLayout from '@/Layouts/FrontLayout.vue';
 import RawTable from '@/Components/RawTable.vue';
-// import VueCookies from 'vue-cookies';
-
-const $cookies = inject('$cookies');
-console.log(this.$cookies.keys());
 
 const props = defineProps({
     reports: Object,
@@ -21,22 +17,12 @@ const breadcrumbs = [
 const donate = () => {
     window.open("https://www.pilsetacilvekiem.lv/ziedot/", '_blank');
     showTable();
-    // if(Cookies.get('no-donation') === 'undefined') 
-    // {
-    //     Cookies.set('no-donation', true, { expires: 14 });
-    // }
 }
 
 const showTable = () => {
-
-    // if(Cookies.get('no-donation') === 'undefined') 
-    // {
-        document.getElementById('donation-box').classList.add('hidden');
-        document.getElementById('rawTable').classList.remove('hidden');
-//     } else {
-//         this.donate();
-//     }
-// }
+    document.getElementById('donation-box').classList.add('hidden');
+    document.getElementById('rawTable').classList.remove('hidden');
+}
 </script>
 <template>
     <FrontLayout title="Neapstrādāti (RAW) dati" :breadcrumbs="breadcrumbs">
@@ -44,7 +30,7 @@ const showTable = () => {
             <RawTable :reports="props.reports"/>
 
         </div>
-        <div id="donation-box" tabindex="-1" class="overflow-y-auto overflow-x-hidden0 z-50 md:inset-0 h-modal md:h-full">
+        <div id="donation-box" tabindex="-1" class="overflow-y-auto overflow-x-hidden z-50 md:inset-0 h-modal md:h-full">
 
             <table class="w-full">
                 <tr>
