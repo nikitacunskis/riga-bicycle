@@ -61,49 +61,49 @@ class SelectorController extends Controller
                         ], 
                     ],
                 ],
-                'direction' => [
-                    'label' => 'Virzieni',
-                    'options' => [
-                        [
-                            'id' => 'to_center', 
-                            'label' => 'Uz centru',
-                        ], 
-                        [
-                            'id' => 'from_center',
-                            'label' => 'No centra',
-                        ], 
-                    ],
-                ],
-                'roadType' => [
-                    'label' => "Ceļa tips",
-                    'options' => [
-                        [
-                            'id' => 'radway', 
-                            'label' => 'Brauktuve',
-                        ], 
-                        [
-                            'id' => 'pavement', 
-                            'label' => 'Ietve',
-                        ], 
-                        [
-                            'id' => 'biekpath',
-                            'label' => 'Velojosla/ veloceļš',
-                        ],
-                    ],
-                ],
-                'attributes' => [
-                    'label' => 'Cits',
-                    'options' => [
-                        [
-                            'id' => 'child_chairs',
-                            'label' => 'Bērnu krēsls',
-                        ], 
-                        [ 
-                            'id' => 'supermobility',
-                            'label' => 'Supermobilitāte ',
-                        ], 
-                    ],
-                ],
+                // 'direction' => [
+                //     'label' => 'Virzieni',
+                //     'options' => [
+                //         [
+                //             'id' => 'to_center', 
+                //             'label' => 'Uz centru',
+                //         ], 
+                //         [
+                //             'id' => 'from_center',
+                //             'label' => 'No centra',
+                //         ], 
+                //     ],
+                // ],
+                // 'roadType' => [
+                //     'label' => "Ceļa tips",
+                //     'options' => [
+                //         [
+                //             'id' => 'radway', 
+                //             'label' => 'Brauktuve',
+                //         ], 
+                //         [
+                //             'id' => 'pavement', 
+                //             'label' => 'Ietve',
+                //         ], 
+                //         [
+                //             'id' => 'biekpath',
+                //             'label' => 'Velojosla/ veloceļš',
+                //         ],
+                //     ],
+                // ],
+                // 'attributes' => [
+                //     'label' => 'Cits',
+                //     'options' => [
+                //         [
+                //             'id' => 'child_chairs',
+                //             'label' => 'Bērnu krēsls',
+                //         ], 
+                //         [ 
+                //             'id' => 'supermobility',
+                //             'label' => 'Supermobilitāte ',
+                //         ], 
+                //     ],
+                // ],
                 'places' => [
                     'label' => 'Vietas',
                     'options' => [],

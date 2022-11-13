@@ -1,6 +1,10 @@
 <script setup>
 import FrontLayout from '@/Layouts/FrontLayout.vue';
 import RawTable from '@/Components/RawTable.vue';
+// import VueCookies from 'vue-cookies';
+
+const $cookies = inject('$cookies');
+console.log(this.$cookies.keys());
 
 const props = defineProps({
     reports: Object,
@@ -17,12 +21,22 @@ const breadcrumbs = [
 const donate = () => {
     window.open("https://www.pilsetacilvekiem.lv/ziedot/", '_blank');
     showTable();
+    // if(Cookies.get('no-donation') === 'undefined') 
+    // {
+    //     Cookies.set('no-donation', true, { expires: 14 });
+    // }
 }
 
 const showTable = () => {
-    document.getElementById('donation-box').classList.add('hidden');
-    document.getElementById('rawTable').classList.remove('hidden');
-}
+
+    // if(Cookies.get('no-donation') === 'undefined') 
+    // {
+        document.getElementById('donation-box').classList.add('hidden');
+        document.getElementById('rawTable').classList.remove('hidden');
+//     } else {
+//         this.donate();
+//     }
+// }
 </script>
 <template>
     <FrontLayout title="Neapstrādāti (RAW) dati" :breadcrumbs="breadcrumbs">
@@ -38,9 +52,9 @@ const showTable = () => {
                         <i class="fa-solid fa-heart text-[200pt] text-red-500"></i>
                     </td>
                     <td>
-                        <h3 class="mb-5 text-[20pt] font-normal text-gray-700 dark:text-gray-400">"<b>Pilsēta Cilvēkiem</b>" piedāvā pieeju visiem datiem <b>BEZMAKSAS</b>. Vai vēlaties atbalstīt projektu ar ziedojumu?</h3>
+                        <h3 class="mb-5 text-[20pt] font-normal text-gray-700 dark:text-gray-400">"<b>Pilsēta cilvēkiem</b>" piedāvā pieeju visiem datiem <b>BEZMAKSAS</b>. Vai vēlaties atbalstīt projektu ar ziedojumu?</h3>
                         <p class="text-sm text-gray-400">Pieprasītie dati paliks tepat. Mēs atvērsim ziedojumu lapu blakus cilnē.</p>
-                        <p class="text-sm text-gray-400">Apvienība “Pilsēta cilvēkiem” ir sabiedriskā labuma organizācija, tādēļ ziedotāji (gan fiziskās personas, gan uzņēmumi), var saņemt nodokļu atvieglojumu.</p>
+                        <p class="text-sm text-gray-400">Apvienība “Pilsēta cilvēkiem” ir sabiedriskā labuma organizācija, tādēļ ziedotāji (gan fiziskās personas, gan uzņēmumi), var saņemt <a href="https://www.vid.gov.lv/lv/nodoklu-atvieglojumi" class="text-green-500">nodokļu atvieglojumu</a>.</p>
                     </td>
                 </tr>
                 <tr> 

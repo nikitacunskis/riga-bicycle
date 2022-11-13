@@ -81,7 +81,7 @@
                         </ul>
                     </td>
 
-                    <td class="border border-slate-300 align-top">
+                    <!-- <td class="border border-slate-300 align-top">
                         <ul class="items align-top">
                             <li v-for="o in fields.options.direction.options">    
                                 <input type="checkbox" :id="'checkbox_'+o.id" :name="o.id" checked/>{{ o.label }} 
@@ -103,7 +103,7 @@
                                 <input type="checkbox" :id="'checkbox_'+o.id" :name="o.id" checked/>{{ o.label }} 
                             </li>
                         </ul>
-                    </td>
+                    </td> -->
 
                     <td class="border border-slate-300 align-top">
                         <ul class="items align-top">
@@ -138,9 +138,9 @@
                         <i class="fa-solid fa-heart text-[200pt] text-red-500"></i>
                     </td>
                     <td>
-                        <h3 class="mb-5 text-[20pt] font-normal text-gray-700 dark:text-gray-400">"<b>Pilsēta Cilvēkiem</b>" piedāvā pieeju visiem datiem <b>BEZMAKSAS</b>. Vai vēlaties atbalstīt projektu ar ziedojumu?</h3>
+                        <h3 class="mb-5 text-[20pt] font-normal text-gray-700 dark:text-gray-400">"<b>Pilsēta cilvēkiem</b>" piedāvā pieeju visiem datiem <b>BEZMAKSAS</b>. Vai vēlaties atbalstīt projektu ar ziedojumu?</h3>
                         <p class="text-sm text-gray-400">Pieprasītie dati paliks tepat. Mēs atvērsim ziedojumu lapu blakus cilnē.</p>
-                        <p class="text-sm text-gray-400">Apvienība “Pilsēta cilvēkiem” ir sabiedriskā labuma organizācija, tādēļ ziedotāji (gan fiziskās personas, gan uzņēmumi), var saņemt nodokļu atvieglojumu.</p>
+                        <p class="text-sm text-gray-400">Apvienība “Pilsēta cilvēkiem” ir sabiedriskā labuma organizācija, tādēļ ziedotāji (gan fiziskās personas, gan uzņēmumi), var saņemt <a href="https://www.vid.gov.lv/lv/nodoklu-atvieglojumi" class="text-green-500">nodokļu atvieglojumu</a>.</p>
                     </td>
                 </tr>
                 <tr> 
