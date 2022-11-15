@@ -17,43 +17,6 @@ class DatasetController extends Controller
         $events  = Event::all()->toArray();
         $this->filterEvents($events, $filters);
 
-        $data = $this->gatherDataFromDB($events, $filters);
-
-
-        foreach($data['raw'] as $key => $rawReport)
-        {
-            $data['raw'][$key]['place'] = Place::where('id', $rawReport['place_id'])->pluck('location')[0];
-            $data['raw'][$key]['event'] = Event::where('id', $rawReport['event_id'])->pluck('date')[0];
-            $data['raw'][$key]['weather'] = Event::where('id', $rawReport['event_id'])->pluck('weather')[0];
-        }
-
-        $data['dataset'] = [];
-        $data['report'] = [
-            'places' => [],
-            'objects' => [],
-        ];
-        foreach($data['dataset'] as $year => $d)
-        {
-            $data['dataset'][] = [
-                'label' => $year,
-                'data' => [],
-            ];
-            $key = sizeof($data['dataset']) - 1;
-            foreach($d as $data)
-            {
-                $data['dataset'][$key]['data'][] = $data['value'];
-                $data['report']['places'] = array_merge($data['report']['places'], $data['report']['places']);
-                $data['report']['objects'] = array_merge($data['report']['objects'], $data['report']['objects']);
-                $data['report']['method'] = $data['report']['method'];
-            }
-        }
-        $data['report']['places'] = array_unique($data['report']['places']);
-        $data['report']['objects'] = array_unique($data['report']['objects']);
-        return $data;
-    }
-
-    private function gatherDataFromDB(array $events, array $filters)
-    {
         $dataset = [];
         $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         $raw = [];
@@ -77,8 +40,41 @@ class DatasetController extends Controller
                 'report' => $this->datasetReport($reports, $filters),
             ];
         }
+
+
+        foreach($raw as $key => $rawReport)
+        {
+            $raw[$key]['place'] = Place::where('id', $rawReport['place_id'])->pluck('location')[0];
+            $raw[$key]['event'] = Event::where('id', $rawReport['event_id'])->pluck('date')[0];
+            $raw[$key]['weather'] = Event::where('id', $rawReport['event_id'])->pluck('weather')[0];
+        }
+
+
+        $returnDataset = [];
+        $returnReport = [
+            'places' => [],
+            'objects' => [],
+        ];
+        foreach($dataset as $year => $d)
+        {
+            $returnDataset[] = [
+                'label' => $year,
+                'data' => [],
+            ];
+            $key = sizeof($returnDataset) - 1;
+            foreach($d as $data)
+            {
+                $returnDataset[$key]['data'][] = $data['value'];
+                $returnReport['places'] = array_merge($returnReport['places'], $data['report']['places']);
+                $returnReport['objects'] = array_merge($returnReport['objects'], $data['report']['objects']);
+                $returnReport['method'] = $data['report']['method'];
+            }
+        }
+        $returnReport['places'] = array_unique($returnReport['places']);
+        $returnReport['objects'] = array_unique($returnReport['objects']);
         return [
-            'dataset' => $dataset,
+            'dataset' => $returnDataset,
+            'report' => $returnReport,
             'raw' => $raw,
         ];
     }
