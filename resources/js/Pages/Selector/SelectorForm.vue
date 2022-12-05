@@ -28,6 +28,7 @@
 
     const realSubmit = () => {
         form.selected = []; //in some undetected cases form.selected saves it's state. 
+        props.fields.fields.push('interpolation');
         props.fields.fields.forEach(e =>
         {
             if(document.getElementById('checkbox_'+e).checked)
@@ -35,6 +36,7 @@
                 form.selected.push(e);
             }
         });
+        
         form.post(route('page.report.post'));
     }
 
@@ -50,6 +52,12 @@
             href: '/report'
         },
     ];
+
+    const showInterpolationTooltip = (visibile) => {
+        let tooltipElement = document.getElementById('inropolation_tooltip');
+        if(visibile) tooltipElement.classList.remove('hidden');
+        else tooltipElement.classList.add('hidden');
+    }
 
 </script>
 <template>
@@ -81,30 +89,6 @@
                         </ul>
                     </td>
 
-                    <!-- <td class="border border-slate-300 align-top">
-                        <ul class="items align-top">
-                            <li v-for="o in fields.options.direction.options">    
-                                <input type="checkbox" :id="'checkbox_'+o.id" :name="o.id" checked/>{{ o.label }} 
-                            </li>
-                        </ul>
-                    </td>
-
-                    <td class="border border-slate-300 align-top">
-                        <ul class="items align-top">
-                            <li v-for="o in fields.options.roadType.options">    
-                                <input type="checkbox" :id="'checkbox_'+o.id" :name="o.id" checked/>{{ o.label }} 
-                            </li>
-                        </ul>
-                    </td>
-
-                    <td class="border border-slate-300 align-top">
-                        <ul class="items align-top">
-                            <li v-for="o in fields.options.attributes.options">    
-                                <input type="checkbox" :id="'checkbox_'+o.id" :name="o.id" checked/>{{ o.label }} 
-                            </li>
-                        </ul>
-                    </td> -->
-
                     <td class="border border-slate-300 align-top">
                         <ul class="items align-top">
                             <li v-for="o in fields.options.places.options">    
@@ -117,10 +101,17 @@
                         <ul class="items align-top">
                             <li v-for="o in fields.options.method.options">    
                                 <div class="flex items-center">
-                                    <input :id="'checkbox_'+o.id" type="radio" :value="o.id" name="place" class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-2">
+                                    <input :id="'checkbox_'+o.id" type="radio" :value="o.id" name="method" class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-2">
                                     <label :for="'checkbox_'+o.id" class="ml-2 text-sm font-medium">{{ o.label }} </label>
                                 </div>
                             </li>
+                            <!-- <hr>
+                            <li>    
+                                <div class="flex items-center">
+                                    <input id="checkbox_interpolation" type="radio" value="interpolation" name="interpolation" class="text-blue-600 bg-gray-100 border-gray-300 focus:ring-2">
+                                    <label for="checkbox_interpolation" class="ml-2 text-sm font-medium">Intropolacija</label>
+                                </div>
+                            </li> -->
                         </ul>
                     </td>
                 </tr>
@@ -153,7 +144,6 @@
                                 Nē, vēlos tikai saņemt datus!
                             </button>
                         </form>
-
                     </td>
                 </tr>
             </table>

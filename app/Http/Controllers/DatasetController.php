@@ -41,14 +41,12 @@ class DatasetController extends Controller
             ];
         }
 
-
         foreach($raw as $key => $rawReport)
         {
             $raw[$key]['place'] = Place::where('id', $rawReport['place_id'])->pluck('location')[0];
             $raw[$key]['event'] = Event::where('id', $rawReport['event_id'])->pluck('date')[0];
             $raw[$key]['weather'] = Event::where('id', $rawReport['event_id'])->pluck('weather')[0];
         }
-
 
         $returnDataset = [];
         $returnReport = [
@@ -72,11 +70,72 @@ class DatasetController extends Controller
         }
         $returnReport['places'] = array_unique($returnReport['places']);
         $returnReport['objects'] = array_unique($returnReport['objects']);
-        return [
+
+        $interpolationDataset = [];
+        if($filters['interpolation'])
+        {
+            $interpolationDataset = $this->generateImagineDataset($returnDataset);
+        }
+
+        return [    
             'dataset' => $returnDataset,
+            // 'interpolation' => $interpolationDataset,
             'report' => $returnReport,
             'raw' => $raw,
         ];
+    }
+
+    private function generateImagineDataset(array $returnDataset) : array
+    {
+        $imagineDataset = []; 
+        foreach($returnDataset as $yearKey => $yearDataset)
+        {
+            $imagineDataset[$yearKey] = [
+                'label' => $yearDataset['label'] . ' (interpolēts)',
+                'data' => [],
+            ];
+
+            $previosValue = 0;
+            foreach($yearDataset['data'] as $monthKey => $monthValue)
+            {
+                if($monthValue == 0)
+                {
+                    if($monthKey == 0)
+                    {
+                        $imagineDataset[$yearKey]['data'][] = 0;
+                    } 
+                    else if($monthKey == array_key_last($yearDataset['data']))
+                    {
+                        $imagineDataset[$yearKey]['data'][] = $yearDataset['data'][$monthKey - 1] / 2;
+                    }
+                    else
+                    {
+                        $nextValue = 0;
+                        for($i = $monthKey + 1; $i < array_key_last($yearDataset['data']); $i++){
+                            if($yearDataset['data'][$i] != 0)
+                            {
+                                $nextValue = $yearDataset['data'][$i];
+                            }
+                        }
+                        if($nextValue != 0)
+                        {
+                            $imagineDataset[$yearKey]['data'][] = ($previosValue + $nextValue) / 2 ;
+                        } else {
+                            
+                            for($i = $monthKey + 1; $i < array_key_last($yearDataset['data']); $i++){
+                                $imagineDataset[$yearKey]['data'][$i] = $previosValue;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    $imagineDataset[$yearKey]['data'][] = 'null';
+                }
+                $previosValue = $monthValue;
+            }
+        }
+        return $imagineDataset;
     }
 
     private function value($reports, $filters)
@@ -104,6 +163,7 @@ class DatasetController extends Controller
             'attributes' => [],
             'places' => [],
             'method' => '',
+            'interpolation' => false,
         ];
 
         foreach($selected as $k => $e)
@@ -141,6 +201,11 @@ class DatasetController extends Controller
             if(in_array($e, ['average', 'sum', 'prc']))
             {
                 $filters['method'] = $e;
+            }
+
+            if($e == 'interpolation')
+            {
+                $filters['interpolation'] = $e;
             }
         }
 
