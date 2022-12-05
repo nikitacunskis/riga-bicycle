@@ -8,6 +8,10 @@ const props = defineProps({
         type: Object,
         default: {}
     },
+    interpolation: {
+        type: Object,
+        default: {}
+    },
     report: {
         type: Object,
         default: {}
@@ -50,6 +54,14 @@ const generateDataset = () => {
             borderColor: colorPalette[index],
         })
     });
+    // props.interpolation.forEach( (e, index) => {
+    //     generatedDataset.push({
+    //         ...e,
+    //         tension: 0.3,
+    //         borderColor: colorPalette[index],
+    //     })
+    // });
+
     return generatedDataset;
 }
 
