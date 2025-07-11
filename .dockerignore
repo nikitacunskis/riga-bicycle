@@ -1,0 +1,5 @@
+# Avoid syncing these into containers
+node_modules
+.env
+.DS_Store
+.git
