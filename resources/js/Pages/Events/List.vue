@@ -3,15 +3,16 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import EventItem from '@/Components/Events/EventItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import route from '../../../../vendor/tightenco/ziggy/src/js';
 
 const props = defineProps({
     events: Array,
 });
 
 
+const route = (name) => name;
+
 const createEvent = () => {
-    window.open(route("dashboard.events.create"),"_self");
+    window.open(route('dashboard.events.create'), '_self');
 }
 </script>
 <template>

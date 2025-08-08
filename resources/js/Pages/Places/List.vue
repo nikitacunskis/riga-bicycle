@@ -3,14 +3,15 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import PlaceItem from '@/Components/Places/PlaceItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import route from '../../../../vendor/tightenco/ziggy/src/js';
 
 const props = defineProps({
     places: Array,
 });
 
+const route = (name) => name;
+
 const createPlace = () => {
-    window.open(route("dashboard.places.create"),"_self");
+    window.open(route('dashboard.places.create'), '_self');
 }
 </script>
 <template>
