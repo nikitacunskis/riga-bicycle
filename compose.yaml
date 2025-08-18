@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - 80:80
+    volumes:
+      - .env:/app/.env
+      - storage:/app/storage
+
+volumes:
+  storage:
