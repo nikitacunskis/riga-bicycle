@@ -86,12 +86,12 @@
         <div class="flex w-full md:w-1/3 ">
             <img class="w-20 h-20 rounded-full mr-4" src="img/pilsēta-cilvēkiem-logo.jpg" alt="Pilsēta Cilvēkiem logotips">
             <div class="flex-1 px-2">
-                <h3 class="font-bold text-gray-900">Pilsēta Cilvēkiem</h3>
+                <h3 class="font-bold text-gray-900">Pilsēta cilvēkiem</h3>
                 <p class="text-gray-600 text-xs md:text-base">
                 <a class="text-green-500 no-underline hover:underline" href="mailto:info@pilsetacilvekiem.lv">info@pilsetacilvekiem.lv</a><br>
-                <a class="text-green-500 no-underline hover:underline" href="tel:++37129112372">+371 29112372</a><br>
+                <a class="text-green-500 no-underline hover:underline" href="tel:+37120211400">+371 20 211 400</a><br>
                 Juridiskā adrese:<br>
-                Ropažu iela 14 k-1 - 105, Rīga, LV-1039<br>
+                Hospitāļu iela 5 - 32, Rīga, LV-1013<br>
                 </p>
             </div>
         </div>
