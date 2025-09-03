@@ -11,32 +11,34 @@ RUN apt-get update && \
     apt-get install -y unzip && \
     docker-php-ext-install pdo_mysql && \
     composer install && \
-    rm -rf /usr/local/bin/composer /var/lib/apt/lists/*
+    rm -fr /usr/local/bin/composer /var/lib/apt/lists/*
 
 # Build frontend
-FROM base AS node
+FROM node AS node
+WORKDIR /app
+COPY --from=base /app/vendor vendor/
 COPY package.json ./
 COPY postcss.config.js tailwind.config.js vite.config.js ./
 COPY resources resources/
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install && \
-    npm run build && \
-    apt-get autopurge -y nodejs && \
-    rm -rf /var/lib/apt/lists/*
+RUN npm install && \
+    npm run build
 
 # Add nginx, Supervisor, PHP MySQL extension and built frontend assets to backend
-FROM base AS final
+FROM base
 RUN apt-get update && \
     apt-get install -y nginx supervisor && \
-    rm -rf /var/lib/apt/lists/* && \
-    chmod 777 /var/lib/nginx /var/run
+    chmod 777 /var/lib/nginx /var/run && \
+    ln -fs /dev/fd/1 /var/log/nginx/access.log && \
+    ln -fs /dev/fd/2 /var/log/nginx/error.log && \
+    rm -fr /var/lib/apt/lists/*
 COPY --from=node /app/public public/
-COPY docker/fpm.conf /usr/local/etc/php-fpm.d/zz-docker.conf
-COPY docker/nginx.conf /etc/nginx/
-COPY docker/start.sh ./
+COPY docker/entrypoint.sh ./
+COPY docker/nginx-server.conf /etc/nginx/sites-enabled/default
+COPY docker/nginx.conf /etc/nginx/conf.d/
+COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY public/img public/img/
 COPY public/index.php public/
 COPY resources/views resources/views/
-CMD ["./start.sh"]
+ENTRYPOINT [ "./entrypoint.sh" ]
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]

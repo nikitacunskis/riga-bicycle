@@ -19,5 +19,4 @@ if [ "$(id -u)" -eq 0 ]; then
     chown -R www-data storage
 fi
 
-# Start PHP-FPM and nginx
-exec supervisord -c /etc/supervisor/supervisord.conf
+exec "$@"
