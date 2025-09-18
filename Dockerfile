@@ -1,12 +1,16 @@
 # Prepare base backend
-FROM php:8.3-fpm AS base
+FROM php:8.1-fpm AS base
 WORKDIR /app
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY app app/
 COPY artisan composer.json ./
 COPY bootstrap bootstrap/
 COPY config config/
 COPY routes routes/
+COPY database database/
+COPY public public/
+COPY resources resources/
+COPY composer.lock .
 RUN apt-get update && \
     apt-get install -y unzip && \
     docker-php-ext-install pdo_mysql && \
