@@ -1,7 +1,7 @@
 <script setup>
-import LineChart from '@/Components/Graphs/LineChart.vue';
-import FrontLayout from '@/Layouts/FrontLayout.vue';
-import RawTable from '@/Components/RawTable.vue';
+import LineChart from '../../Components/Graphs/LineChart.vue';
+import FrontLayout from '../../Layouts/FrontLayout.vue';
+import RawTable from '../../Components/RawTable.vue';
 
 const props = defineProps({
     dataset: {
@@ -28,7 +28,7 @@ const randomColorPalette = () => {
     var palette = [];
     while(true){
         var r = Math.floor(Math.random() * 5);
-        if(palette.indexOf(colorPalette[r]) === -1) 
+        if(palette.indexOf(colorPalette[r]) === -1)
         {
             palette.push(colorPalette[r]);
         }
@@ -71,6 +71,8 @@ const breadcrumbs = [
 <template>
 
 <FrontLayout title="Atskaites" :breadcrumbs="breadcrumbs">
+
+    <section class="overflow-x-auto bg-white p-1">
         <div class="sharethis-inline-share-buttons"></div>
         <p>Dati tiek ievākti katra mēneša 15. datumam tuvākajā piektdienā 8:00 - 9:00</p>
         <p>Redzamajā grafikā ir ievākti dati no sekojošiem punktiem:</p>
@@ -82,11 +84,12 @@ const breadcrumbs = [
             <li v-for="object in props.report.objects">- {{object}}</li>
         </ul>
         <p>Apkopojot, tika izmantota metode "{{props.report.method}}"</p>
-        <LineChart 
+        <LineChart
             :chartData = "chartData"
             :chartOptions = "chartOptions"
         />
-        <RawTable :reports="props.raw"/>    
-    
+        <RawTable :reports="props.raw"/>
+    </section>
+
 </FrontLayout>
 </template>

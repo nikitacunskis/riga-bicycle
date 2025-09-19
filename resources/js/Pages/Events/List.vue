@@ -3,7 +3,8 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import EventItem from '@/Components/Events/EventItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import route from '../../../../vendor/tightenco/ziggy/src/js';
+import { ZiggyVue } from 'ziggy-js';
+import { Ziggy }    from '@/ziggy';
 
 const props = defineProps({
     events: Array,
@@ -26,12 +27,12 @@ const createEvent = () => {
         </template>
 
         <BodySection>
-            
+
             <div class="grid grid-cols-3 gap-3">
                 <div>Date</div>
                 <div>Weather</div>
                 <div>Action</div>
-                <EventItem 
+                <EventItem
                     v-for="event in events"
                     :event="event" />
             </div>
