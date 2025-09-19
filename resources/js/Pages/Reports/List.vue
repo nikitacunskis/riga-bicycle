@@ -4,11 +4,12 @@ import ReportItem from '@/Components/Reports/ReportItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ReportTableHeader from '@/Components/Reports/ReportTableHeader.vue';
-import route from '../../../../vendor/tightenco/ziggy/src/js';
 import ReportSetup from '@/Components/Reports/ReportSetup.js';
+import { ZiggyVue } from 'ziggy-js';
+import { Ziggy }    from '@/ziggy';
 
 let reportSetup = new ReportSetup();
-const fieldsToRender = reportSetup.getItemsShow; 
+const fieldsToRender = reportSetup.getItemsShow;
 
 const props = defineProps({
     reports: Array,
@@ -31,12 +32,12 @@ const createReport = () => {
         </template>
 
         <BodySection>
-            
+
             <table class="border-solid">
-                <ReportTableHeader 
+                <ReportTableHeader
                     :fields="fieldsToRender"
                 />
-                <ReportItem 
+                <ReportItem
                     v-for="report in reports"
                     :report="report" />
             </table>

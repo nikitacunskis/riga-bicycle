@@ -1,125 +1,121 @@
-<script setup>
-    import Breadcrumb from '@/Components/Breadcrumb.vue';
-    const props = defineProps({
-        title: {
-            type: String,
-            default: ""
-        },
-        breadcrumbs: {
-            type: Array,
-            default: []
-        }
-    });
+<template>
+    <!-- Scene background with grid + aurora -->
+    <div class="relative min-h-screen text-gray-900 overflow-hidden bg-base">
+        <!-- Glow/aurora layers (non-interactive) -->
+        <div aria-hidden="true" class="pointer-events-none">
+            <div class="aurora aurora-a"></div>
+            <div class="aurora aurora-b"></div>
+            <div class="aurora aurora-c"></div>
+        </div>
 
+        <!-- Subtle grid overlay -->
+        <div aria-hidden="true" class="absolute inset-0 bg-grid"></div>
+
+        <!-- Header (glassy bar) -->
+        <header
+            class="sticky top-0 z-50 backdrop-blur-md bg-white/70 shadow-[0_2px_20px_-10px_rgba(16,185,129,0.35)] ring-1 ring-white/60"
+        >
+            <HeaderNav />
+        </header>
+
+        <!-- Framed content card -->
+        <main class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <div
+                class="relative rounded-3xl bg-white/75 backdrop-blur-xl ring-1 ring-white/60 shadow-2xl
+               animate-fadein overflow-hidden"
+            >
+                <!-- animated rim light -->
+                <div aria-hidden="true" class="glow-rim"></div>
+
+                <!-- content slot -->
+                <div class="relative z-10 p-5 sm:p-8 lg:p-10">
+                    <slot />
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer with gradient rail -->
+        <footer class="mt-10">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="rounded-2xl bg-gradient-to-r from-emerald-100/70 via-white/70 to-emerald-100/70 ring-1 ring-white/60 backdrop-blur-xl">
+                    <SiteFooter />
+                </div>
+            </div>
+        </footer>
+    </div>
+</template>
+
+<script setup>
+import HeaderNav from '../Components/HeaderNav.vue'
+import SiteFooter from '../Components/SiteFooter.vue'
 </script>
 
-<template>
+<style scoped>
+/* ====== Base gradient ====== */
+.bg-base {
+    /* soft diagonal wash in your green range */
+    background-image:
+        radial-gradient(1200px 600px at 85% -10%, rgba(16,185,129,0.18), transparent 60%),
+        radial-gradient(900px 500px at -10% 10%, rgba(52,211,153,0.16), transparent 55%),
+        linear-gradient(180deg, #f0fdf4 0%, #ffffff 45%, #ecfdf5 100%);
+}
 
-<nav id="header" class="fixed w-full z-10 top-0">
+/* ====== Subtle grid overlay (low-contrast) ====== */
+.bg-grid {
+    background-image:
+        linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(75% 75% at 50% 10%, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+}
 
-    <div class="w-full md:max-w-4xl mx-auto flex flex-wrap items-center justify-between mt-0 py-3">
+/* ====== Aurora blobs ====== */
+.aurora {
+    position: absolute;
+    filter: blur(40px);
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+    transform: translateZ(0);
+}
+.aurora-a { top: -12rem; left: -8rem; width: 40rem; height: 40rem; background: radial-gradient(circle at 30% 30%, rgba(16,185,129,0.35), transparent 60%); }
+.aurora-b { top: -6rem; right: -10rem; width: 46rem; height: 46rem; background: radial-gradient(circle at 70% 40%, rgba(5,150,105,0.30), transparent 65%); }
+.aurora-c { bottom: -14rem; left: 20%; width: 50rem; height: 50rem; background: radial-gradient(circle at 50% 50%, rgba(110,231,183,0.28), transparent 60%); }
 
-        <div class="pl-4">
-            <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl" href="/">
-                _____Velo skaitīšana_____<i class="fa-solid fa-person-biking"></i>
-            </a>
-        </div>
+/* Gentle drift animation (reduced for motion-sensitive users) */
+@media (prefers-reduced-motion: no-preference) {
+    .aurora-a { animation: floatA 18s ease-in-out infinite alternate; }
+    .aurora-b { animation: floatB 22s ease-in-out infinite alternate; }
+    .aurora-c { animation: floatC 26s ease-in-out infinite alternate; }
+}
+@keyframes floatA { from { transform: translate(-10px, 0); } to { transform: translate(10px, 8px); } }
+@keyframes floatB { from { transform: translate(8px, -6px); } to { transform: translate(-8px, 4px); } }
+@keyframes floatC { from { transform: translate(0, 10px); } to { transform: translate(8px, -6px); } }
 
-        <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto lg:block mt-2 lg:mt-0 bg-gray-100 md:bg-transparent z-20" id="nav-content">
-            <ul class="list-reset lg:flex justify-end flex-1 items-center">
-                <li class="mr-3">
-                    <a class="link-regular" href="/">Sākums</a>
-                </li>
-                <li class="mr-3">
-                    <a class="link-active" href="/report">Atskaites</a>
-                </li>
-                <li class="mr-3">
-                    <a class="text-black bg-blue-100 hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3  py-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" href="/join">Pievienojies</a>
-                </li>
-                <li class="mr-3">
-                    <a class="link-regular" href="/raw">Neapstrādāti dati</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+/* ====== Rim glow around the content card ====== */
+.glow-rim {
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    background:
+        conic-gradient(from 180deg at 50% 50%,
+        rgba(16,185,129,0.0) 0deg,
+        rgba(16,185,129,0.25) 90deg,
+        rgba(16,185,129,0.0) 180deg,
+        rgba(16,185,129,0.25) 270deg,
+        rgba(16,185,129,0.0) 360deg);
+    mask: radial-gradient(closest-side, transparent 97%, black 100%);
+    border-radius: 1.5rem;
+    opacity: .7;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .glow-rim { animation: spin 16s linear infinite; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-<!--Container-->
-<div class="container w-full md:max-w-[55%] mx-auto pt-20">
-
-    <div class="w-full px-4 md:px-6 text-xl text-gray-800 leading-normal" style="font-family:Georgia,serif;">
-
-        {{ props.title }}<br>
-    
-        <Breadcrumb :elements="props.breadcrumbs" />
-
-    </div>
-
-    <!--Divider-->
-    <hr class="border-b-2 border-gray-400 mb-8 mx-4">
-
-        <div class="content-center">
-            <slot />
-        </div>
-
-    <!--Divider-->
-    <hr class="border-b-2 border-gray-400 mb-8 mx-4">
-
-</div>
-<!--/container-->
-
-<footer class="bg-white border-t border-gray-400 shadow">
-<div class="container max-w-4xl mx-auto flex py-8">
-    <div class="w-full mx-auto flex flex-wrap">
-        <div class="flex w-full md:w-1/3 ">
-            <img class="w-20 h-20 rounded-full mr-4" src="img/nikitacunskis.png" alt="Nikita Cunskis profila bilde">
-            <div class="flex-1 px-2">
-                <h3 class="font-bold text-gray-900">Ņikita Cunskis</h3>
-                <p class="text-gray-600 text-xs md:text-base">IT risinājuma izveide 
-                <a class="text-green-500 no-underline hover:underline" href="https://github.com/nikitacunskis/riga-bicycle">GitHub</a><br>
-                <a class="text-green-500 no-underline hover:underline" href="https://twitter.com/nikitacunskis">Twitter</a><br>
-                <a class="text-green-500 no-underline hover:underline" href="mailto:nikita.cunskis@gmail.com">nikita.cunskis@gmail.com</a>
-                </p>
-            </div>
-        </div>
-
-        <div class="flex w-full md:w-1/3 ">
-            <img class="w-20 h-20 rounded-full mr-4" src="img/pilsēta-cilvēkiem-logo.jpg" alt="Pilsēta Cilvēkiem logotips">
-            <div class="flex-1 px-2">
-                <h3 class="font-bold text-gray-900">Pilsēta cilvēkiem</h3>
-                <p class="text-gray-600 text-xs md:text-base">
-                <a class="text-green-500 no-underline hover:underline" href="mailto:info@pilsetacilvekiem.lv">info@pilsetacilvekiem.lv</a><br>
-                <a class="text-green-500 no-underline hover:underline" href="tel:+37120211400">+371 20 211 400</a><br>
-                Juridiskā adrese:<br>
-                Hospitāļu iela 5 - 32, Rīga, LV-1013<br>
-                </p>
-            </div>
-        </div>
-
-        <div class="flex w-full md:w-1/3">
-            <div class="px-8">
-                <h3 class="font-bold text-gray-900">Saites</h3>
-                <ul class="list-reset items-center text-sm pt-3">
-                    <li>
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="https://www.facebook.com/PilsetaCilvekiem/">Facebook</a>
-                    </li>
-                    <li>
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="https://www.tiktok.com/@pilsetacilvekiem">Tik Tok</a>
-                    </li>
-                    <li>
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="https://www.youtube.com/channel/UCY3R63J7tbUg3qPMtbqmU6A">YouTube</a>
-                    </li>
-                    <li>
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="https://www.instagram.com/pilsetacilvekiem/">Instaram</a>
-                    </li>
-                    <li>
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-1" href="https://twitter.com/pilscilvekiem">Twitter</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-</footer>
-
-</template>
+/* ====== Fade-in for slot content ====== */
+@keyframes fadein {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fadein { animation: fadein .6s ease-out both; }
+</style>

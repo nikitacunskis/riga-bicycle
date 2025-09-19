@@ -3,7 +3,8 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import PlaceItem from '@/Components/Places/PlaceItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import route from '../../../../vendor/tightenco/ziggy/src/js';
+import { ZiggyVue } from 'ziggy-js';
+import { Ziggy }    from '@/ziggy';
 
 const props = defineProps({
     places: Array,
@@ -25,12 +26,12 @@ const createPlace = () => {
         </template>
 
         <BodySection>
-            
+
             <div class="grid grid-cols-3 gap-3">
                 <div>Location</div>
                 <div>Coordinates</div>
                 <div>Functions</div>
-                <PlaceItem 
+                <PlaceItem
                     v-for="place in places"
                     :place="place" />
             </div>
