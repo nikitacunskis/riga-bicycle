@@ -23,7 +23,7 @@ const createReport = () => {
 <template>
     <AdminLayout title="Reports">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-xl leading-tight">
                 Reports
             </h2>
             <PrimaryButton class="ml-4" @click="createReport">

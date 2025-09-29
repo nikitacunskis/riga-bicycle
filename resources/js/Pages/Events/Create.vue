@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import InputError from '@/Components/InputError.vue';
@@ -46,8 +46,8 @@ const getWeather = () => {
                 let id = Object.keys(response.data)[Object.keys(response.data).length - 1];
 
                 let data = JSON.parse(response.data[id].json_data);
-                let temperature = data.main.temp - 273.15; 
-                let temperature_max = data.main.temp_max - 273.15; 
+                let temperature = data.main.temp - 273.15;
+                let temperature_max = data.main.temp_max - 273.15;
                 form.weather = "Gaisa temperatūra: " + temperature.toFixed(2) + " " + data.weather[0].description + "(Maksimālā temperatūra: " + temperature_max.toFixed(2) + " )";
         });
 

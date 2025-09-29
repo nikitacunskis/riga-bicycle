@@ -1,24 +1,21 @@
-import './bootstrap';
-import '../css/app.css';
+import './bootstrap'
+import '../css/app.css'
 
-import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/inertia-vue3';
-import { InertiaProgress } from '@inertiajs/progress';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from 'ziggy-js';
-import { Ziggy } from './ziggy';
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'   /** #### CHANGED (EXPLANATION): modern adapter */
+import { InertiaProgress } from '@inertiajs/progress'
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const appName = document.getElementsByTagName('title')[0]?.innerText || 'Laravel'
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
-    setup({ el, app, props, plugin }) {
-        return createApp({ render: () => h(app, props) })
-            .use(plugin)
-            .use(ZiggyVue, Ziggy)
-            .mount(el);
+    title: title => `${title} - ${appName}`,
+    resolve: name => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    setup({ el, App, props, plugin }) {
+        const vue = createApp({ render: () => h(App, props) })
+        vue.use(plugin) /** #### ADDED (EXPLANATION): registers Inertia on the client (mandatory). */
+        vue.mount(el)
     },
-});
+})
 
-InertiaProgress.init({ color: '#4B5563' });
+InertiaProgress.init({ color: '#10b981' })

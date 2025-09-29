@@ -3,12 +3,15 @@
         class="flex items-center justify-between py-4 px-4 sm:px-6 lg:px-8 bg-green-600 text-white"
     >
         <!-- Logo / Brand -->
-        <div class="text-lg font-bold">Skaitām riteņbraucējus</div>
+        <div class="text-lg font-bold">
+            <a href="/">Skaitām riteņbraucējus</a>
+        </div>
 
         <!-- Desktop links -->
         <div class="hidden md:flex space-x-6">
-            <a href="/join" class="hover:underline">Kļūt par brīvprātīgo</a>
-            <a href="/report" class="hover:underline">Iegūt datus</a>
+            <a href="/join" class="hover:none">Kļūt par brīvprātīgo</a>
+            <a href="/report" class="hover:none">Iegūt datus</a>
+            <a href="/apis/request" class="hover:none">API</a>
         </div>
 
         <!-- Mobile menu button -->

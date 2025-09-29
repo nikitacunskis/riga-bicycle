@@ -4,6 +4,7 @@ services:
     ports:
       - "8080:80"
     volumes:
+      - .:/app
       - .env:/app/.env
       - storage:/app/storage
     depends_on:

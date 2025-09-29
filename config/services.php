@@ -31,4 +31,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'meta' => [
+        'base_uri'   => env('META_BASE_URI', 'https://graph.facebook.com'),
+        'version'    => env('META_GRAPH_VERSION', 'v21.0'),
+        'page_token' => env('META_PAGE_TOKEN'),
+        'fb_page_id' => env('META_FB_PAGE_ID'),
+        'timeout'    => env('META_TIMEOUT', 20),
+    ],
 ];

@@ -1,5 +1,5 @@
 <script setup>
-    import { Link } from '@inertiajs/inertia-vue3';
+    import { Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -59,7 +59,7 @@
                                 </Link>
                             </h5>
                             <p class="text-gray-700 text-base mb-4">
-                                Admin panelis ar atskaitēm par veiktām skaitīšanām. Šeit glabājās RAW dati par skaitīšanām.   
+                                Admin panelis ar atskaitēm par veiktām skaitīšanām. Šeit glabājās RAW dati par skaitīšanām.
                             </p>
                             <Link href="/dashboard/reports" method="get" as="button" type="button">Move -></Link>
                         </div>

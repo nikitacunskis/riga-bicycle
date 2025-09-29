@@ -1,5 +1,5 @@
 <script setup>
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const props = defineProps({
@@ -16,7 +16,6 @@ const submit = () => {
 
 </script>
 <template>
-
     <form @submit.prevent="submit">
         <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
             Edit
