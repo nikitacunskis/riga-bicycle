@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
+        <div class="sm:px-20 border-b border-gray-200">
             <ApplicationLogo class="block h-12 w-auto" />
         </div>
 

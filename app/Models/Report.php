@@ -24,4 +24,14 @@ class Report extends Model
         'children_self',
         'children_passanger',
     ];
+
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
+    }
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

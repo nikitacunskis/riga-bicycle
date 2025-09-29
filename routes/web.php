@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,11 @@ Route::get('/join', [JoinpageController::class, 'index'])->name('page.join');
 Route::get('/report', [SelectorController::class, 'index'])->name('page.report.get');
 Route::post('/report', [SelectorController::class, 'report'])->name('page.report.post');
 Route::get('/raw', [RawpageController::class, 'index'])->name('page.raw');
+Route::get('/apis/request', [ApiController::class, 'request'])->name('page.apis.request');
+Route::post('/apis/request', [ApiController::class, 'requestStore'])
+    ->middleware('throttle:8,1')
+    ->name('apis.request.store');
+Route::get('/apis/documentation', [ApiController::class, 'documentation'])->name('page.apis.documentation');
 
 Route::middleware([
     'auth:sanctum',
@@ -70,7 +76,13 @@ Route::middleware([
             Route::delete('/destroy/{id}', [ReportController::class, 'destroy'])->name('dashboard.reports.destroy');
             Route::get('/reports-list', [ReportController::class, 'getReports'])->name('api.reports.getreports');
         });
-        
+
+        Route::prefix('apis')->name('dashboard.apis.')->group(function () {
+            Route::get('/', [ApiController::class, 'index'])->name('index');
+            Route::post('/store', [ApiController::class, 'store'])->name('store');
+            Route::delete('/{id}', [ApiController::class, 'destroy'])->name('destroy');
+        });
+
         Route::prefix("/weather")->group(function(){
             Route::post('/get', [WeatherController::class, 'getWeather'])->name('dashboard.weather.get');
         });

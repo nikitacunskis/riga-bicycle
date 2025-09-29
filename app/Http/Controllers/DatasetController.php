@@ -8,10 +8,10 @@ use App\Models\Place;
 use Inertia\Inertia;
 use DB;
 
-class DatasetController extends Controller 
+class DatasetController extends Controller
 {
     public function generateDataset(array $selected)
-    {   
+    {
         $filters = $this->filterArray($selected);
 
         $events  = Event::all()->toArray();
@@ -241,7 +241,7 @@ class DatasetController extends Controller
         {
             foreach($filters['objects'] as $obj)
             {
-                $objects[] = $labels[array_search($obj, $ids)];          
+                $objects[] = $labels[array_search($obj, $ids)];
             }
         }
 
@@ -260,5 +260,49 @@ class DatasetController extends Controller
             'objects' => $objects,
             'method' => $method,
         ];
+    }
+
+    /**
+     * Generate dataset for ALL data (all years, all places, all objects),
+     * with a selectable aggregation method: 'average' | 'sum' | 'prc'.
+     *
+     * @param string $method
+     * @return array{dataset: array, report: array, raw: array}
+     */
+    public function generateAllDataset(string $method = 'average'): array
+    {
+        // Normalize/validate method
+        $allowed = ['average', 'sum', 'prc'];
+        if (!in_array($method, $allowed, true)) {
+            $method = 'average';
+        }
+
+        $allYears = Event::query()
+            ->select(DB::raw("DISTINCT SUBSTRING_INDEX(`date`, '-', 1) AS y"))
+            ->pluck('y')
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $allPlaceIds = Place::query()->pluck('id')->all();
+        $allObjects = ['womens', 'man', 'children_self', 'children_passanger'];
+        $selected = [];
+
+        foreach ($allYears as $y) {
+            $selected[] = "year_{$y}";
+        }
+
+        foreach ($allPlaceIds as $pid) {
+            $selected[] = "place_{$pid}";
+        }
+
+        foreach ($allObjects as $obj) {
+            $selected[] = $obj;
+        }
+
+        $selected[] = $method;
+
+        return $this->generateDataset($selected);
     }
 }
