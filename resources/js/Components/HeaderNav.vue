@@ -1,17 +1,19 @@
 <template>
     <nav
-        class="flex items-center justify-between py-4 px-4 sm:px-6 lg:px-8 bg-green-600 text-white"
+        class="flex items-center justify-between py-4 px-4 sm:px-6 lg:px-8 bg-white text-black"
     >
         <!-- Logo / Brand -->
-        <div class="text-lg font-bold">
-            <a href="/">Skaitām riteņbraucējus</a>
+        <div class="text-3xl font-bold">
+            <a href="/">
+                <img src="/img/logo.png" class="max-h-24" />
+            </a>
         </div>
 
         <!-- Desktop links -->
         <div class="hidden md:flex space-x-6">
-            <a href="/join" class="hover:none">Kļūt par brīvprātīgo</a>
-            <a href="/report" class="hover:none">Iegūt datus</a>
-            <a href="/apis/request" class="hover:none">API</a>
+            <a href="/join" class="hover:none text-xl font-bold">Kļūt par brīvprātīgo</a>
+            <a href="/report" class="hover:none text-xl font-bold">Iegūt datus</a>
+            <a href="/apis/request" class="hover:none text-xl font-bold">API</a>
         </div>
 
         <!-- Mobile menu button -->

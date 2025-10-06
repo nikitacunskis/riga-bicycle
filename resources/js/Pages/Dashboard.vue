@@ -22,18 +22,6 @@
 
         <!-- OPTIONAL ACTIONS IN HEADER (RIGHT) -->
         <template #actions>
-            <button
-                class="px-3 py-2  border border-zinc-700 text-zinc-200 bg-zinc-900 hover:bg-zinc-800 transition"
-                @click="$inertia.visit(route('dashboard.events'))"
-            >
-                Create Event
-            </button>
-            <button
-                class="px-3 py-2  bg-zinc-100 text-zinc-900 hover:opacity-90 transition"
-                @click="$inertia.visit(route('dashboard.reports'))"
-            >
-                New Report
-            </button>
         </template>
 
         <!-- MAIN CONTENT CARDS -->
@@ -49,30 +37,6 @@
                 Use the left sidebar to manage members, programs, events, and reports.
                 Keep it lean: fast approvals, clean records, transparent updates.
             </p>
-            <div class="mt-4 grid sm:grid-cols-2 gap-3">
-                <button
-                    class="group px-4 py-3 rounded-2xl border border-zinc-700 text-sm text-left text-zinc-200
-                 hover:bg-zinc-800 transition"
-                    @click="$inertia.visit(route('dashboard.events'))"
-                >
-                    <div class="font-medium flex items-center justify-between">
-                        Plan Community Event
-                        <span class="opacity-0 group-hover:opacity-100 transition">→</span>
-                    </div>
-                    <div class="text-xs text-zinc-400">Add details, capacity, and shareables.</div>
-                </button>
-                <button
-                    class="group px-4 py-3 rounded-2xl border border-zinc-700 text-sm text-left text-zinc-200
-                 hover:bg-zinc-800 transition"
-                    @click="$inertia.visit(route('dashboard.reports'))"
-                >
-                    <div class="font-medium flex items-center justify-between">
-                        File/Review Reports
-                        <span class="opacity-0 group-hover:opacity-100 transition">→</span>
-                    </div>
-                    <div class="text-xs text-zinc-400">Keep issues tracked and resolved.</div>
-                </button>
-            </div>
         </section>
 
     </AdminLayout>

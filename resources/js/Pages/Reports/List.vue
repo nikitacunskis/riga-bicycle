@@ -7,12 +7,14 @@ import ReportTableHeader from '@/Components/Reports/ReportTableHeader.vue';
 import ReportSetup from '@/Components/Reports/ReportSetup.js';
 import { ZiggyVue } from 'ziggy-js';
 import { Ziggy }    from '@/ziggy';
+import EventSelector from "../../Components/Reports/EventSelector.vue";
 
 let reportSetup = new ReportSetup();
 const fieldsToRender = reportSetup.getItemsShow;
 
 const props = defineProps({
     reports: Array,
+    events: Array,
 });
 
 
@@ -22,17 +24,11 @@ const createReport = () => {
 </script>
 <template>
     <AdminLayout title="Reports">
-        <template #header>
-            <h2 class="font-semibold text-xl leading-tight">
-                Reports
-            </h2>
-            <PrimaryButton class="ml-4" @click="createReport">
-                Create
-            </PrimaryButton>
-        </template>
-
+        <PrimaryButton class="ml-4" @click="createReport">
+            Create
+        </PrimaryButton>
+        <EventSelector :events="props.events" />
         <BodySection>
-
             <table class="border-solid">
                 <ReportTableHeader
                     :fields="fieldsToRender"

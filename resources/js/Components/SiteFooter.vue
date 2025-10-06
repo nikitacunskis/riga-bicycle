@@ -1,5 +1,5 @@
 <template>
-    <footer class="bg-green-600 text-white py-8 px-4 sm:px-6 lg:px-8">
+    <footer class="text-black py-8 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
                 <h3 class="font-semibold">About</h3>

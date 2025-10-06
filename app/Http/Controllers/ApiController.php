@@ -40,24 +40,35 @@ class ApiController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'owner'       => ['required','string','max:255'],
-            'valid_until' => ['nullable','date'],
+            'owner'            => ['required', 'string', 'max:255'],
+            'type'             => ['nullable', 'in:personal,organisation'],
+            'valid_until'      => ['nullable', 'date'],
+            'phone'            => ['nullable', 'string', 'max:50'],
+            'email'            => ['nullable', 'email', 'max:255'],
+            'reg_number'       => ['nullable', 'string', 'max:255'],
+            'key'              => ['nullable', 'string', 'max:255'],
+            'tos_accepted'     => ['required', 'boolean'],
+            'privacy_accepted' => ['required', 'boolean'],
         ]);
 
-        $data['valid_until'] = isset($data['valid_until'])
+        $data['valid_until'] = isset($data['valid_until']) && $data['valid_until']
             ? Carbon::parse($data['valid_until'])
-            : now()->addYear(); // default: today + 1 year
+            : now()->addYear();
 
-        $data['key'] = Str::random(64); // generate the key
+        if (empty($data['key'])) {
+            $data['key'] = Str::random(64);
+        }
 
-        $api = Api::create($data);
+        // If DB columns are VARCHARs:
+        $data['tos_accepted']     = $data['tos_accepted'] ? '1' : '0';
+        $data['privacy_accepted'] = $data['privacy_accepted'] ? '1' : '0';
 
-        // If the frontend asked for JSON, return it (no navigation)
+        $api = Api::query()->create($data); // IDE-friendly
+
         if ($request->wantsJson()) {
             return response()->json(['api' => $api], 201);
         }
 
-        // Fallback to classic Inertia redirect
         return Redirect::route('dashboard.apis.index');
     }
 

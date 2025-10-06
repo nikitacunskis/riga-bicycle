@@ -12,15 +12,17 @@ class Api extends Model
     protected $table = 'apis';
 
     protected $fillable = [
+        'type',
         'key',
         'owner',
-        'valid_until',
         'phone',
         'email',
+        'purpose_of_use',
+        'org_contact',
         'tos_accepted',
         'privacy_accepted',
-        'type',          // enum: personal | organisation
         'reg_number',
+        'valid_until',
     ];
 
     protected $casts = [

@@ -14,18 +14,25 @@ use DB;
 
 class ReportController extends Controller
 {
-    
+    public function index() {
+        $events = Event::all()->toArray();
+        return  Inertia::render('Reports/Index', ['events' => $events]);
+    }
+
     /**
      * list page
      */
-    public function index()
+    public function listByEvent(int $eventId)
     {
+        $events = Event::all();
         $reportCollection = collect(DB::select(
-            "SELECT reports.*, events.`date` ,places.location 
+            "SELECT reports.*, events.`date` ,places.location
             FROM reports
             LEFT JOIN places ON places.id = reports.place_id
-            LEFT JOIN events ON events.id = reports.event_id"));
-        return Inertia::render('Reports/List', ['reports' => $reportCollection]);
+            LEFT JOIN events ON events.id = reports.event_id
+            WHERE reports.event_id = ?", [ $eventId ]
+        ));
+        return Inertia::render('Reports/List', ['reports' => $reportCollection, 'events' => $events]);
     }
     /**
      * create page
@@ -43,7 +50,7 @@ class ReportController extends Controller
         // dd($request->prev_event_id);
         $placeCollection = Place::all();
         $eventCollection = Event::all();
-        return Inertia::render('Reports/Create', ['places' => $placeCollection, 'events' => $eventCollection, 
+        return Inertia::render('Reports/Create', ['places' => $placeCollection, 'events' => $eventCollection,
         'prev_event_id' => $prev_event_id
     ]);
     }

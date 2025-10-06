@@ -5,19 +5,23 @@
             <dl class="mt-6 grid sm:grid-cols-2 gap-6">
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
                     <dt class="font-semibold text-green-800">Cik ilgi ilgst skaitīšana?</dt>
-                    <dd class="mt-2 text-gray-700">Parasti 60–90 minūtes pīķa stundā.</dd>
+                    <dd class="mt-2 text-gray-700">Precīzi 60 minūtes — no 8:00 līdz 9:00.</dd>
                 </div>
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
-                    <dt class="font-semibold text-green-800">Vai man vajag velosipēdu?</dt>
-                    <dd class="mt-2 text-gray-700">Nē. Galvenais — būt punktā un precīzi fiksēt datus.</dd>
+                    <dt class="font-semibold text-green-800">Vai obligāti jābūt riteņbraucējam?</dt>
+                    <dd class="mt-2 text-gray-700">Nē. Te viss kārtībā.</dd>
                 </div>
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
-                    <dt class="font-semibold text-green-800">Vai dati ir publiski?</dt>
-                    <dd class="mt-2 text-gray-700">Jā, dati un metodika ir atvērti (skatīt sadaļu “Dati visiem”).</dd>
+                    <dt class="font-semibold text-green-800">Vai ir jāiestājās "Pilsēta cilvēkiem" biedrībā?</dt>
+                    <dd class="mt-2 text-gray-700">Nē, nav obligāti.</dd>
                 </div>
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
-                    <dt class="font-semibold text-green-800">Kā tiek lietoti ziedojumi?</dt>
-                    <dd class="mt-2 text-gray-700">Kafija brīvprātīgajiem skaitīšanas dienās — caur Buy Me a Coffee.</dd>
+                    <dt class="font-semibold text-green-800">Es nevaru garantēt katru reizi, ka būšu.</dt>
+                    <dd class="mt-2 text-gray-700">Tā nav problēma, galvenais laicīgi pabrīdināt.</dd>
+                </div>
+                <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
+                    <dt class="font-semibold text-green-800">Man liekas, ka vajag skaitīt punktā, kurā vēl netiek skaitīts.</dt>
+                    <dd class="mt-2 text-gray-700">To var izskatīt. Laika gaitā ir parādījušies vairāki punkti.</dd>
                 </div>
             </dl>
 

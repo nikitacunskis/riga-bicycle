@@ -62,12 +62,12 @@ watch(() => props.items.length, () => {
         <div class="overflow-x-auto shadow-sm">
             <table :id="tableId" class="min-w-full table-auto text-left">
                 <thead class="sticky top-0 backdrop-blur z-10">
-                <tr>
-                    <th v-for="col in columns" :key="col.key" :class="['px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 text-white', col.thClass]">
-                        {{ col.label ?? col.key }}
-                    </th>
-                    <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 text-white">Actions</th>
-                </tr>
+                    <tr>
+                        <th v-for="col in columns" :key="col.key" :class="['px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 text-white', col.thClass]">
+                            {{ col.label ?? col.key }}
+                        </th>
+                        <th class="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 text-white">Actions</th>
+                    </tr>
                 </thead>
                 <tbody class="[&_tr:nth-child(odd)]:bg-gray-50/40">
                 <template v-if="pagedRows.length">

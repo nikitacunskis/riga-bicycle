@@ -97,19 +97,19 @@ function changePageSize(size) {
                     </thead>
 
                     <tbody class="[&_tr:nth-child(odd)]:bg-gray-50/40">
-                    <template v-if="pagedEvents.length">
-                        <EventItem
-                            v-for="(event, idx) in pagedEvents"
-                            :key="event.id ?? `${event.date}-${idx}`"
-                            :event="event"
-                        />
-                    </template>
+                        <template v-if="pagedEvents.length">
+                            <EventItem
+                                v-for="(event, idx) in pagedEvents"
+                                :key="event.id ?? `${event.date}-${idx}`"
+                                :event="event"
+                            />
+                        </template>
 
-                    <tr v-else>
-                        <td colspan="3" class="px-4 py-8 text-center text-sm text-gray-500">
-                            No events yet.
-                        </td>
-                    </tr>
+                        <tr v-else>
+                            <td colspan="3" class="px-4 py-8 text-center text-sm text-gray-500">
+                                No events yet.
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 

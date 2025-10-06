@@ -1,6 +1,8 @@
 <script setup>
 import UpdateButton from './UpdateButton.vue'
 import DeleteButton from './DeleteButton.vue'
+import { router } from '@inertiajs/vue3'
+import PrimaryButton from '../PrimaryButton.vue'
 
 const props = defineProps({
     event: {
@@ -8,6 +10,10 @@ const props = defineProps({
         required: true,
     },
 })
+
+const generateImage = () => {
+    router.post(route('dashboard.events.generate', props.event.id))
+}
 </script>
 
 <template>
@@ -26,6 +32,7 @@ const props = defineProps({
             <div class="flex items-center gap-2">
                 <UpdateButton :event="props.event" />
                 <DeleteButton :event="props.event" />
+                <PrimaryButton @click="generateImage">Generate image</PrimaryButton>
             </div>
         </td>
     </tr>
