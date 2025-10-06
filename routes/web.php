@@ -65,10 +65,14 @@ Route::middleware([
             Route::patch('/update/{id}', [EventController::class, 'update'])->name('dashboard.events.update');
             Route::delete('/destroy/{id}', [EventController::class, 'destroy'])->name('dashboard.events.destroy');
             Route::get('/events-list', [EventController::class, 'getEvents'])->name('api.events.getevents');
+            Route::post('/{event}/generate', [EventController::class, 'generate'])->name('dashboard.events.generate');
         });
 
         Route::prefix("/reports")->group(function () {
             Route::get('/', [ReportController::class, 'index'])->name('dashboard.reports');
+            Route::get('/list/{eventId}', [ReportController::class, 'listByEvent'])
+                ->whereNumber('eventId')
+                ->name('dashboard.reports.list');
             Route::get('/create', [ReportController::class, 'create'])->name('dashboard.reports.create');
             Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('dashboard.reports.edit');
             Route::post('/store', [ReportController::class, 'store'])->name('dashboard.reports.store');

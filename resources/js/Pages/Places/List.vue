@@ -13,18 +13,23 @@ const props = defineProps({
 const createPlace = () => {
     window.open(route("dashboard.places.create"),"_self");
 }
+const columns = [
+    { key: 'id', label: 'ID' },
+    { key: 'key', label: 'Key' },
+    { key: 'owner', label: 'Owner' },
+    { key: 'type', label: 'Type', format: v => v || '—' },
+    { key: 'reg_number', label: 'Reg #' , format: v => v || '—' },
+    { key: 'email', label: 'Email', format: v => v || '—' },
+    { key: 'phone', label: 'Phone', format: v => v || '—' },
+    { key: 'valid_until', label: 'Valid Until', format: v => v ? new Date(v).toLocaleDateString() : '—' },
+]
 </script>
 <template>
     <AdminLayout title="Places">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Places
-            </h2>
-            <PrimaryButton class="ml-4" @click="createPlace">
-                Create
-            </PrimaryButton>
-        </template>
 
+        <PrimaryButton class="ml-4" @click="createPlace">
+            Create
+        </PrimaryButton>
         <BodySection>
 
             <div class="grid grid-cols-3 gap-3">

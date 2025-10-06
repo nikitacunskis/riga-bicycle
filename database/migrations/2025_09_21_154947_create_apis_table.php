@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('apis', function (Blueprint $table) {
             $table->id();
+            $table->enum('type', ['personal', 'organisation']);
             $table->string('key');
             $table->string('owner');
-            $table->dateTime('valid_until');
-            $table->string('phone');
             $table->string('email');
+            $table->string('phone');
+            $table->string('purpose_of_use');
+            $table->string('reg_number');
+            $table->string('org_contact');
             $table->string('tos_accepted');
             $table->string('privacy_accepted');
-            $table->enum('type', ['personal', 'organisation']);
-            $table->string('reg_number')->nullable();
+            $table->dateTime('valid_until');
             $table->timestamps();
         });
     }

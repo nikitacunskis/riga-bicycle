@@ -14,13 +14,17 @@
         <!-- Subtle grid overlay -->
         <div aria-hidden="true" class="absolute inset-0 bg-grid"></div>
 
-        <!-- Header (glassy bar) -->
         <header
-            class="site-header top-0 z-50 backdrop-blur-md bg-white/70 shadow-[0_2px_20px_-10px_rgba(16,185,129,0.35)] ring-1 ring-white/60"
+            class="site-header top-0 z-50 backdrop-blur-md bg-white/70
+           shadow-[0_2px_20px_-10px_rgba(16,185,129,0.35)]
+           ring-1 ring-white/60"
         >
-            <div class="keyline"></div>
-            <HeaderNav />
+            <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="keyline"></div>
+                <HeaderNav />
+            </div>
         </header>
+
 
         <!-- Framed content card -->
         <main class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -42,12 +46,13 @@
 
         <!-- Footer with gradient rail -->
         <footer class="mt-10">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="rounded-2xl bg-gradient-to-r from-emerald-100/70 via-white/70 to-emerald-100/70 ring-1 ring-white/60 backdrop-blur-xl footer-rail">
+            <div class="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="rounded-t-2xl bg-gradient-to-r from-emerald-100/70 via-white/70 to-emerald-100/70 ring-1 ring-white/60 backdrop-blur-xl footer-rail">
                     <SiteFooter />
                 </div>
             </div>
         </footer>
+
     </div>
 </template>
 
@@ -186,5 +191,9 @@ import SiteFooter from '../Components/SiteFooter.vue'
 *, *::before, *::after {
     transition: none !important;
     animation: none !important;
+}
+
+@media (max-width: 768px) {
+
 }
 </style>

@@ -13,4 +13,10 @@ class Event extends Model
         'date',
         'weather',
     ];
+
+    public function weather()
+    {
+        return $this->belongsTo(Weather::class);
+    }
+
 }
