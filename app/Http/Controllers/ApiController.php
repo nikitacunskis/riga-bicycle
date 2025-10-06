@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -11,15 +10,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\Api;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
-
-    public function test()
-    {
-        dd('ssssss');
-    }
     public function index()
     {
         $apis = Api::query()
