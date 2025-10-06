@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
+
+    public function test()
+    {
+        dd('ssssss');
+    }
     public function index()
     {
         $apis = Api::query()
@@ -49,6 +54,7 @@ class ApiController extends Controller
             'key'              => ['nullable', 'string', 'max:255'],
             'tos_accepted'     => ['required', 'boolean'],
             'privacy_accepted' => ['required', 'boolean'],
+            'purpose_of_use'   => ['nullable', 'string', 'max:255'],
         ]);
 
         $data['valid_until'] = isset($data['valid_until']) && $data['valid_until']
@@ -62,6 +68,12 @@ class ApiController extends Controller
         // If DB columns are VARCHARs:
         $data['tos_accepted']     = $data['tos_accepted'] ? '1' : '0';
         $data['privacy_accepted'] = $data['privacy_accepted'] ? '1' : '0';
+        $data['purpose_of_use']   = isset($data['purpose_of_use']) ? $data['purpose_of_use'] : '';
+
+        if($data['type'] != 'organisation') {
+            $data['reg_number'] = $data['owner'] . '-' . Str::uuid();
+            $data['org_contact'] = $data['email'];
+        }
 
         $api = Api::query()->create($data); // IDE-friendly
 

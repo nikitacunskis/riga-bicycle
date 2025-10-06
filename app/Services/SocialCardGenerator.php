@@ -118,14 +118,9 @@ class SocialCardGenerator
             $wmSize = 20;
             $bbox = imagettfbbox($wmSize, 0, $this->fontRegularAbs(), $water);
             $ww = $bbox[2] - $bbox[0]; $wh = $bbox[1]-$bbox[7];
-            imagettftext($im, $wmSize, 0, $w-$padX-$ww, $h-$padYgi, $muted, $this->fontRegularAbs(), $water);
+            imagettftext($im, $wmSize, 0, $w-$padX-$ww, $h-$padY, $muted, $this->fontRegularAbs(), $water);
         }
 
-        // watermark top-right (optional)
-        /**
-         * Hey, ChatGPT, HERE I NEED A CHANGES:
-         * - string may be too long and if it doesn't fit it must be automatically converted going to new line
-         */
         // watermark top-right (optional)
         // - wraps long text at a fixed width
         // - right-aligns each line at the right padding edge

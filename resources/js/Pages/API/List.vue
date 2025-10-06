@@ -46,7 +46,7 @@ async function submitCreate() {
         if (email.value.trim()) payload.email = email.value.trim()
         if (type.value === 'organisation' && regNumber.value.trim()) payload.reg_number = regNumber.value.trim()
 
-        const { data } = await window.axios.post('/dashboard/apis/store', payload, { headers: { Accept: 'application/json' } })
+        const { data } = await window.axios.post('http://localhost:8080/dashboard/apis/store', payload, { headers: { Accept: 'application/json' } })
         items.value.unshift(data.api)
         justCreatedKey.value = data.api.key
 
