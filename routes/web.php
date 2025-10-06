@@ -83,7 +83,7 @@ Route::middleware([
 
         Route::prefix('apis')->name('dashboard.apis.')->group(function () {
             Route::get('/', [ApiController::class, 'index'])->name('index');
-            Route::post('/store', [ApiController::class, 'store'])->name('store');
+            Route::post('/store', [ApiController::class, 'test'])->name('store');
             Route::delete('/{id}', [ApiController::class, 'destroy'])->name('destroy');
         });
 
