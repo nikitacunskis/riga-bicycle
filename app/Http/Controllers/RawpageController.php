@@ -16,6 +16,7 @@ class RawpageController extends Controller
     public function index(Request $request)
     {
         $reports = Report::all()->toArray();
+
         foreach($reports as $key => $report)
         {
             $reports[$key]['place'] = Place::where('id', $report['place_id'])->pluck('location')[0];

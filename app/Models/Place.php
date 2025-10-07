@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Place extends Model
 {
     use HasFactory;
-    protected $table = 'places';
-    protected $fillable = [
-        'location', 
-        'coordinates'
+
+    protected $fillable = ['location','coordinates','lat','lng'];
+
+    protected $casts = [
+        'lat' => 'float',
+        'lng' => 'float',
     ];
+
+    public function reports() { return $this->hasMany(Report::class); }
 }

@@ -28,41 +28,39 @@ const submit = () => {
 
 <template>
     <AdminLayout title="Dashboard - Create Place">
-        <AuthenticationCard>
-            <h2>Edit Place</h2>
-            <form @submit.prevent="submit">
-                <div>
-                    <InputLabel for="location" value="Location" />
-                    <TextInput
-                        id="location"
-                        v-model="form.location"
-                        type="text"
-                        class="mt-1 block w-full"
-                        required
-                        autofocus
-                        autocomplete="location"
-                    />
-                    <InputError class="mt-2" :message="form.errors.location" />
-                </div>
+        <h2>Edit Place</h2>
+        <form @submit.prevent="submit">
+            <div>
+                <InputLabel for="location" value="Location" class="text-white" />
+                <TextInput
+                    id="location"
+                    v-model="form.location"
+                    type="text"
+                    class="mt-1 block w-full bg-black text-white"
+                    required
+                    autofocus
+                    autocomplete="location"
+                />
+                <InputError class="mt-2" :message="form.errors.location" />
+            </div>
 
-                <div class="mt-4">
-                    <InputLabel for="coordinates" value="Coordinates" />
-                    <TextInput
-                        id="coordinates"
-                        v-model="form.coordinates"
-                        type="text"
-                        class="mt-1 block w-full"
-                        required
-                    />
-                    <InputError class="mt-2" :message="form.errors.coordinates" />
-                </div>
+            <div class="mt-4">
+                <InputLabel for="coordinates" value="Coordinates" class="text-white" />
+                <TextInput
+                    id="coordinates"
+                    v-model="form.coordinates"
+                    type="text"
+                    class="mt-1 block w-full bg-black text-white"
+                    required
+                />
+                <InputError class="mt-2" :message="form.errors.coordinates" />
+            </div>
 
-                <div class="flex items-center justify-end mt-4">
-                    <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Edit
-                    </PrimaryButton>
-                </div>
-            </form>
-        </AuthenticationCard>
+            <div class="flex items-center justify-end mt-4">
+                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Edit
+                </PrimaryButton>
+            </div>
+        </form>
     </AdminLayout>
 </template>

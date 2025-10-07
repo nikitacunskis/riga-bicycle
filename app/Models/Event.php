@@ -19,4 +19,8 @@ class Event extends Model
         return $this->belongsTo(Weather::class);
     }
 
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }

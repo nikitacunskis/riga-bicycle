@@ -38,4 +38,8 @@ return [
         'fb_page_id' => env('META_FB_PAGE_ID'),
         'timeout'    => env('META_TIMEOUT', 20),
     ],
+
+    'ga4' => [
+        'measurement_id' => env('GA4_MEASUREMENT_ID'),
+    ],
 ];
