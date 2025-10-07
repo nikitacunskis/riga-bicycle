@@ -9,12 +9,14 @@ const props = defineProps({
 </script>
 <template>
     <div>
-        <InputLabel :for="field.id" :value="field.label" v-if="field.type !== 'hidden' && field.visible"/>
+        <InputLabel :for="field.id" :value="field.label" v-if="field.type !== 'hidden' && field.visible"
+            class="text-white"
+        />
         <TextInput
             :id="field.id"
             :type="field.type"
             :name = "field.id"
-            class="mt-1 block w-full"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             :value = "props.report[props.field.id]"
             required
             autofocus

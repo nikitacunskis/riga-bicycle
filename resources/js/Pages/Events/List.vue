@@ -42,31 +42,29 @@ function changePageSize(size) {
     pageSize.value = size
     currentPage.value = 1
 }
+
 </script>
 
 <template>
     <AdminLayout title="Events">
-        <template #header>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Events</h2>
-                    <PrimaryButton @click="createEvent">Create</PrimaryButton>
-                </div>
-
-                <!-- Controls -->
-                <div class="flex items-center gap-3">
-                    <label class="text-sm text-gray-500">Rows</label>
-                    <select
-                        class="rounded-lg border-gray-300 text-sm shadow-sm focus:border-black focus:ring-black"
-                        :value="pageSize"
-                        @change="changePageSize(parseInt($event.target.value, 10))"
-                    >
-                        <option v-for="opt in pageSizeOptions" :key="opt" :value="opt">{{ opt }}</option>
-                    </select>
-                    <span class="text-sm text-gray-500">Total: {{ totalItems }}</span>
-                </div>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <PrimaryButton @click="createEvent">Create</PrimaryButton>
             </div>
-        </template>
+
+            <!-- Controls -->
+            <div class="flex items-center gap-3">
+                <label class="text-sm text-gray-500">Rows</label>
+                <select
+                    class="rounded-lg border-gray-300 text-sm shadow-sm focus:border-black focus:ring-black bg-black text-white"
+                    :value="pageSize"
+                    @change="changePageSize(parseInt($event.target.value, 10))"
+                >
+                    <option v-for="opt in pageSizeOptions" :key="opt" :value="opt">{{ opt }}</option>
+                </select>
+                <span class="text-sm text-gray-500">Total: {{ totalItems }}</span>
+            </div>
+        </div>
 
         <BodySection>
             <!-- Responsive scroll container -->

@@ -23,10 +23,11 @@ class StorePlaceRequest extends FormRequest
      */
     public function rules()
     {
-        return [        
-            'location' => 'required',
-            'coordinates' => 'required',
-            'last_update' => ''
+        return [
+            'location' => ['required','string','max:500'],
+            'lat'      => ['required','numeric','between:-90,90'],
+            'lng'      => ['required','numeric','between:-180,180'],
+            'coordinates' => ['prohibited'],
         ];
     }
 }

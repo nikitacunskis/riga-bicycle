@@ -70,49 +70,47 @@ autoComplete();
 
 <template>
     <AdminLayout title="Dashboard - Create Event">
-        <AuthenticationCard>
-            <h2>Create Event</h2>
-            <form @submit.prevent="submit">
-                <div>
-                    <InputLabel for="date" value="Date" />
-                    <TextInput
-                        id="date"
-                        v-model="form.date"
-                        type="date"
-                        class="mt-1 block w-full"
-                        required
-                        autofocus
-                        autocomplete="date"
-                    />
-                    <PrimaryButton @click="todayDate" type="button">
-                        Today
-                    </PrimaryButton>
-                    <InputError class="mt-2" :message="form.errors.date" />
-                </div>
+        <h2>Create Event</h2>
+        <form @submit.prevent="submit">
+            <div>
+                <InputLabel for="date" value="Date" />
+                <TextInput
+                    id="date"
+                    v-model="form.date"
+                    type="date"
+                    class="mt-1 block w-full bg-black text-white"
+                    required
+                    autofocus
+                    autocomplete="date"
+                />
+                <PrimaryButton @click="todayDate" type="button">
+                    Today
+                </PrimaryButton>
+                <InputError class="mt-2" :message="form.errors.date" />
+            </div>
 
-                <div class="mt-4">
-                    <InputLabel for="weather" value="Weather" />
-                    <TextInput
-                        id="weather"
-                        v-model="form.weather"
-                        type="text"
-                        class="mt-1 block w-full"
-                        required
-                    />
+            <div class="mt-4">
+                <InputLabel for="weather" value="Weather" />
+                <TextInput
+                    id="weather"
+                    v-model="form.weather"
+                    type="text"
+                    class="mt-1 block w-full bg-black text-white"
+                    required
+                />
 
-                    <PrimaryButton @click="getWeather" type="button">
-                        Get weather
-                    </PrimaryButton>
-                    <InputError class="mt-2" :message="form.errors.weather" />
-                </div>
+                <PrimaryButton @click="getWeather" type="button">
+                    Get weather
+                </PrimaryButton>
+                <InputError class="mt-2" :message="form.errors.weather" />
+            </div>
 
-                <div class="flex items-center justify-end mt-4">
-                    <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Create
-                    </PrimaryButton>
-                </div>
-            </form>
-            {{ error }}
-        </AuthenticationCard>
+            <div class="flex items-center justify-end mt-4">
+                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Create
+                </PrimaryButton>
+            </div>
+        </form>
+        {{ error }}
     </AdminLayout>
 </template>

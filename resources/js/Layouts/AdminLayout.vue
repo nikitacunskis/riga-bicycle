@@ -9,9 +9,8 @@ const props = defineProps({
     title: { type: String, default: '' },
 })
 
-// Pull user from shared Inertia props
 const page = usePage()
-const user = computed(() => page.props.value?.auth?.user ?? null)
+const user = computed(() => page.props.auth?.user ?? null)
 </script>
 
 <template>

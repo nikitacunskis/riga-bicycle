@@ -24,6 +24,7 @@ class EventController extends Controller
     public function index()
     {
         $eventCollection = Event::all();
+
         return Inertia::render('Events/List', ['events' => $eventCollection]);
     }
     /**

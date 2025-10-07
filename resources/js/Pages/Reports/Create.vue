@@ -1,11 +1,11 @@
-<script setup>
+<script setup xmlns="http://www.w3.org/1999/html">
 import { useForm } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ReportSetup from '@/Components/Reports/ReportSetup.js';
 import InputField from '@/Components/Reports/InputField.vue';
+import InputLabel from "@/Components/InputLabel.vue";
 
 let reportSetup = new ReportSetup();
 const fieldsToRender = reportSetup.getItemsShow;
@@ -99,41 +99,45 @@ const excelString = () => {
 
 <template>
     <AdminLayout title="Dashboard - Create Report">
-        <AuthenticationCard>
-            <h2>Create Report</h2>
-            <form @submit.prevent="submit">
-                <div class="flex items-center justify-end mt-4">
-                    <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Create
-                    </PrimaryButton>
-                </div>
-                <div>
-                    <label for="places" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Place</label>
-                    <select id="places"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option v-for="place in props.places" :value="place.id">
-                            {{ place.location }}
-                        </option>
-                    </select>
-                </div>
-                <div>
-                    <label for="events" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Events</label>
-                    <select id="events"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option v-for="event in props.events" :value="event.id">
-                            {{ event.date }}
-                        </option>
-                    </select>
-                </div>
-                <TextInput :value="''" id="excel-string" />
-
+        <form @submit.prevent="submit">
+            <div class="flex items-center justify-end mt-4">
+                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Create
+                </PrimaryButton>
+            </div>
+            <div>
+                <label for="places" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Place</label>
+                <select id="places" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option v-for="place in props.places" :value="place.id">
+                        {{ place.location }}
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="events" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Events</label>
+                <select id="events" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option v-for="event in props.events" :value="event.id">
+                        {{ event.date }}
+                    </option>
+                </select>
+            </div>
+            <section
+                class="border border-white border m-5 p-5">
+                <InputLabel class="text-white" value="Importē reporta datus no vēsturiska Andreja Excel faila. Nokopē failā visu rindu (row) un iekopē te (teksta veidā). Nospied Import un datiem vajadzētu automātiski pievilkties."/>
+                <TextInput
+                    :value="''"
+                    id="excel-string"
+                    class="bg-black border border-white p-1 m-3"
+                />
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" @click="excelString" type="button">
                     Import
                 </PrimaryButton>
-                <InputField
-                    v-for="field in fieldsToRender"
-                    :field = "field"
-                    :report = "report"
-                />
-            </form>
-        </AuthenticationCard>
+            </section>
+            <InputField
+                v-for="field in fieldsToRender"
+                :field = "field"
+                :report = "report"
+            />
+        </form>
     </AdminLayout>
 </template>

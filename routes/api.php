@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SelectorController;
 use App\Http\Controllers\SocialPostController;
+use App\Http\Controllers\MapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix("/data")->group(function () {
     Route::get('/', [SelectorController::class, 'apiReport']);
 });
+
+
+Route::get('/map/places', [MapController::class, 'places']);
+Route::get('/map/events', [MapController::class, 'events']); // for a dropdown
 
 //Route::post('/social/post', SocialPostController::class);
 
