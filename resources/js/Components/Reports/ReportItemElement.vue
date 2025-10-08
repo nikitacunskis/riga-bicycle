@@ -1,27 +1,21 @@
 <script setup>
-import { computed } from "vue";
-const props = defineProps({
-    field: Object,
-    report: Object,
-})
+import { computed } from 'vue';
+const props = defineProps({ field: Object, report: Object });
 
-let value = computed(() => {
-    if(props.field['foreign'] !== false)
-    {
-        return props.report[props.field.foreign];
-    }
-    else
-    {
-        return props.report[props.field.id];
-    }
+const value = computed(() => props.field['foreign'] !== false
+    ? props.report?.[props.field.foreign]
+    : props.report?.[props.field.id]);
+
+const isNumeric = (v) => typeof v === 'number' || (!isNaN(parseFloat(v)) && isFinite(v));
+const cellClass = computed(() => {
+    const v = value.value;
+    const align = props.field.align ?? (isNumeric(v) ? 'text-right' : 'text-left');
+    return `reports-td ${align}`;
 });
-console.log(props.field['foreign']);
 </script>
-<template>
-    <td >
-        <div class="border-dotted border-2 border-indigo-600 " >
-            <span>{{ value }}</span>
-        </div>
-    </td>
 
+<template>
+    <td :class="cellClass">
+        <div class="truncate max-w-[48rem]">{{ value }}</div>
+    </td>
 </template>

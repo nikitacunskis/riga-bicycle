@@ -1,3 +1,59 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* === Reports Dark Table — exact screenshot look === */
+.reports-theme {
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+    background: #2A2E33; /* page background under rows is invisible due to slab rows */
+    width: 100%;
+}
+
+/* header */
+.reports-head-row {
+    background: #3B4046;            /* steel grey */
+    color: #9AA3AD;                 /* muted header text */
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .06em;
+    height: 44px;
+}
+.reports-th {
+    padding: 12px 20px;
+    border-right: 1px solid #4A5057;
+}
+.reports-th:last-child { border-right: none; }
+
+/* rows */
+.reports-row {
+    background: #2F343A;            /* odd row */
+    height: 76px;                   /* chunky slab */
+    border-top: 1px solid #2A2F35;
+}
+.reports-row:nth-child(even) {
+    background: #3A4046;            /* even row */
+}
+.reports-row:hover {
+    background: #3C4450;            /* subtle hover */
+}
+
+/* cells */
+.reports-td {
+    padding: 16px 20px;
+    color: #E6EDF3;                 /* primary text */
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* buttons (pill, navy, light border) */
+.reports-btn {
+    appearance: none;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #E7EEF7;
+}

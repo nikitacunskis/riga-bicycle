@@ -1,22 +1,13 @@
 <script setup>
 import ReportTableHeadElement from './ReportTableHeadElement.vue';
-
-const props = defineProps({
-    fields: Object,
-});
+const props = defineProps({ fields: Object });
 </script>
 
 <template>
-
-    <ReportTableHeadElement
-     v-for="field in fields"
-     :field="field"
-     />
-    <th>
-        <div class="border-solid border-2 border-indigo-600 ">
-            <span>
-                Actions
-            </span>
-        </div>
-    </th>
+    <thead>
+    <tr class="reports-head-row">
+        <ReportTableHeadElement v-for="f in props.fields" :key="f.id" :field="f" />
+        <th scope="col" class="reports-th text-right">Actions</th>
+    </tr>
+    </thead>
 </template>

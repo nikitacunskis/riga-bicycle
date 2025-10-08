@@ -5,38 +5,40 @@ import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ReportTableHeader from '@/Components/Reports/ReportTableHeader.vue';
 import ReportSetup from '@/Components/Reports/ReportSetup.js';
-import { ZiggyVue } from 'ziggy-js';
-import { Ziggy }    from '@/ziggy';
-import EventSelector from "../../Components/Reports/EventSelector.vue";
+import EventSelector from '@/Components/Reports/EventSelector.vue';
 
-let reportSetup = new ReportSetup();
+const reportSetup = new ReportSetup();
 const fieldsToRender = reportSetup.getItemsShow;
 
-const props = defineProps({
-    reports: Array,
-    events: Array,
-});
-
-
-const createReport = () => {
-    window.open(route("dashboard.reports.create"),"_self");
-}
+const props = defineProps({ reports: Array, events: Array });
+const createReport = () => window.open(route('dashboard.reports.create'), '_self');
 </script>
+
 <template>
     <AdminLayout title="Reports">
-        <PrimaryButton class="ml-4" @click="createReport">
-            Create
-        </PrimaryButton>
-        <EventSelector :events="props.events" />
+        <div class="mb-4 flex items-center justify-between">
+            <h1 class="text-xl font-semibold text-slate-100">Reports</h1>
+            <div class="flex items-center gap-3">
+                <EventSelector :events="props.events" />
+                <PrimaryButton @click="createReport">CREATE</PrimaryButton>
+            </div>
+        </div>
+
         <BodySection>
-            <table class="border-solid">
-                <ReportTableHeader
-                    :fields="fieldsToRender"
-                />
-                <ReportItem
-                    v-for="report in reports"
-                    :report="report" />
-            </table>
+            <div class="overflow-hidden border border-slate-800 shadow-lg bg-slate-900">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-fixed text-sm">
+                        <ReportTableHeader :fields="fieldsToRender" />
+                        <tbody class="divide-y divide-slate-800">
+                        <ReportItem
+                            v-for="r in props.reports"
+                            :key="r.id ?? r.uuid"
+                            :report="r"
+                        />
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </BodySection>
     </AdminLayout>
 </template>
