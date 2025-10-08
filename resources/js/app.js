@@ -18,7 +18,7 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { InertiaProgress } from '@inertiajs/progress'
-import { installInertiaGA } from 'plugins/inertia-ga';
+import { installInertiaGA } from './plugins/inertia-ga';
 
 const appName = document.title || 'Laravel'
 

@@ -1,4 +1,4 @@
-import { gaSendPageView } from '@/js/lib/ga';
+import { gaSendPageView } from '../lib/ga';
 
 // Fire initial page_view after first paint
 export const installInertiaGA = () => {
