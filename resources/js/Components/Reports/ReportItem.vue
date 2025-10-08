@@ -4,27 +4,24 @@ import DeleteButton from './DeleteButton.vue';
 import ReportItemElement from './ReportItemElement.vue';
 import ReportSetup from './ReportSetup.js';
 
-let reportSetup = new ReportSetup();
-const fieldsToRender = reportSetup.getItemsShow; 
-
-const props = defineProps({
-    report: Object,
-});
-console.log(props.report);
+const reportSetup = new ReportSetup();
+const fieldsToRender = reportSetup.getItemsShow;
+const props = defineProps({ report: Object });
 </script>
 
 <template>
-
-    <tr>
+    <!-- row height + zebra + subtle hover -->
+    <tr class="reports-row">
         <ReportItemElement
-            v-for="field in fieldsToRender"
-            :field="field"
+            v-for="f in fieldsToRender"
+            :key="f.id"
+            :field="f"
             :report="props.report"
         />
-        <td>
-            <div class="border-dotted border-2 border-indigo-600 ">
-                <UpdateButton :report="props.report" />
-                <DeleteButton :report="props.report" />
+        <td class="reports-td">
+            <div class="flex items-center justify-end gap-3">
+                <UpdateButton :report="props.report" class="reports-btn" />
+                <DeleteButton :report="props.report" class="reports-btn reports-btn--danger" />
             </div>
         </td>
     </tr>

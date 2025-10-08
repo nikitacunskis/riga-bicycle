@@ -8,14 +8,14 @@ export default class ReportSetup{
             visible: true,
             crud: true,
         },
-        {
-            label: "Event",
-            id: 'event_id',
-            foreign: 'date',
-            type: 'hidden',
-            visible: true,
-            crud: true,
-        },
+        // {
+        //     label: "Event",
+        //     id: 'event_id',
+        //     foreign: 'date',
+        //     type: 'hidden',
+        //     visible: true,
+        //     crud: true,
+        // },
         {
             label: "Womens",
             id: 'womens',
@@ -104,7 +104,7 @@ export default class ReportSetup{
             visible: true,
             crud: true,
         },
-        
+
     ];
 
     get getItemsShow(){
