@@ -26,13 +26,12 @@ const columns = [
 </script>
 <template>
     <AdminLayout title="Places">
-
         <PrimaryButton class="ml-4" @click="createPlace">
             Create
         </PrimaryButton>
         <BodySection>
 
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-3 gap-3 p-3">
                 <div>Location</div>
                 <div>Coordinates</div>
                 <div>Functions</div>

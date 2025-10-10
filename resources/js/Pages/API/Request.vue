@@ -4,9 +4,7 @@ import FrontLayout from '../../Layouts/FrontLayout.vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
-
 // Types
-
 type ApplicantType = 'private' | 'org'
 
 interface PrivatePayload {
@@ -33,24 +31,22 @@ interface OrgPayload {
 
 type Payload = PrivatePayload | OrgPayload
 
+
 const emit = defineEmits<{ (e: 'submit', payload: Payload): void }>()
 const applicantType = ref<ApplicantType>('private')
 const isSubmitting = ref(false)
 const success = ref<{ owner: string; key: string } | null>(null)
 const errorMsg = ref<string | null>(null)
 
-
-// Common validators
+// ✅ Define schemas FIRST
 const phoneRegex = /^\+?\d[\d\s\-().]{6,}$/
 const mustBeTrue = (msg: string) => z.boolean().refine(v => v === true, { message: msg })
-const validationSchema = computed(() =>
-    applicantType.value === 'private' ? toTypedSchema(privateSchemaZ) : toTypedSchema(orgSchemaZ)
-)
 
 const privateSchemaZ = z.object({
     name: z.string().trim().min(3, 'Ievadiet pilnu vārdu un uzvārdu'),
     phone: z.string().trim().regex(phoneRegex, 'Ievadiet derīgu tālruņa numuru'),
-    email: z.email('Ievadiet derīgu e-pastu'),
+    // ✅ FIX
+    email: z.string().email('Ievadiet derīgu e-pastu'),
     purpose: z.string().trim().min(20, 'Pastāstiet vairāk (vismaz 20 rakstzīmes)'),
     acceptedTos: mustBeTrue('Jums jāpiekrīt Lietošanas noteikumiem'),
     acceptedPrivacy: mustBeTrue('Jums jāpiekrīt Privātuma politikai'),
@@ -61,11 +57,18 @@ const orgSchemaZ = z.object({
     regNumber: z.string().trim().min(2, 'Ievadiet reģistrācijas numuru'),
     contactName: z.string().trim().min(3, 'Ievadiet kontaktpersonas pilnu vārdu'),
     phone: z.string().trim().regex(phoneRegex, 'Ievadiet derīgu tālruņa numuru'),
-    email: z.email('Ievadiet derīgu e-pastu'),
+    // ✅ FIX
+    email: z.string().email('Ievadiet derīgu e-pastu'),
     purpose: z.string().trim().min(20, 'Pastāstiet vairāk (vismaz 20 rakstzīmes)'),
     acceptedTos: mustBeTrue('Jums jāpiekrīt Lietošanas noteikumiem'),
     acceptedPrivacy: mustBeTrue('Jums jāpiekrīt Privātuma politikai'),
 })
+
+// ✅ Now the computed
+const validationSchema = computed(() =>
+    applicantType.value === 'private' ? toTypedSchema(privateSchemaZ) : toTypedSchema(orgSchemaZ)
+)
+
 
 async function onSubmit(values: Record<string, unknown>) {
     errorMsg.value = null
