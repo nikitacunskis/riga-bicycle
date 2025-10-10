@@ -28,7 +28,7 @@
             <div class="mt-10 rounded-3xl bg-emerald-50 ring-1 ring-emerald-200 p-6">
                 <h3 class="font-semibold text-emerald-900">Kontakti</h3>
                 <p class="mt-2 text-emerald-900">
-                    Raksti mums: <a href="mailto:info@veloskaititaji.lv" class="underline decoration-emerald-600">info@veloskaititaji.lv</a>
+                    Raksti mums: <a href="mailto:info@pilsetacilvekiem.lv" class="underline decoration-emerald-600">info@pilsetacilvekiem.lv</a>
                 </p>
             </div>
         </div>
