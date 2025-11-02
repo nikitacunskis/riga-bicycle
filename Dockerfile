@@ -47,6 +47,8 @@ RUN apt-get update && apt-get install -y curl && \
 FROM base AS final
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
+RUN composer install
+
 RUN apt-get update && \
     apt-get install -y nginx supervisor && \
     rm -rf /var/lib/apt/lists/* && \
