@@ -1,1 +1,0 @@
-import{o as a,a as e,w as o,b as s,x as r,S as i}from"./app.ff9256fe.js";const u={__name:"AuthenticationCardLogo",setup(n){return(l,t)=>(a(),e(r(i),{href:"/"},{default:o(()=>[...t[0]||(t[0]=[s("img",{src:"/img/pils\u0113ta-cilv\u0113kiem-logo-horizontal-text-white.png",class:"h-16 w-auto"},null,-1)])]),_:1}))}};export{u as _};
