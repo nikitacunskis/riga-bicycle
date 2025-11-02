@@ -17,7 +17,6 @@ COPY resources resources/
 COPY composer.lock .
 
 # PHP extensions + tools Composer relies on
-# PHP extensions + tools Composer relies on
 RUN apt-get update && \
     apt-get install -y git unzip libicu-dev libxml2-dev \
         libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
@@ -46,8 +45,6 @@ RUN apt-get update && apt-get install -y curl && \
 # Add nginx, Supervisor, PHP-FPM config and built frontend assets
 FROM base AS final
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-
-RUN composer install
 
 RUN apt-get update && \
     apt-get install -y nginx supervisor && \
@@ -80,8 +77,17 @@ RUN printf '%s\n' \
   > /usr/local/bin/entrypoint.sh && \
   chmod +x /usr/local/bin/entrypoint.sh
 
-# Normalize line endings if needed (Windows checkouts)
+# Normalize line endings
 RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh
+
+# Ensure Laravel cache directories exist before composer install
+RUN mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache && \
+    chmod -R 777 storage bootstrap/cache
+
+# Install PHP dependencies without triggering artisan
+RUN composer install --no-scripts --no-interaction --prefer-dist --optimize-autoloader
 
 # Use the entrypoint
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+
