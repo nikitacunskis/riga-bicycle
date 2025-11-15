@@ -1,9 +1,9 @@
 # Prepare base backend
-FROM php:8.1-fpm AS base
+FROM docker.io/library/php:8.1-fpm AS base
 WORKDIR /app
 
 # Keep Composer available in all stages
-COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+COPY --from=docker.io/library/composer:2 /usr/bin/composer /usr/local/bin/composer
 
 # Copy application sources needed for composer install and build
 COPY app app/
