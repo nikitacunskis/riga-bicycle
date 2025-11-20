@@ -74,6 +74,7 @@ RUN printf '%s\n' \
   'php artisan config:cache 2>/dev/null || true' \
   'php artisan route:cache 2>/dev/null || true' \
   'exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf' \
+  'php artisan migrate' \
   > /usr/local/bin/entrypoint.sh && \
   chmod +x /usr/local/bin/entrypoint.sh
 
