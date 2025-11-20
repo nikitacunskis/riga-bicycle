@@ -154,14 +154,8 @@ class ApiController extends Controller
         return response()->json([
             'ok'  => true,
             'api' => [
-//                'id'          => $api->id,
-//                'key'         => $api->key,
                 'owner'       => $api->owner,
-//                'type'        => $api->type,
-//                'valid_until' => $api->valid_until->toISOString(),
                 'email'       => $api->email,
-//                'phone'       => $api->phone,
-//                'reg_number'  => $api->reg_number,
             ],
         ], 201);
     }
