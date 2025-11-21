@@ -58,23 +58,20 @@ COPY docker/nginx.conf /etc/nginx/
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # --- NEW: runtime entrypoint created from Dockerfile ---
-# This runs INSIDE the container every start, even with your bind/volume mounts.
 RUN printf '%s\n' \
   '#!/bin/sh' \
   'set -e' \
   'cd /app' \
-  '# ensure storage tree exists even when volume is empty' \
   'mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache' \
   'touch storage/logs/laravel.log' \
   'chown -R www-data:www-data storage bootstrap/cache' \
   'chmod -R 775 storage bootstrap/cache || true' \
-  '# optional: ensure env + key if dev' \
   '[ -f .env ] || cp .env.example .env 2>/dev/null || true' \
   'php -v >/dev/null 2>&1 || true' \
   'php artisan config:cache 2>/dev/null || true' \
   'php artisan route:cache 2>/dev/null || true' \
+  'php artisan migrate --force' \
   'exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf' \
-  'php artisan migrate' \
   > /usr/local/bin/entrypoint.sh && \
   chmod +x /usr/local/bin/entrypoint.sh
 
