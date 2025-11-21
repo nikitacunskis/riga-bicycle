@@ -111,8 +111,7 @@ class ApiController extends Controller
         ]);
 
         $dbType = $v['type'] === 'private' ? 'personal' : 'organisation';
-
-        $owner = $v['type'] === 'private' ? $v['name'] : $v['orgName'];
+        $owner  = $v['type'] === 'private' ? $v['name'] : $v['orgName'];
 
         $api = Api::create([
             'key'              => Str::random(64),
@@ -120,13 +119,13 @@ class ApiController extends Controller
             'valid_until'      => now()->addYear(),
             'phone'            => $v['phone'],
             'email'            => $v['email'],
-            'tos_accepted'     => $v['acceptedTos'] ? '1' : '0',         // schema = string
-            'privacy_accepted' => $v['acceptedPrivacy'] ? '1' : '0',      // schema = string
-            'type'             => $dbType,                                 // enum value
+            'tos_accepted'     => $v['acceptedTos'] ? '1' : '0',        // schema = string
+            'privacy_accepted' => $v['acceptedPrivacy'] ? '1' : '0',     // schema = string
+            'type'             => $dbType,                               // enum value
             'reg_number'       => $v['type'] === 'org' ? ($v['regNumber'] ?? null) : null,
         ]);
 
-        // Email ops
+        // Prepare email content
         $lines = [
             'New API key issued.',
             'Key: ' . $api->key,
@@ -146,16 +145,22 @@ class ApiController extends Controller
         $lines[] = 'Purpose:';
         $lines[] = $v['purpose'];
 
-        Mail::raw(implode("\n", $lines), function ($m) use ($api) {
-            $m->to('info@pilsetacilvekiem.lv')
-                ->subject('API key issued: ' . $api->owner);
-        });
+        // Send mail but don't break the response if it fails
+        try {
+            Mail::raw(implode("\n", $lines), function ($m) use ($api) {
+                $m->to('info@pilsetacilvekiem.lv')
+                    ->subject('API key issued: ' . $api->owner);
+            });
+        } catch (\Throwable $e) {
+            \Log::error('API mail sending failed: '.$e->getMessage());
+        }
 
+        // Always return success
         return response()->json([
             'ok'  => true,
             'api' => [
-                'owner'       => $api->owner,
-                'email'       => $api->email,
+                'owner' => $api->owner,
+                'email' => $api->email,
             ],
         ], 201);
     }
