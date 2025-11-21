@@ -96,20 +96,40 @@ class SelectorController extends Controller
         return Inertia::render('Selector/SelectorForm', ['fields' => $form]);
     }
 
-    public function report(Request $request)
+    /**
+     * POST /report
+     * Redirects to GET /report-result with query parameters
+     */
+    public function redirectToResult(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $dataset = (new DatasetController())->generateDataset($request->input('selected', []));
+        return redirect()->route('page.report.result', [
+            'selected' => $request->input('selected', []),
+            'method'   => $request->input('method'),
+        ]);
+    }
 
-        $payload = [
+    /**
+     * GET /report-result
+     * Renders selected report (dataset results)
+     */
+    public function result(Request $request): \Inertia\Response
+    {
+        $dataset = (new DatasetController())
+            ->generateDataset(
+                $request->input('selected', []),
+                $request->input('method')
+            );
+
+        return Inertia::render('Selector/SelectedReport', [
             'dataset' => $dataset['dataset'],
             'report'  => $dataset['report'],
             'raw'     => $dataset['raw'],
-        ];
-
-        /** #### ADDED: 303 redirect to GET /report and flash the payload. */
-        return to_route('page.report.get', [], 303)->with('report_payload', $payload);
+        ]);
     }
 
+    /**
+     * API endpoint (unchanged)
+     */
     public function apiReport(Request $request): JsonResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $apiData = Api::where('key', $request->key)->first();
@@ -117,13 +137,12 @@ class SelectorController extends Controller
             return response()->json(['error' => 'API key not valid'], 404);
         }
 
-        $group = $request->query('group'); // 'event' | 'place' | null
+        $group = $request->query('group');
         if ($group && ! in_array($group, ['event', 'place'], true)) {
             return response()->json(['error' => 'Invalid group value. Use "event" or "place".'], 422);
         }
 
-        // New: format selector
-        $format = $request->query('format'); // 'xlsx' | 'csv' | null
+        $format = $request->query('format');
         if ($format && ! in_array($format, ['xlsx','csv'], true)) {
             return response()->json(['error' => 'Invalid format. Use "xlsx" or "csv".'], 422);
         }
@@ -132,7 +151,7 @@ class SelectorController extends Controller
             ->get()
             ->makeHidden(['place_id','event_id']);
 
-        // Build JSON payload (unchanged)
+        // Grouping logic
         if ($group === 'event') {
             $payload = $reports->groupBy('event.id')->map(function ($items) {
                 return [
@@ -153,31 +172,26 @@ class SelectorController extends Controller
             $payload = $reports;
         }
 
-        // If Excel/CSV requested: return a file instead of JSON
+        // Spreadsheet download
         if ($format) {
-            // Flatten to a single sheet; ignore deep grouping for spreadsheets.
-            // If you really want grouping, create separate exports per group and a MultipleSheets export.
             $export = new ReportsExport($reports, $group);
-
             $filename = 'reports'.($group ? "-{$group}" : '').'-'.now()->format('Ymd_His');
 
-            if ($format === 'xlsx') {
-                return Excel::download($export, $filename.'.xlsx'); // Content-Disposition: attachment
-            }
-
-            // CSV path (Excel opens it fine)
-            return Excel::download($export, $filename.'.csv', \Maatwebsite\Excel\Excel::CSV, [
-                'Content-Type' => 'text/csv',
-            ]);
+            return Excel::download(
+                $export,
+                $filename.'.'.$format,
+                $format === 'csv' ? \Maatwebsite\Excel\Excel::CSV : \Maatwebsite\Excel\Excel::XLSX,
+                ['Content-Type' => $format === 'csv' ? 'text/csv' : null]
+            );
         }
 
-        // Default JSON (back-compatible)
+        // Default JSON response
         return response()->json([
             $group ? 'groupedReports' : 'reports' => $payload,
             'apiData' => $apiData,
             'meta' => [
-                'group' => $group ?? null,
-                'count' => $reports->count(),
+                'group'  => $group ?? null,
+                'count'  => $reports->count(),
                 'format' => 'json',
             ],
         ]);
