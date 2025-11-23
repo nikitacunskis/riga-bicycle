@@ -9,14 +9,12 @@ return [
         'channel_signature' => '', // This will be assigned in the footer of message
         'proxy' => false,   // True => Proxy is On | False => Proxy Off
     ],
-
     'x' => [
         'consumer_key'        => env('X_CONSUMER_KEY'),
         'consumer_secret'     => env('X_CONSUMER_SECRET'),
         'access_token'        => env('X_ACCESS_TOKEN'),
         'access_token_secret' => env('X_ACCESS_TOKEN_SECRET'),
     ],
-
     'facebook' => [
         'app_id' => '', // Your Meta App ID
         'app_secret' => '', // Your Meta App Secret

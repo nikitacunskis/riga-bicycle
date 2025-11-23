@@ -13,28 +13,49 @@ class SocialCardGenerator
     ) {}
 
     /**
-     * Generate a social card and return the absolute file path.
-     *
-     * @param array{
-     *   title:string,
-     *   subtitle?:string,
-     *   bg?:string,             // local path or URL
-     *   logo?:string,           // local path
-     *   primary?:string,        // hex, e.g. '#0ea5e9'
-     *   secondary?:string,      // hex, e.g. '#111827'
-     *   watermark?:string,      // small text bottom-right
-     *   top_watermark?:string   // small text top-right
-     * } $opts
+     * Generate a card and save to file
      */
     public function make(array $opts): string
     {
-        $w = 1200; $h = 675; // 16:9
+        $im = $this->render($opts);
+
+        // save to disk
+        $filename = 'social/'.date('Y/m').'/'.Str::uuid().'.jpg';
+        $absPath = Storage::disk('public')->path($filename);
+        @mkdir(dirname($absPath), 0775, true);
+        imagejpeg($im, $absPath, 100);
+        imagedestroy($im);
+
+        return $absPath;
+    }
+
+    /**
+     * Generate a card preview (no saving) & return bytes
+     */
+    public function stream(array $opts): string
+    {
+        $im = $this->render($opts);
+
+        ob_start();
+        imagejpeg($im, null, 100);
+        imagedestroy($im);
+
+        return ob_get_clean();
+    }
+
+    /**
+     * Draw the card (shared between save & preview)
+     * Returns GD resource
+     */
+    private function render(array $opts)
+    {
+        $w = 1200; $h = 675;
         $title    = trim($opts['title'] ?? '');
         $subtitle = trim($opts['subtitle'] ?? '');
         $bg       = $opts['bg'] ?? null;
         $logo     = $opts['logo'] ?? null;
-        $primary  = $this->hex($opts['primary'] ?? '#0ea5e9'); // cyan-500
-        $secondary= $this->hex($opts['secondary'] ?? '#0b1220'); // slate-ish
+        $primary  = $this->hex($opts['primary'] ?? '#0ea5e9');
+        $secondary= $this->hex($opts['secondary'] ?? '#0b1220');
         $water    = trim($opts['watermark'] ?? '');
         $twater   = trim($opts['top_watermark'] ?? '');
 
@@ -42,43 +63,42 @@ class SocialCardGenerator
         $im = imagecreatetruecolor($w, $h);
         imageantialias($im, true);
 
-        // background solid
-        [$r2,$g2,$b2] = $secondary; $bgCol = imagecolorallocate($im,$r2,$g2,$b2);
+        // bg solid
+        [$r2,$g2,$b2] = $secondary;
+        $bgCol = imagecolorallocate($im,$r2,$g2,$b2);
         imagefilledrectangle($im, 0, 0, $w, $h, $bgCol);
 
-        // optional background image (cover)
+        // optional bg image
         if ($bg) {
             $bgPath = $this->ensureLocal($bg);
             $bgImg = $this->loadImage($bgPath);
             if ($bgImg) {
                 $bw = imagesx($bgImg); $bh = imagesy($bgImg);
-                // cover fit
                 $scale = max($w/$bw, $h/$bh);
                 $nw = (int)($bw*$scale); $nh=(int)($bh*$scale);
                 $x = (int)(($w - $nw)/2); $y = (int)(($h - $nh)/2);
                 imagecopyresampled($im, $bgImg, $x, $y, 0, 0, $nw, $nh, $bw, $bh);
                 imagedestroy($bgImg);
 
-                // dark overlay for text contrast
-                $overlay = imagecolorallocatealpha($im, 0, 0, 0, 80); // 0..127
+                // dark overlay
+                $overlay = imagecolorallocatealpha($im, 0, 0, 0, 80);
                 imagefilledrectangle($im, 0, 0, $w, $h, $overlay);
             }
         }
 
-        // left-to-right gradient ribbon
+        // gradient ribbon
         [$r1,$g1,$b1] = $primary;
         for ($i=0; $i<$w; $i++) {
-            $alpha = 100 - (int)(100 * ($i/$w)); // fade
+            $alpha = 100 - (int)(100 * ($i/$w));
             $col = imagecolorallocatealpha($im, $r1, $g1, $b1, min(127, max(0, 95 + (int)round($alpha * 0.3))));
             imageline($im, $i, 0, $i, $h, $col);
         }
 
-        // paddings & colors
         $padX=72; $padY=72;
         $white = imagecolorallocate($im, 255, 255, 255);
-        $muted = imagecolorallocate($im, 229, 231, 235); // gray-200
+        $muted = imagecolorallocate($im, 229, 231, 235);
 
-        // text: title (auto-sized)
+        // title
         $titleSize = $this->fitText($title, $this->fontBoldAbs(), 64, 36, $w - 2*$padX, 4);
         $titleLines= $this->wrap($title, $this->fontBoldAbs(), $titleSize, $w - 2*$padX);
         $y = $padY + $titleSize;
@@ -102,7 +122,7 @@ class SocialCardGenerator
             }
         }
 
-        // logo bottom-left (optional)
+        // logo
         if ($logo && is_file($logoAbs = base_path($logo))) {
             $lg = $this->loadImage($logoAbs);
             if ($lg) {
@@ -113,7 +133,7 @@ class SocialCardGenerator
             }
         }
 
-        // watermark bottom-right (optional)
+        // bottom-right watermark
         if ($water !== '') {
             $wmSize = 20;
             $bbox = imagettfbbox($wmSize, 0, $this->fontRegularAbs(), $water);
@@ -121,42 +141,27 @@ class SocialCardGenerator
             imagettftext($im, $wmSize, 0, $w-$padX-$ww, $h-$padY, $muted, $this->fontRegularAbs(), $water);
         }
 
-        // watermark top-right (optional)
-        // - wraps long text at a fixed width
-        // - right-aligns each line at the right padding edge
+        // top-right watermark
         if ($twater !== '') {
-            $wmSize    = 12;
-            $maxWidth  = min(380, $w - 2 * $padX); // clamp wrap width
+            $wmSize = 12;
+            $maxWidth  = min(380, $w - 2 * $padX);
             $lines     = $this->wrap($twater, $this->fontRegularAbs(), $wmSize, $maxWidth);
 
             $yTop = $padY;
             foreach ($lines as $ln) {
-                // measure current line
                 $bbox = imagettfbbox($wmSize, 0, $this->fontRegularAbs(), $ln);
-                $lw   = $bbox[2] - $bbox[0];
-                $lh   = $bbox[1] - $bbox[7];
-
-                // right-align: start so that the right edge sits at (w - padX)
+                $lw   = $bbox[2] - $bbox[0]; $lh   = $bbox[1] - $bbox[7];
                 $x = $w - $padX - $lw;
                 imagettftext($im, $wmSize, 0, $x, $yTop + $lh, $muted, $this->fontRegularAbs(), $ln);
-
-                // advance with small line gap
                 $yTop += $lh + 6;
             }
         }
 
-
-        // save
-        $filename = 'social/'.date('Y/m').'/'.Str::uuid().'.jpg';
-        $absPath = Storage::disk('public')->path($filename);
-        @mkdir(dirname($absPath), 0775, true);
-        imagejpeg($im, $absPath, 100);
-        imagedestroy($im);
-
-        return $absPath; // absolute path for your X driver
+        return $im;
     }
 
-    // -------- helpers --------
+    // ========== helper methods ==========
+
     private function fontBoldAbs(): string    { return base_path($this->fontBoldPath); }
     private function fontRegularAbs(): string { return base_path($this->fontRegularPath); }
 
@@ -190,9 +195,8 @@ class SocialCardGenerator
 
     private function wrap(string $text, string $font, int $size, int $maxWidth): array
     {
-        // Normalize newlines and accept literal "\n" from CLI
         $text = str_replace(["\r\n", "\r"], "\n", $text);
-        $text = str_replace("\\n", "\n", $text); // literal backslash-n -> real newline
+        $text = str_replace("\\n", "\n", $text);
 
         $paragraphs = explode("\n", $text);
         $lines = [];
@@ -200,7 +204,6 @@ class SocialCardGenerator
         foreach ($paragraphs as $para) {
             $para = trim($para);
 
-            // empty line -> preserve as spacer
             if ($para === '') {
                 $lines[] = ' ';
                 continue;
@@ -230,7 +233,6 @@ class SocialCardGenerator
 
         return $lines;
     }
-
 
     private function fitText(string $text, string $font, int $max, int $min, int $maxWidth, int $maxLines): int {
         for ($s=$max; $s>=$min; $s-=2) {
