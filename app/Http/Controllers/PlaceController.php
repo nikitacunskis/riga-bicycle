@@ -54,7 +54,8 @@
         {
             $data = $request->validated();
             $data['coordinates'] = $data['lat'].'/'.$data['lng'];
-//            dd($data);
+            unset($data['lat']);
+            unset($data['lng']);
             Place::create($data);
             return redirect()->route('dashboard.places.index')->with('success','Place created');
         }
@@ -65,6 +66,6 @@
         {
             $place = Place::find($id);
             $place->update($request->validated());
-            return Redirect::route('dashboard.places');
+            return Redirect::route('dashboard.places.index');
         }
     }

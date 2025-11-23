@@ -10,10 +10,10 @@ use Throwable;
 
 class XDriver implements SocialDriver
 {
-    private string $ck; // consumer key
-    private string $cs; // consumer secret
-    private string $at; // access token
-    private string $as; // access token secret
+    private string $ck; // API Key
+    private string $cs; // API Key Secret
+    private string $at; // Access Token
+    private string $as; // Access Token Secret
 
     public function __construct()
     {
@@ -33,13 +33,13 @@ class XDriver implements SocialDriver
     {
         try {
             $tweetUrl = 'https://api.twitter.com/2/tweets';
+            $payload = ['text' => $data->text ?: ''];
 
-            $payload = ['text' => $data->text];
-
-            // Handle media (upload first, collect media_ids)
+            // 🔥 Если есть картинки — пытаемся залить (V1.1 upload + media_ids)
             if (!empty($data->media)) {
                 $mediaIds = [];
                 $paths = is_array($data->media) ? array_slice($data->media, 0, 4) : [$data->media];
+
                 foreach ($paths as $p) {
                     $local = $this->toLocalPath($p);
                     $mediaIds[] = $this->uploadMedia($local);
@@ -47,7 +47,6 @@ class XDriver implements SocialDriver
                 $payload['media'] = ['media_ids' => $mediaIds];
             }
 
-            // OAuth 1.0a User context – for JSON POST, do NOT include body params in signature
             $auth = $this->oauth1HeaderJson('POST', $tweetUrl);
 
             $res = Http::withHeaders([
@@ -68,8 +67,7 @@ class XDriver implements SocialDriver
     }
 
     /**
-     * Uploads a single media to Twitter v1.1 and returns media_id_string.
-     * Uses base64 'media_data' param. Body is x-www-form-urlencoded, so params are signed.
+     * Upload media (V1.1). Returns media_id_string.
      */
     private function uploadMedia(string $absolutePath): string
     {
@@ -100,7 +98,7 @@ class XDriver implements SocialDriver
     }
 
     /**
-     * Resolve to an absolute path; download remote URLs to a temp file.
+     * Resolve to local path; download remote to tmp.
      */
     private function toLocalPath(string $path): string
     {
@@ -114,7 +112,6 @@ class XDriver implements SocialDriver
             return $tmp;
         }
 
-        // If relative, resolve from base_path()
         if (!str_starts_with($path, '/')) {
             $candidate = base_path($path);
             if (is_file($candidate)) return $candidate;
@@ -128,7 +125,7 @@ class XDriver implements SocialDriver
     }
 
     /**
-     * OAuth 1.0a header for JSON POST (no body params in signature).
+     * OAuth1 header for V2 JSON POST (no body signature)
      */
     private function oauth1HeaderJson(string $method, string $url): string
     {
@@ -141,18 +138,14 @@ class XDriver implements SocialDriver
             'oauth_version'          => '1.0',
         ];
 
-        $params = $oauth;
-        // include query params if present
-        $parts = parse_url($url);
-        if (!empty($parts['query'])) {
-            parse_str($parts['query'], $query);
-            $params = array_merge($params, $query);
-        }
+        ksort($oauth);
 
-        ksort($params);
-        $base = strtoupper($method).'&'.rawurlencode($this->withoutQuery($url)).'&'.
-            rawurlencode(http_build_query($params, '', '&', PHP_QUERY_RFC3986));
-        $key  = rawurlencode($this->cs).'&'.rawurlencode($this->as);
+        $base = strtoupper($method)
+            .'&'.rawurlencode($this->withoutQuery($url))
+            .'&'.rawurlencode(http_build_query($oauth, '', '&', PHP_QUERY_RFC3986));
+
+        $key = rawurlencode($this->cs).'&'.rawurlencode($this->as);
+
         $oauth['oauth_signature'] = base64_encode(hash_hmac('sha1', $base, $key, true));
 
         return 'OAuth '.implode(', ', array_map(
@@ -161,10 +154,7 @@ class XDriver implements SocialDriver
             ));
     }
 
-    /**
-     * OAuth 1.0a header for x-www-form-urlencoded POST (body params ARE signed).
-     */
-    private function oauth1HeaderForm(string $method, string $url, array $bodyParams): string
+    private function oauth1HeaderForm(string $method, string $url, array $params): string
     {
         $oauth = [
             'oauth_consumer_key'     => $this->ck,
@@ -175,18 +165,15 @@ class XDriver implements SocialDriver
             'oauth_version'          => '1.0',
         ];
 
-        $params = array_merge($oauth, $bodyParams);
-        // include query params if present
-        $parts = parse_url($url);
-        if (!empty($parts['query'])) {
-            parse_str($parts['query'], $query);
-            $params = array_merge($params, $query);
-        }
-
+        $params = array_merge($oauth, $params);
         ksort($params);
-        $base = strtoupper($method).'&'.rawurlencode($this->withoutQuery($url)).'&'.
-            rawurlencode(http_build_query($params, '', '&', PHP_QUERY_RFC3986));
-        $key  = rawurlencode($this->cs).'&'.rawurlencode($this->as);
+
+        $base = strtoupper($method)
+            .'&'.rawurlencode($this->withoutQuery($url))
+            .'&'.rawurlencode(http_build_query($params, '', '&', PHP_QUERY_RFC3986));
+
+        $key = rawurlencode($this->cs).'&'.rawurlencode($this->as);
+
         $oauth['oauth_signature'] = base64_encode(hash_hmac('sha1', $base, $key, true));
 
         return 'OAuth '.implode(', ', array_map(
@@ -198,9 +185,6 @@ class XDriver implements SocialDriver
     private function withoutQuery(string $url): string
     {
         $u = parse_url($url);
-        $scheme = $u['scheme'] ?? 'https';
-        $host   = $u['host'] ?? '';
-        $path   = $u['path'] ?? '';
-        return "{$scheme}://{$host}{$path}";
+        return "{$u['scheme']}://{$u['host']}{$u['path']}";
     }
 }

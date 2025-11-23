@@ -20,6 +20,7 @@ class DatasetController extends Controller
         $dataset = [];
         $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         $raw = [];
+
         foreach($events as $event)
         {
             $date = explode('-', $event['date']);
@@ -147,7 +148,7 @@ class DatasetController extends Controller
         return $filters;
     }
 
-    private function filterEvents(&$events, array $filters)
+    private function filterEvents(&$events, array $filters): void
     {
         foreach($events as $key => $event)
         {
@@ -158,7 +159,7 @@ class DatasetController extends Controller
         }
     }
 
-    private function avarage(array $reports, array $filters)
+    private function avarage(array $reports, array $filters): float|int
     {
         $sum = 0;
         foreach($reports as $report)
@@ -191,7 +192,7 @@ class DatasetController extends Controller
         return $sum;
     }
 
-    private function prc(array $reports, array $filters)
+    private function prc(array $reports, array $filters): float|int
     {
         $prcOverall = 0;
         foreach($reports as $report)
