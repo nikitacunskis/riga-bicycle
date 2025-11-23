@@ -5,7 +5,7 @@
                 Skaitām riteņbraucējus Rīgā. Kopā.
             </h1>
             <p class="mt-4 text-lg text-gray-700">
-                Brīvprātīgie fiksē plūsmas krustojumos, lai pilsēta būtu drošāka, gudrāka un draudzīgāka velobraucējiem.
+                Brīvprātīgie fiksē velosatiksmes plūsmas krustojumos un uz tiltiem, lai pilsēta būtu drošāka, viedāka un draudzīgāka velobraucējiem
             </p>
 
             <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">

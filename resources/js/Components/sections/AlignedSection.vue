@@ -3,7 +3,7 @@
         <div class="mx-auto">
             <header v-if="title || subtitle" class="mb-10 text-center">
                 <h2 v-if="title" class="text-3xl font-bold text-green-800">{{ title }}</h2>
-                <p v-if="subtitle" class="mt-3 text-gray-700">{{ subtitle }}</p>
+                <p v-if="subtitle" class="mt-3 text-gray-700 text-justify">{{ subtitle }}</p>
             </header>
 
             <!-- One row per item -->
@@ -23,13 +23,13 @@
                         <h3 v-if="item.heading" class="text-2xl font-semibold text-green-800">
                             {{ item.heading }}
                         </h3>
-                        <p v-if="item.body" class="text-gray-700">
+                        <p v-if="item.body" class="text-gray-700 text-justify">
                             {{ item.body }}
                         </p>
 
                         <ul v-if="item.points?.length" class="grid sm:grid-cols-2 gap-3 text-gray-700">
-                            <li v-for="(p, idx) in item.points" :key="idx" class="flex items-start gap-3">
-                                <div class="h-10 w-10 rounded-xl bg-emerald-100 ring-1 ring-white/60 flex items-center justify-center">
+                            <li v-for="(p, idx) in item.points" :key="idx" class="flex items-start gap-3 rounded-xl bg-emerald-100/50 ring-1 ring-white/60 p-3">
+                                <div class="flex items-center justify-center">
                                     {{ p.icon || '✅' }}
                                 </div>
                                 <span>{{ p.text }}</span>

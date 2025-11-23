@@ -47,7 +47,7 @@ class SelectorController extends Controller
                         ['id' => 'womens', 'label' => 'Sievietes'],
                         ['id' => 'man', 'label' => 'Vīrieši'],
                         ['id' => 'children_self', 'label' => 'Bērni paši'],
-                        ['id' => 'children_passanger', 'label' => 'Bērni, kā pasažieri'],
+                        ['id' => 'children_passanger', 'label' => 'Bērni kā pasažieri'],
                     ],
                 ],
                 'places' => [

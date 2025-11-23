@@ -233,7 +233,7 @@ class DatasetController extends Controller
 
         $objects = [];
         $ids = ['womens', 'man', 'children_self', 'children_passanger'];
-        $labels = ['Sievietes', 'Vīrieši', 'Bērni paši', 'Bērni, kā pasažieri'];
+        $labels = ['Sievietes', 'Vīrieši', 'Bērni paši', 'Bērni kā pasažieri'];
         if(sizeof($filters['objects']) === 0)
         {
             $objects = ['nav izvēlēta neviena pētījuma kategorija'];
