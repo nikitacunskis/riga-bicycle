@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\Social\PostData;
+use App\Support\Social\SocialPoster;
 use Carbon\Carbon;
 use App\Models\Report;
 use Illuminate\Support\Facades\Redirect;
@@ -9,84 +11,112 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Event;
-use App\Http\Requests\StoreEventRequest;
-use App\Http\Requests\UpdateEventRequest;
 use App\Services\SocialCardGenerator;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
-use DB;
 
 class EventController extends Controller
 {
-
-    /**
-     * list page
-     */
     public function index()
     {
         $eventCollection = Event::all();
-
         return Inertia::render('Events/List', ['events' => $eventCollection]);
     }
-    /**
-     * create page
-     */
+
     public function create()
     {
         return Inertia::render('Events/Create');
     }
 
-    /**
-     * edit page
-     */
     public function edit(int $id)
     {
         $event = Event::find($id);
         return Inertia::render('Events/Edit', ['event' => $event]);
     }
 
-    /**
-     * destroy
-     */
     public function destroy(int $id)
     {
         $event = Event::find($id);
         $event->delete();
-        return Redirect::route('dashboard.events');
+        return Redirect::route('dashboard.events.index');
     }
 
-    /**
-     * Store Event in storage.
-     */
-    public function store(StoreEventRequest $request)
+    public function store(Request $request)
     {
-        $event = new Event($request->validated());
+        $event = new Event($request->toArray());
         $event->save();
-        return Redirect::route('dashboard.events');
+        return Redirect::route('dashboard.events.index');
     }
-    /**
-     * Update Event in storage.
-     */
-    public function update(UpdateEventRequest $request, int $id)
+
+    public function update(Request $request, int $id)
     {
         $event = Event::find($id);
-        $event->update($request->validated());
-        return Redirect::route('dashboard.events');
+        $event->update($request->toArray());
+        return Redirect::route('dashboard.events.index');
     }
 
-    public function getWeather(string $date)
+    public function generate(Event $event, Request $request)
     {
-        $weather = Weather::find($date);
-        return $weather;
+
+        $previewUrl = route('events.image', ['event' => $event->id]);
+
+        return Inertia::render('Events/Image', [
+            'post_text' => $this->buildPostText($event),
+            'image_url' => $previewUrl,
+            'event_id'  => $event->id,
+        ]);
+
     }
 
-    public function generate(Event $event, Request $request, SocialCardGenerator $cards)
+    public function image(Event $event, Request $request, SocialCardGenerator $cards)
     {
-        // Build the title from the event date: "October 2025"
+        $binary = $cards->stream([
+            'title'         => Carbon::parse($event->date)->format('F Y'),
+            'subtitle'      => $this->buildSubtitle($event),
+            'logo'          => 'public/img/pilsēta-cilvēkiem-logo-horizontal-text-white.png',
+            'watermark'     => 'veloskaitisana.pilsetacilvekiem.lv',
+            'top_watermark' => $event->weather,
+        ]);
+
+        return Response::make($binary, 200, [
+            'Content-Type' => 'image/png',
+            'Cache-Control' => 'no-cache',
+        ]);
+    }
+
+    protected function buildPostText(Event $event): string
+    {
         $title = Carbon::parse($event->date)->format('F Y');
+        $report = $this->eventReportDataBuild($event);
 
-        // Fetch related reports for this event (what you want to inspect now)
+        return "$title notika kārtējā ikmēneša veloskaitīšana. Šoreiz aktīvisti ir " .
+            "saskaitījuši pavisam " . $report['countAll'] . " velobraucējus. " .
+            "Datus var izpētīt projekta lapā https://veloskaitisana.pilsetacilvekiem.lv";
+    }
+
+    protected function buildSubtitle(Event $event): string
+    {
+        $report = $this->eventReportDataBuild($event);
+
+        return
+            "Vidēji pa visiem punktiem Rīgā pēc kategorijām\n" .
+            "Vīrieši: {$report['total']['man']}\n" .
+            "Sievietes: {$report['total']['womens']}\n" .
+            "Bērni pasažieri: {$report['total']['children_passanger']}\n" .
+            "Bērni paši: {$report['total']['children_self']}\n\n" .
+            "Kopā tika saskaitīti {$report['countAll']} supermobilitātes transportrīki.\n\n" .
+            "Lielākais punkts: {$report['biggestPlace']} [{$report['biggestTotal']}]\n" .
+            "Mazākais punkts: {$report['smallestPlace']} [{$report['smallestTotal']}]";
+    }
+
+    protected function eventReportDataBuild(Event $event): array|string
+    {
         $reports = Report::where('event_id', $event->id)->latest()->get();
         $reportCount = $reports->count();
+
+        if ($reportCount === 0) {
+            return "Nav datu par šo mēnesi.";
+        }
 
         $total = [
             'man' => 0,
@@ -94,58 +124,97 @@ class EventController extends Controller
             'children_passanger' => 0,
             'children_self' => 0,
         ];
+
         $biggestPlace = null;
-        $biggestPlaceResult = 0;
-        $smallestPlace = $reports[0]->place;
-        $smallestPlaceResult = 999999999;
+        $biggestTotal = 0;
+        $smallestPlace = null;
+        $smallestTotal = PHP_INT_MAX;
         $countAll = 0;
 
-        foreach ($reports as $key => $report) {
+        foreach ($reports as $report) {
             $placeTotal = 0;
-            foreach (array_keys($total) as $key) {
-                $total[$key] += $report->{$key};
-                $placeTotal += $report->{$key};
+
+            foreach ($total as $k => $_) {
+                $total[$k] += $report->{$k};
+                $placeTotal += $report->{$k};
             }
-            if ($biggestPlaceResult < $placeTotal) {
-                $biggestPlace = $report->place;
-                $biggestPlaceResult = $placeTotal;
+
+            // <<< FIX HERE: only location text
+            if ($placeTotal > $biggestTotal) {
+                $biggestTotal = $placeTotal;
+                $biggestPlace = $report->place->location;
             }
-            if ($smallestPlaceResult > $placeTotal) {
-                $smallestPlace = $report->place;
-                $smallestPlaceResult = $placeTotal;
+
+            if ($placeTotal < $smallestTotal) {
+                $smallestTotal = $placeTotal;
+                $smallestPlace = $report->place->location;
             }
+
             $countAll += $placeTotal;
         }
 
         foreach ($total as $key => $value) {
-            $total[$key] = (int)($total[$key] / $reportCount);
+            $total[$key] = (int) round($total[$key] / $reportCount);
         }
 
-        // Show me the reports right now, as requested
-//        dd([
-//            'event'   => $event->only(['id','date']),
-//            'title'   => $title,
-//            'reports' => $reports,
-//            'total'   => $total,
-//        ]);
-
-        $subtitle = "Vidēji pa visiem punktiem Rīgā pēc kategorijām\nVīrieši: {$total['man']}\nSievietes: {$total['womens']}\nBērni pasažieri: {$total['children_passanger']}\nBērni paši: {$total['children_self']}";
-        $subtitle .= "\n\nKopā tika saskaitīti {$countAll} supermobilitātes transportrīki.";
-        $subtitle .= "\n\nLielākais punkts: {$biggestPlace->location} [{$biggestPlaceResult}]\nMazākais punkt: {$smallestPlace->location} [{$smallestPlaceResult}]";
-        // --- When you’re ready to generate the image, un-comment below ---
-
-        $path = $cards->make([
-            'title'         => $title,
-            'subtitle'      => $request->input('subtitle', $subtitle),
-            //             'bg'        => $request->input('bg', 'public/img/strudel_solinsh.jpg'),
-            'logo'          => $request->input('logo', 'public/img/pilsēta-cilvēkiem-logo-horizontal-text-white.png'),
-            'watermark'     => $request->input('watermark', 'veloskaitisana.pilsetacilvekiem.lv'),
-            'top_watermark' => $event->weather,
-        ]);
-
-        $relative = str_replace(Storage::disk('public')->path(''), '', $path);
-        $url = Storage::disk('public')->url($relative);
-
-        return Inertia::render('Events/Image', ['image' => $url]);
+        return [
+            'total' => $total,
+            'biggestPlace' => $biggestPlace,
+            'biggestTotal' => $biggestTotal,
+            'smallestPlace' => $smallestPlace,
+            'smallestTotal' => $smallestTotal,
+            'countAll' => $countAll,
+        ];
     }
+
+    public function shareAndPost(Event $event, Request $request, SocialPoster $poster)
+    {
+        $text = $this->buildPostText($event);
+
+        if ($request->boolean('no-image')) {
+            $postData = new PostData(
+                text:  $text,
+                link:  null,
+                media: [],     // без картинок
+                meta:  []
+            );
+            $res = $poster->post('x', $postData);
+
+            return response()->json([
+                'generated' => [
+                    'text'  => $text,
+                    'image' => null,
+                ],
+                'posted' => [
+                    'ok'       => $res->ok,
+                    'remoteId' => $res->remoteId ?? null,
+                    'error'    => $res->error ?? null,
+                    'raw'      => $res->raw,
+                ],
+            ]);
+        }
+
+        $publicUrl = route('events.image', ['event' => $event->id]);
+        $postData = new PostData(
+            text:  $text,
+            link:  null,
+            media: [$publicUrl],
+            meta:  []
+        );
+        $res = $poster->post('x', $postData);
+
+        return response()->json([
+            'generated' => [
+                'text'  => $text,
+                'image' => $publicUrl,
+            ],
+            'posted' => [
+                'ok'       => $res->ok,
+                'remoteId' => $res->remoteId ?? null,
+                'error'    => $res->error ?? null,
+                'raw'      => $res->raw,
+            ],
+        ]);
+    }
+
 }

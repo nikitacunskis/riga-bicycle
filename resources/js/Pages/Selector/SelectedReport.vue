@@ -11,27 +11,72 @@ const props = defineProps({
     e:       { type: Array,  default: () => [] }
 })
 
+/* ===========================================================
+   🎨 COLOR MODE
+   emerald mode (default)  ||  high-contrast mode (toggle)
+=========================================================== */
+const colorful = ref(false)
+
 /* Emerald palette with depth */
 const emeralds = ['#047857','#059669','#10B981','#34D399','#6EE7B7','#A7F3D0','#D1FAE5']
 
-/* Chart dataset using brand colors */
+/* High-contrast preset palette (colorblind-safe) */
+const highContrasts = [
+    '#0072B2','#D55E00','#009E73','#CC79A7','#F0E442',
+    '#56B4E9','#E69F00','#000000','#0099A8','#9C179E'
+]
+
+/* Pick colors based on mode */
+function pickColor(i) {
+    return colorful.value
+        ? highContrasts[i % highContrasts.length]
+        : emeralds[i % emeralds.length]
+}
+
+/* Toggle button */
+function toggleColors() {
+    colorful.value = !colorful.value
+}
+
+/* ===========================================================
+   📈 CHART DATA (opacity + hover behavior)
+=========================================================== */
 const chartData = computed(() => ({
     labels: [
         'Janvāris','Februāris','Marts','Aprīlis','Maijs','Jūnijs',
         'Jūlijs','Augusts','Septembris','Oktobris','Novembris','Decembris'
     ],
-    datasets: (props.dataset || []).map((d, i) => ({
-        ...d,
-        tension: 0.35,
-        borderWidth: 3,
-        pointRadius: 0,
-        borderColor: emeralds[i % emeralds.length],
-        backgroundColor: emeralds[i % emeralds.length] + '33'
-    }))
+    datasets: (props.dataset || []).map((d, i) => {
+        const c = pickColor(i)
+        const base = c
+        return {
+            ...d,
+            tension: 0.35,
+            borderWidth: 3,
+            pointRadius: 0,
+
+            // ✨ DEFAULT — transparent
+            borderColor: base,
+            backgroundColor: base,
+
+            // ✨ HOVER — full color
+            hoverBorderColor: c,
+            hoverBackgroundColor: c,
+            pointHoverRadius: 6
+        }
+    })
 }))
 
+/* ===========================================================
+   ⚙️ CHART OPTIONS (enable highlight hover)
+=========================================================== */
 const chartOptions = {
     responsive: true,
+    interaction: { mode: 'nearest', intersect: false },
+    elements: {
+        line: { hoverBorderWidth: 4 },
+        point: { hoverRadius: 8 }
+    },
     plugins: {
         legend: { position: 'bottom', labels: { color: '#064e3b', usePointStyle: true, padding: 20 } },
         tooltip: { mode: 'index', intersect: false }
@@ -42,7 +87,9 @@ const chartOptions = {
     }
 }
 
-/* Paginated raw table */
+/* ===========================================================
+   🧾 RAW TABLE PAGINATION
+=========================================================== */
 const pageSize = 25
 const visibleCount = ref(pageSize)
 const canLoadMore = computed(() => visibleCount.value < props.raw.length)
@@ -58,7 +105,6 @@ const breadcrumbs = [{ text: 'Atskaites', href: '/report' }]
             class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-white/60
              backdrop-blur-2xl ring-1 ring-emerald-200 shadow-2xl p-6 md:p-10">
 
-            <!-- Radiant emerald “heavenly beams” -->
             <div aria-hidden="true" class="pointer-events-none absolute inset-0">
                 <div
                     class="absolute -top-40 -left-1/2 w-[200%] h-[200%] bg-gradient-to-tr
@@ -96,8 +142,19 @@ const breadcrumbs = [{ text: 'Atskaites', href: '/report' }]
                     </div>
                 </div>
 
-                <!-- Line chart -->
+                <!-- Chart + button -->
                 <div class="mt-10 rounded-3xl bg-white ring-1 ring-emerald-100 p-4 shadow-lg">
+
+                    <div class="flex justify-end mb-3">
+                        <button
+                            @click="toggleColors"
+                            class="px-4 py-1.5 text-sm rounded-md font-semibold
+                                   bg-emerald-700 text-white hover:bg-emerald-800 transition"
+                        >
+                            Krāsains grafiks
+                        </button>
+                    </div>
+
                     <LineChart :chartData="chartData" :chartOptions="chartOptions" />
                 </div>
 

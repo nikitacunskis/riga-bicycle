@@ -50,9 +50,11 @@ class ReportController extends Controller
         // dd($request->prev_event_id);
         $placeCollection = Place::all();
         $eventCollection = Event::all();
-        return Inertia::render('Reports/Create', ['places' => $placeCollection, 'events' => $eventCollection,
-        'prev_event_id' => $prev_event_id
-    ]);
+        return Inertia::render('Reports/Create', [
+            'places' => $placeCollection,
+            'events' => $eventCollection,
+            'prev_event_id' => $prev_event_id
+        ]);
     }
 
     /**
@@ -69,7 +71,7 @@ class ReportController extends Controller
     /**
      * destroy
      */
-    public function destroy(int $id)
+    public function destroy(int $id): \Illuminate\Http\RedirectResponse
     {
         $report = Report::find($id);
         $report->delete();
@@ -79,16 +81,17 @@ class ReportController extends Controller
     /**
      * Store Report in storage.
      */
-    public function store(StoreReportRequest $request)
+    public function store(StoreReportRequest $request): \Illuminate\Http\RedirectResponse
     {
         $report = new Report($request->validated());
         $report->save();
         return Redirect::route('dashboard.reports.create', ['prev_event_id' => $report->event_id]);
     }
+
     /**
      * Update Report in storage.
      */
-    public function update(UpdateReportRequest $request, int $id)
+    public function update(UpdateReportRequest $request, int $id): \Illuminate\Http\RedirectResponse
     {
         $report = Report::find($id);
         $report->update($request->validated());
