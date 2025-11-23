@@ -25,15 +25,15 @@ const breadcrumbs = [{ text: 'Pievienojies', href: '/join' }]
                         Pievienojies Rīgas veloskaitītāju komandai
                     </h1>
                     <p class="max-w-2xl text-green-700 text-lg">
-                        Mēs skaitām velobraucējus, lai uzlabotu Rīgas infrastruktūru.
-                        Tavs brīvprātīgais darbs palīdz parādīt pilsētai, cik liela ir riteņbraucēju kopiena.
+                        Mēs skaitām velobraucējus, lai iegūtu sistemātisku statistiku, kas pamatotu Rīgas infrastruktūras
+                        uzlabošanu. Tavs brīvprātīgais darbs palīdz parādīt pilsētai, cik liela ir riteņbraucēju kopiena.
                     </p>
 
                     <span class="block mt-3 text-lg font-semibold">
-                        - Aizņem tikai 30 sekundes — pievienojies jau šodien
+                        - Aizņem tikai dažas minūtes — pievienojies jau šodien
                     </span>
                     <span class="block mt-2 text-lg font-semibold">
-                        - Tikai 1 stundu mēnesī, lai padarītu Rīgu drošāku, modernāku un pievilcīgāku
+                        - Skaitīšana notiek tikai 1 stundu mēnesī
                     </span>
                 </div>
             </section>
@@ -56,12 +56,31 @@ const breadcrumbs = [{ text: 'Pievienojies', href: '/join' }]
             <h2 class="text-3xl font-bold text-green-800 mb-6 text-center">
                 Kāpēc tas ir svarīgi
             </h2>
+            <p class="mb-4">
+                <b>Rīgas velosatiksmes skaitīšana</b> ir sistemātiska un zinātniska pieeja pilsētvides mērīšanai.
+                Mēs strādājam pēc Atbilstoši dāņu urbānista Jāna Gēla principiem <b>“Cities for People”</b> mūsu
+                mērķis ir padarīt Rīgu efektīvāku, dzīvīgāku un pievilcīgāku. Labi dati ir pamats gudrai
+                pārvaldībai: tie ļauj pašvaldībai plānot veloinfrastruktūru un pamatot tās nepieciešamību.
+                Mēs sadarbojamies ar Jana Gēla biroju, urbānistu Mikaelu Kolvilu-Andersenu un Danielu Hess,
+                lai pierādītu, ka satiksme pilsētā var kļūt daudz efektīvāka un demokrātiskāka.
+                <b>Velosipēds kā ilgtspējīgākais un ērtākais transporta veids</b> – ir viena no attīstības vektoru prioritātēm.
+                Tāpēc dati par velosatiksmi interesē ne tikai pašvaldību, bet arī studentus, uzņēmējus un pētniekus.
+                Šie dati ir pilsētas nākotnes atslēga. Tieši tāpēc mēs īpaši uzsveram <b>konsekvenci, regularitāti un uzticamību</b>
+                – un sagaidām no brīvprātīgajiem <b>atbildību un godīgumu</b>.
+            </p>
 
-            <p class="mb-4"><b>Rīgas velosatiksmes skaitīšana</b> nav tikai tehnisks uzdevums – tā ir daļa no lielākas pilsētas nākotnes vīzijas. Mēs strādājam pēc dāņu urbānista Jāna Gēla principiem <b>“Cities for Humans”</b>, kas uzsver cilvēkam draudzīgu pilsētvidi. Mūsu mērķis ir padarīt Rīgu efektīvāku, dzīvīgāku un pievilcīgāku, balstoties uz <b>zinātnisku pieeju urbanismam</b>. Labi dati ir pamats gudrai pārvaldībai: tie ļauj pašvaldībai plānot drošākas ielas, kvalitatīvus veloceliņus un ērtas stāvvietas.</p>
-            <p class="mb-4">Mēs sadarbojamies ar Jana Gēla biroju, urbānistu Mikuelu Kolvilu-Andersenu un Danielu Hess, lai pierādītu, ka satiksme pilsētā var kļūt daudz efektīvāka. <b>Supermobilitāte – velosipēds kā ātrākais un ilgtspējīgākais transporta veids</b> – ir viena no attīstības vektoru prioritātēm. Tāpēc dati par velosatiksmi interesē ne tikai <b>pašvaldību</b>, bet arī <b>studentus</b>, <b>uzņēmējus</b> un <b>pētniekus</b>. Sabiedrībai var šķist, ka šie dati ir mazāk aizraujoši, taču tie ir pilsētas nākotnes atslēga. Tieši tāpēc mēs īpaši uzsveram <b>konsekvenci</b>, <b>regularitāti</b> un <b>uzticamību</b> – un sagaidām no brīvprātīgajiem <b>atbildību</b> un <b>godīgumu</b>.</p>
-            <p class="mb-4"><b>Brīvprātīgie ir mūsu kustības sirds</b>. Mēs esam plašs tīkls no dažādām apkaimēm un organizācijām, kas tic, ka <b>Rīga var kļūt par pilsētu cilvēkiem</b>. Nav nepieciešams biedrības <b>“Pilsētā cilvēkiem”</b> biedra statuss, lai pievienotos, taču visi brīvprātīgie ir laipni gaidīti mūsu pasākumos, diskusijās un aicināti <b>kļūt par biedriem</b>. Daudziem šī pieredze kļuvusi par nozīmīgu karjeras soli: tā palīdzējusi iegūt priekšrocības, iestājoties <b>Arhitektu</b>, <b>Būvinženieru</b>, <b>Urbānistu</b> un citās radniecīgās profesijās, vai veidot <b>politisko karjeru</b> un vērtīgu kontaktu loku.</p>
-            <p class="mb-4">Tomēr pats svarīgākais ir ieguldījums <b>pilsētas attīstībā</b>. Veltot tikai <b>vienu stundu mēnesī</b>, tu kļūsti par Rīgas nākotnes līdzveidotāju – cilvēku, kas palīdz radīt <b>modernu, cilvēkiem draudzīgu un efektīvu galvaspilsētu</b>.</p>
+            <p class="mb-4">
+                <b>Brīvprātīgie ir mūsu kustības sirds, kas tic, ka Rīga var kļūt par pilsētu, kas draudzīga cilvēkiem.</b>
+                Lai piedalītos veloskaitīšanā, nav nepieciešams biedrības “Pilsētā cilvēkiem” biedra vai
+                atbalstītāja statuss, taču visi brīvprātīgie ir laipni gaidīti mūsu pasākumos, diskusijās un
+                aicināti kļūt par atbalstītājiem un biedriem, lai iegūtu vērtīgu kontaktu loku, vai pat palīdzētu šo
+                pieredzi pārvērst karjerā.
+            </p>
 
+            <p class="mb-4">
+                Tomēr pats svarīgākais ir ieguldījums <b>pilsētas attīstībā</b>. Veltot tikai <b>vienu stundu mēnesī</b>, tu
+                kļūsti par Rīgas nākotnes līdzveidotāju – cilvēku, kas palīdz radīt <b>modernu, cilvēkiem draudzīgu un efektīvu galvaspilsētu</b>.
+            </p>
         </section>
 
 
@@ -118,7 +137,7 @@ const breadcrumbs = [{ text: 'Pievienojies', href: '/join' }]
             <p class="text-gray-700 mb-8">
                 Sūti e-pastu uz
                 <a href="mailto:info@pilsetacilvekiem.lv" class="text-green-600 underline">info@pilsetacilvekiem.lv</a>
-                vai zvani Andrejam <a href="tel:+37129140848" class="text-green-600 underline">2914&nbsp;0848</a>.
+                vai raksti / zvani Andrejam <a href="tel:+37129140848" class="text-green-600 underline">+371 29140848.</a>.
             </p>
             <a
                 href="mailto:info@pilsetacilvekiem.lv
