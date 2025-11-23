@@ -71,8 +71,31 @@ function submit() {
                     Veloskaitīšanas Atskaites
                 </h1>
                 <p class="mt-3 text-center text-emerald-800/80 max-w-2xl mx-auto">
-                    Izvēlies gadus, punktus un metodi, lai redzētu detalizētus grafikus par Rīgas velosatiksmi.
+                    Izvēlies gadus, vietas un citus parametrus, lai redzētu detalizētus grafikus ar veloskaitīšanas
+                    datiem.
                 </p>
+                <div
+                    class="mt-6 rounded-xl bg-white/70 backdrop-blur shadow-sm border border-green-200 p-6 text-gray-800 leading-relaxed"
+                >
+                    <h2 class="text-lg font-semibold text-green-700 mb-3">
+                        Informācija:
+                    </h2>
+
+                    <p class="flex gap-2 mb-2">
+                        <span class="text-green-600 font-medium">•</span>
+                        Kopējais skaits (summa) veidojas no sieviešu, vīriešu, pašbraucošu bērnu un bērnu kā pasažieru skaita.
+                    </p>
+
+                    <p class="flex gap-2 mb-2">
+                        <span class="text-green-600 font-medium">•</span>
+                        Vidējais skaits tiek attēlots no aritmētiski vidējā rādītāja kopējam skaitam visās skaitīšanas vietās.
+                    </p>
+
+                    <p class="flex gap-2">
+                        <span class="text-green-600 font-medium">•</span>
+                        Procents no kopējā tiek attēlots datiem par vīriešiem, sievietēm, pašbraucošiem bērniem un bērniem kā pasažieriem.
+                    </p>
+                </div>
 
                 <div class="mt-10 overflow-x-auto">
                     <table class="w-full border-separate border-spacing-0 text-left text-sm">

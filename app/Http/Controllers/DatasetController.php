@@ -196,10 +196,11 @@ class DatasetController extends Controller
             $places = ['nav izvēlēts neviens punkts'];
         }
 
-        $ids = ['womens','man','children_self','children_passanger'];
-        $labels = ['Sievietes','Vīrieši','Bērni paši','Bērni, kā pasažieri'];
-
-        if (!$filters['objects']) {
+        $objects = [];
+        $ids = ['womens', 'man', 'children_self', 'children_passanger'];
+        $labels = ['Sievietes', 'Vīrieši', 'Bērni paši', 'Bērni kā pasažieri'];
+        if(sizeof($filters['objects']) === 0)
+        {
             $objects = ['nav izvēlēta neviena pētījuma kategorija'];
         } else {
             $objects = [];
