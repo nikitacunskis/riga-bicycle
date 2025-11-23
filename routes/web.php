@@ -30,7 +30,6 @@ Route::get('/join', [JoinpageController::class, 'index'])->name('page.join');
 
 Route::get('/report', [SelectorController::class, 'index'])->name('page.report.get');
 Route::get('/report-result', [SelectorController::class, 'result'])->name('page.report.result');
-Route::post('/report', [SelectorController::class, 'redirectToResult'])->name('page.report.post');
 
 Route::get('/raw', [RawpageController::class, 'index'])->name('page.raw');
 Route::get('/apis/request', [ApiController::class, 'request'])->name('page.apis.request');
