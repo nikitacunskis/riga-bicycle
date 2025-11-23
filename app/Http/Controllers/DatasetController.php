@@ -10,137 +10,92 @@ use DB;
 
 class DatasetController extends Controller
 {
-    public function generateDataset(array $selected)
+    /**
+     * Build dataset for selected filters + selected method
+     */
+    public function generateDataset(array $selected, ?string $method = null): array
     {
         $filters = $this->filterArray($selected);
 
-        $events  = Event::all()->toArray();
+        // Override method if explicitly provided
+        if ($method && in_array($method, ['average','sum','prc'], true)) {
+            $filters['method'] = $method;
+        }
+
+        $events = Event::all()->toArray();
         $this->filterEvents($events, $filters);
 
         $dataset = [];
-        $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         $raw = [];
+        $months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-        foreach($events as $event)
-        {
+        foreach ($events as $event) {
             $date = explode('-', $event['date']);
             $date = [
-                'year' => $date[0],
-                'month' => $date[1],
+                'year'  => $date[0],
+                'month' => (int)$date[1],
             ];
 
             $reports = Report::where('event_id', $event['id'])
-            ->whereIn('place_id', $filters['places'])
-            ->get()
-            ->toArray();
+                ->whereIn('place_id', $filters['places'])
+                ->get()
+                ->toArray();
 
             $raw = array_merge($raw, $reports);
 
-            $dataset[$date['year']][$month[(int)$date['month']-1]] = [
-                'value' => $this->value($reports, $filters),
+            $dataset[$date['year']][$months[$date['month'] - 1]] = [
+                'value'  => $this->value($reports, $filters),
                 'report' => $this->datasetReport($reports, $filters),
             ];
         }
 
+        // Enrich RAW in one go (no N+1)
+        $raw = $this->enrichRaw($raw);
 
-        foreach($raw as $key => $rawReport)
-        {
-            $raw[$key]['place'] = Place::where('id', $rawReport['place_id'])->pluck('location')[0];
-            $raw[$key]['event'] = Event::where('id', $rawReport['event_id'])->pluck('date')[0];
-            $raw[$key]['weather'] = Event::where('id', $rawReport['event_id'])->pluck('weather')[0];
-        }
-
-
-        $returnDataset = [];
-        $returnReport = [
-            'places' => [],
-            'objects' => [],
-        ];
-        foreach($dataset as $year => $d)
-        {
-            $returnDataset[] = [
-                'label' => $year,
-                'data' => [],
-            ];
-            $key = sizeof($returnDataset) - 1;
-            foreach($d as $data)
-            {
-                $returnDataset[$key]['data'][] = $data['value'];
-                $returnReport['places'] = array_merge($returnReport['places'], $data['report']['places']);
-                $returnReport['objects'] = array_merge($returnReport['objects'], $data['report']['objects']);
-                $returnReport['method'] = $data['report']['method'];
-            }
-        }
-        $returnReport['places'] = array_unique($returnReport['places']);
-        $returnReport['objects'] = array_unique($returnReport['objects']);
-        return [
-            'dataset' => $returnDataset,
-            'report' => $returnReport,
-            'raw' => $raw,
-        ];
+        return $this->formatReturn($dataset, $raw);
     }
 
-    private function value($reports, $filters)
+    /**
+     * Dispatch method
+     */
+    private function value(array $reports, array $filters): float|int
     {
-        switch($filters['method'])
-        {
-            case 'average':
-                return $this->avarage($reports, $filters);
-            case 'sum':
-                return $this->sum($reports, $filters);
-            case 'prc':
-                return $this->prc($reports, $filters);
-            default:
-                return $this->avarage($reports, $filters);
-        }
+        return match ($filters['method']) {
+            'sum' => $this->sum($reports, $filters),
+            'prc' => $this->prc($reports, $filters),
+            default => $this->average($reports, $filters),
+        };
     }
 
-    private function filterArray(array $selected)
+    /**
+     * Extract selected filters
+     */
+    private function filterArray(array $selected): array
     {
         $filters = [
-            'years' => [],
-            'objects' => [],
+            'years'     => [],
+            'objects'   => [],
             'direction' => [],
-            'roadType' => [],
-            'attributes' => [],
-            'places' => [],
-            'method' => '',
+            'roadType'  => [],
+            'attributes'=> [],
+            'places'    => [],
+            'method'    => '',
         ];
 
-        foreach($selected as $k => $e)
-        {
-            if(preg_match("/year_(\d*)/", $e, $match))
-            {
+        foreach ($selected as $e) {
+            if (preg_match("/year_(\d+)/", $e, $match)) {
                 $filters['years'][] = $match[1];
             }
 
-            if(in_array($e,['womens','man','children_self','children_passanger']))
-            {
+            if (in_array($e, ['womens','man','children_self','children_passanger'], true)) {
                 $filters['objects'][] = $e;
             }
 
-            if(in_array($e, ['to_center', 'from_center']))
-            {
-                $filters['direction'][] = $e;
-            }
-
-            if(in_array($e, ['radway', 'pavement', 'biekpath']))
-            {
-                $filters['roadType'][] = $e;
-            }
-
-            if(in_array($e, ['child_chairs', 'supermobility']))
-            {
-                $filters['attributes'][] = $e;
-            }
-
-            if(preg_match("/place_(\d*)/", $e, $match))
-            {
+            if (preg_match("/place_(\d+)/", $e, $match)) {
                 $filters['places'][] = $match[1];
             }
 
-            if(in_array($e, ['average', 'sum', 'prc']))
-            {
+            if (in_array($e, ['average','sum','prc'], true)) {
                 $filters['method'] = $e;
             }
         }
@@ -148,132 +103,175 @@ class DatasetController extends Controller
         return $filters;
     }
 
-    private function filterEvents(&$events, array $filters): void
+    /**
+     * Filter events list by years
+     */
+    private function filterEvents(array &$events, array $filters): void
     {
-        foreach($events as $key => $event)
-        {
-            if(!in_array(explode('-',$event['date'])[0], $filters['years']))
-            {
+        foreach ($events as $key => $event) {
+            if (!in_array(explode('-', $event['date'])[0], $filters['years'], true)) {
                 unset($events[$key]);
             }
         }
     }
 
-    private function avarage(array $reports, array $filters): float|int
+    /**
+     * AVERAGE calculation
+     */
+    private function average(array $reports, array $filters): float|int
     {
+        if (!$reports) {
+            return 0;
+        }
+
         $sum = 0;
-        foreach($reports as $report)
-        {
-            foreach($filters['objects'] as $key)
-            {
-                $sum += $report[$key];
+        foreach ($reports as $report) {
+            foreach ($filters['objects'] as $obj) {
+                $sum += $report[$obj];
             }
         }
 
-        $avg = 0;
-        if(sizeof($reports) !== 0)
-        {
-            $avg = $sum/sizeof($reports);
-        }
-        return $avg;
+        return $sum / count($reports);
     }
 
-    private function sum(array $reports, array $filters)
+    /**
+     * SUM calculation
+     */
+    private function sum(array $reports, array $filters): float|int
     {
         $sum = 0;
-        foreach($reports as $report)
-        {
-            foreach($filters['objects'] as $key)
-            {
-                $sum += $report[$key];
+
+        foreach ($reports as $report) {
+            foreach ($filters['objects'] as $obj) {
+                $sum += $report[$obj];
             }
         }
 
         return $sum;
     }
 
+    /**
+     * PERCENT calculation
+     */
     private function prc(array $reports, array $filters): float|int
     {
-        $prcOverall = 0;
-        foreach($reports as $report)
-        {
-            $fullSum = $report['womens'] + $report['man'] + $report['children_self'] + $report['children_passanger'];
-
-            $selectedSum = 0;
-            foreach($filters['objects'] as $key)
-            {
-                $selectedSum += $report[$key];
-            }
-            if($fullSum !== 0 && $selectedSum !== 0)
-            {
-                $prcOverall += $selectedSum/$fullSum * 100;
-            }
-        }
-        if(sizeof($reports) !== 0)
-        {
-            $prcOverall = $prcOverall/sizeof($reports);
+        if (!$reports) {
+            return 0;
         }
 
-        return $prcOverall;
+        $fullTotal = 0;
+        $selectedTotal = 0;
+
+        foreach ($reports as $report) {
+            $fullTotal += $report['womens']
+                + $report['man']
+                + $report['children_self']
+                + $report['children_passanger'];
+
+            foreach ($filters['objects'] as $obj) {
+                $selectedTotal += $report[$obj];
+            }
+        }
+
+        if ($fullTotal === 0) {
+            return 0;
+        }
+
+        return ($selectedTotal / $fullTotal) * 100;
     }
 
-    private function datasetReport(array $reports, array $filters) : array
+
+    /**
+     * Build readable legend + labels
+     */
+    private function datasetReport(array $reports, array $filters): array
     {
         $allPlaces = Place::all()->pluck('location')->toArray();
         $places = Place::whereIn('id', $filters['places'])->pluck('location')->toArray();
 
-        if(sizeof($allPlaces) === sizeof($places))
-        {
+        if (count($allPlaces) === count($places)) {
             $places = ['visi skaitīšanas punkti visā Rīga'];
         }
-        if(sizeof($places) === 0)
-        {
+        if (!$places) {
             $places = ['nav izvēlēts neviens punkts'];
         }
 
-        $objects = [];
-        $ids = ['womens', 'man', 'children_self', 'children_passanger'];
-        $labels = ['Sievietes', 'Vīrieši', 'Bērni paši', 'Bērni, kā pasažieri'];
-        if(sizeof($filters['objects']) === 0)
-        {
+        $ids = ['womens','man','children_self','children_passanger'];
+        $labels = ['Sievietes','Vīrieši','Bērni paši','Bērni, kā pasažieri'];
+
+        if (!$filters['objects']) {
             $objects = ['nav izvēlēta neviena pētījuma kategorija'];
-        }
-        else
-        {
-            foreach($filters['objects'] as $obj)
-            {
+        } else {
+            $objects = [];
+            foreach ($filters['objects'] as $obj) {
                 $objects[] = $labels[array_search($obj, $ids)];
             }
         }
 
-        $methods = ['average' => 'Vidējais', 'sum' => 'Summēšana', 'prc' => 'Procents no visiem'];
-        if($filters['method'] === "")
-        {
-            $method = $methods['average'];
-        }
-        else
-        {
-            $method = $methods[$filters['method']];
+        $methods = ['average'=>'Vidējais','sum'=>'Summēšana','prc'=>'Procents no visiem'];
+        $method = $filters['method'] ? $methods[$filters['method']] : $methods['average'];
+
+        return compact('places', 'objects', 'method');
+    }
+
+    /**
+     * Hydrate RAW once, no N+1
+     */
+    private function enrichRaw(array $raw): array
+    {
+        $placeNames = Place::pluck('location','id')->all();
+        $events = Event::pluck('date','id')->all();
+        $weather = Event::pluck('weather','id')->all();
+
+        foreach ($raw as $k => $r) {
+            $raw[$k]['place']   = $placeNames[$r['place_id']] ?? null;
+            $raw[$k]['event']   = $events[$r['event_id']] ?? null;
+            $raw[$k]['weather'] = $weather[$r['event_id']] ?? null;
         }
 
+        return $raw;
+    }
+
+    /**
+     * Final shape for chart + report info
+     */
+    private function formatReturn(array $dataset, array $raw): array
+    {
+        $finalDataset = [];
+        $report = [
+            'places'  => [],
+            'objects' => [],
+            'method'  => null,
+        ];
+
+        foreach ($dataset as $year => $months) {
+            $finalDataset[] = ['label'=>$year, 'data'=>[]];
+            $idx = array_key_last($finalDataset);
+
+            foreach ($months as $m) {
+                $finalDataset[$idx]['data'][] = $m['value'];
+                $report['places']  = array_merge($report['places'], $m['report']['places']);
+                $report['objects'] = array_merge($report['objects'], $m['report']['objects']);
+                $report['method']  = $m['report']['method'];
+            }
+        }
+
+        $report['places']  = array_unique($report['places']);
+        $report['objects'] = array_unique($report['objects']);
+
         return [
-            'places' => $places,
-            'objects' => $objects,
-            'method' => $method,
+            'dataset' => $finalDataset,
+            'report'  => $report,
+            'raw'     => $raw,
         ];
     }
 
     /**
-     * Generate dataset for ALL data (all years, all places, all objects),
-     * with a selectable aggregation method: 'average' | 'sum' | 'prc'.
-     *
-     * @param string $method
-     * @return array{dataset: array, report: array, raw: array}
+     * Full dataset recalculation for ALL entries (unchanged logic)
      */
     public function generateAllDataset(string $method = 'average'): array
     {
-        // Normalize/validate method
-        $allowed = ['average', 'sum', 'prc'];
+        $allowed = ['average','sum','prc'];
         if (!in_array($method, $allowed, true)) {
             $method = 'average';
         }
@@ -287,23 +285,15 @@ class DatasetController extends Controller
             ->all();
 
         $allPlaceIds = Place::query()->pluck('id')->all();
-        $allObjects = ['womens', 'man', 'children_self', 'children_passanger'];
-        $selected = [];
+        $allObjects = ['womens','man','children_self','children_passanger'];
 
-        foreach ($allYears as $y) {
-            $selected[] = "year_{$y}";
-        }
+        $selected = array_merge(
+            array_map(fn($y) => "year_{$y}", $allYears),
+            array_map(fn($pid) => "place_{$pid}", $allPlaceIds),
+            $allObjects,
+            [$method]
+        );
 
-        foreach ($allPlaceIds as $pid) {
-            $selected[] = "place_{$pid}";
-        }
-
-        foreach ($allObjects as $obj) {
-            $selected[] = $obj;
-        }
-
-        $selected[] = $method;
-
-        return $this->generateDataset($selected);
+        return $this->generateDataset($selected, $method);
     }
 }
