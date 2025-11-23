@@ -5,15 +5,15 @@
             <dl class="mt-6 grid sm:grid-cols-2 gap-6">
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
                     <dt class="font-semibold text-green-800">Cik ilgi ilgst skaitīšana?</dt>
-                    <dd class="mt-2 text-gray-700">Precīzi 60 minūtes — no 8:00 līdz 9:00.</dd>
+                    <dd class="mt-2 text-gray-700">Precīzi 60 minūtes — no 8:00 līdz 9:00 reizi mēnesī, parasti mēneša otrajā vai trešajā piektdienā.</dd>
                 </div>
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
                     <dt class="font-semibold text-green-800">Vai obligāti jābūt riteņbraucējam?</dt>
-                    <dd class="mt-2 text-gray-700">Nē. Te viss kārtībā.</dd>
+                    <dd class="mt-2 text-gray-700">Nē. Var skaitīt arī, ja nebrauc ar velosipēdu.</dd>
                 </div>
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
                     <dt class="font-semibold text-green-800">Vai ir jāiestājās "Pilsēta cilvēkiem" biedrībā?</dt>
-                    <dd class="mt-2 text-gray-700">Nē, nav obligāti.</dd>
+                    <dd class="mt-2 text-gray-700">Nē, tas nav obligāti.</dd>
                 </div>
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
                     <dt class="font-semibold text-green-800">Es nevaru garantēt katru reizi, ka būšu.</dt>
@@ -21,7 +21,8 @@
                 </div>
                 <div class="rounded-2xl bg-white/70 ring-1 ring-white/60 p-5">
                     <dt class="font-semibold text-green-800">Man liekas, ka vajag skaitīt punktā, kurā vēl netiek skaitīts.</dt>
-                    <dd class="mt-2 text-gray-700">To var izskatīt. Laika gaitā ir parādījušies vairāki punkti.</dd>
+                    <dd class="mt-2 text-gray-700">To var izskatīt, ja ir apņēmība skaitīt regulāri. Laika gaitā ir parādījušies vairāki jauni punkti, dažos
+                        citos – vairs nenotiek regulāra skaitīšana.</dd>
                 </div>
             </dl>
 

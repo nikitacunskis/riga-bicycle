@@ -5,12 +5,21 @@
 
         <AlignedSection
             title="Kas mēs esam?"
-            subtitle="Mēs esam brīvprātīgie un pilsētas mobilitātes aktīvisti, kurus vieno nevienaldzība pret Rīgas nākotni. Mūsu komanda regulāri skaita velo plūsmas Rīgas krustojumos, lai sniegtu datus, kas balstīti zinātnē un pētniecībā. Šie dati palīdz veidot drošu un patīkamu pilsētvidi, kur ikviens var pārvietoties brīvi un ērti. Mēs ticam Supermobilitātei – pilsētai, kurā velobraukšana, sabiedriskais transports un gājēji veido ilgtspējīgu pārvietošanās kultūru. Katrs mērījums ir solis tuvāk Rīgai, kas domā par cilvēkiem un dzīvo nākotnē, nevis pagātnē."
+            subtitle="Mēs esam brīvprātīgie un pilsētas mobilitātes aktīvisti, kurus vieno nevienaldzība pret Rīgas nākotni. Mūsu komanda regulāri skaita velo plūsmas Rīgas krustojumos, lai sniegtu datus, kas balstīti zinātnē un pētniecībā. Šie dati palīdz veidot drošu un patīkamu pilsētvidi, kur ikviens var pārvietoties brīvi un ērti. Mēs ticam Supermobilitātei – pilsētai, kurā velobraukšana, sabiedriskais transports un gājēji veido ilgtspējīgu pārvietošanās kultūru. Mēs esam brīvprātīgie un pilsētas aktīvisti, kurus vieno interese par Rīgas mobilitātes nākotni.
+                        Mūsu komanda regulāri (vismaz reizi mēnesī) skaita velo plūsmas Rīgas krustojumos, lai sniegtu
+                        sistemātiskus datus. Šie dati palīdz pamatot drošas un patīkamas pilsētvides veidošanu, kur
+                        ikviens var pārvietoties brīvi un ērti. Mēs ticam pilsētai, kurā velobraukšana, sabiedriskais
+                        transports un gājēji veido ilgtspējīgu pārvietošanās kultūru. Katrs mērījums ir solis tuvāk Rīgai,
+                        kas domā par cilvēkiem un dzīvo nākotnē."
             :items="aboutItems"
         />
         <AlignedSection
             title="Kā mēs skaitām?"
-            subtitle="Mēs strādājam ar zinātnisku metodi, lai nodrošinātu precizitāti un ticamus rezultātus. Brīvprātīgie veic tiešo novērošanu uz vietas, iegūstot datus, kas nav savācami ar kameru, piemēram, velobraucēju vecumu un dzimumu. Skaitīšana notiek ar stingru regularitāti, lai laika gaitā varētu salīdzināt tendences un sezonālās izmaiņas. Mūsu pieeja nodrošina augstu reprezentativitāti, jo dati tiek ievākti dažādos krustojumos un dažādos diennakts laikos. Šādi mēs iegūstam faktus, kas palīdz plānot drošāku, velobraucējiem draudzīgāku pilsētvidi."
+            subtitle="Brīvprātīgie veic tiešo novērošanu uz vietas, iegūstot datus, kas nav savācami ar kameru,
+                        piemēram, velobraucēju dzimumu. Skaitīšana notiek katra mēneša 2. vai 3. piektdienā 8:00 –
+                        9:00 no rīta katru mēnesi – dažkārt arī citu piektdienu rītos, lai laika gaitā varētu salīdzināt
+                        tendences un sezonālās izmaiņas. Mūsu pieeja nodrošina augstu reprezentativitāti, jo dati tiek
+                        ievākti dažādos krustojumos un uz galvenajiem pilsētas tiltiem."
             :items="howItems"
         />
         <DataCta id="dati" />
@@ -31,22 +40,15 @@ const aboutItems = [
         image: "/img/pexels-marleneleppanen-1238456.jpg",
         imageAlt: 'Komanda krustojumā',
         heading: 'Kopiena ar misiju',
-        body: 'Mēs veidojam atvērtu brīvprātīgo tīklu, kas ar precīziem datiem palīdz pierādīt, kur Rīgai nepieciešamas drošas velojoslas un gudri risinājumi. Visi rezultāti ir publiski pieejami un izmantojami gan sabiedrībai, gan plānotājiem. Šī pieeja nodrošina caurspīdību un veicina līdzdalību pilsētas attīstībā.',
+        body: 'Mēs veidojam atvērtu brīvprātīgo tīklu, kas ar precīziem datiem palīdz pierādīt, kur Rīgai\n' +
+            'nepieciešamas droša veloinfrastruktūra. Visi rezultāti ir publiski pieejami un izmantojami gan\n' +
+            'sabiedrībai, gan plānotājiem. Šī pieeja nodrošina caurspīdību un veicina līdzdalību pilsētas\n' +
+            'procesos.',
         points: [
             { icon: '🚲', text: 'Mūsu komanda strādā brīvprātīgi un bez politiskas ietekmes, lai nodrošinātu uzticamus datus. Ikviens var pievienoties un piedalīties.' },
             { icon: '📊', text: 'Iegūtie dati ir publiski pieejami atvērtā formātā, lai tos varētu analizēt jebkurš interesents. Tas veicina sadarbību ar pētniekiem un pilsētplānotājiem.' }
         ]
     },
-    {
-        image: "/img/pexels-hngstrm-3073037.jpg",
-        imageAlt: 'Rīgas karte ar punktiem',
-        heading: 'Vairāki krustojumi',
-        body: 'Skaitīšana notiek vairākās vietās vienlaicīgi, lai atspoguļotu patieso velobraucēju plūsmu visā pilsētā. Šāda plaša pārklājuma pieeja ļauj pamanīt atšķirības starp rajoniem un saprast, kur vajadzīga papildu infrastruktūra.',
-        points: [
-            { icon: '🗺️', text: 'Katrs mērījums tiek veikts pēc iepriekš noteiktām koordinātām, kas nodrošina salīdzināmus datus. Tas palīdz identificēt konkrētas plūsmas un maršrutus.' },
-            { icon: '🕒', text: 'Dati tiek ievākti dažādos diennakts laikos un gadalaikos, lai fiksētu satiksmes maksimumus. Šādi iespējams prognozēt pieprasījuma svārstības un pielāgot risinājumus.' }
-        ]
-    }
 ]
 
 
@@ -55,26 +57,38 @@ const howItems = [
         image: "/img/pexels-mary-nikitina-53440096-7828573.jpg",
         imageAlt: 'Skaitīšanas lapa',
         heading: 'Vienota metodika',
-        body: 'Mēs katru mēnesi skaitām velobraucējus vienā un tajā pašā vietā, lai iegūtu salīdzināmus datus ilgākā laika posmā. Šāda regularitāte palīdz pamanīt sezonālās un ilgtermiņa izmaiņas. Visi brīvprātīgie strādā pēc vienotiem kritērijiem, kas nodrošina uzticamus un pārbaudāmus rezultātus. Dati ir izmantojami gan zinātniskai pētniecībai, gan Rīgas pilsētplānošanas vajadzībām.',
+        body: 'Mēs katru mēnesi skaitām velobraucējus vienā un tajā pašā vietā, lai iegūtu salīdzināmus datus\n' +
+            'ilgākā laika posmā. Šāda regularitāte palīdz pamanīt sezonālās un ilgtermiņa izmaiņas. Visi\n' +
+            'brīvprātīgie veic skaitīšanu pēc vienotiem kritērijiem, kas nodrošina uzticamus un pārbaudāmus\n' +
+            'rezultātus.',
         points: [
             {
                 icon: '🚲',
-                text: 'Mēs vienmēr strādājam tajā pašā vietā un skaitām tos pašus rādītājus, lai dati būtu konsekventi. Šī metode ļauj saprast, kā mainās velobraucēju plūsmas dažādos gadalaikos.',
+                text: 'Mēs vienmēr skaitam tajās pašās vietās un skaitām tos pašus rādītājus (dzimumu īpatsvars,\n' +
+                    'bērnu krēsliņu skaits, elektroskrejriteņu un e-velo skaits u.tml.), lai dati būtu konsekventi. Šī\n' +
+                    'metode ļauj saprast, kā mainās velobraucēju plūsmas dažādos gadalaikos.',
             },
             {
                 icon: '🔍',
-                text: 'Brīvprātīgie tiek rūpīgi apmācīti un ievēro vienotus standartus. Tas nodrošina, ka rezultāti ir ticami un izmantojami pilsētplānošanas lēmumos.',
+                text: 'Brīvprātīgie tiek rūpīgi apmācīti un ievēro vienotus standartus. Tas nodrošina, ka rezultāti ir\n' +
+                    'ticami un iegūti pēc vienas metodikas.',
             },
         ]
     },
     {
         image: "/img/pexels-vlad-fonsark-2175898-4037900.jpg",
         imageAlt: 'Virzienu bultiņas',
-        heading: 'Virzieni un apstākļi',
-        body: 'Skaitīšanas laikā mēs uzskaitām velobraucējus un pierakstām apstākļus, kas ietekmē satiksmes plūsmu. Precīza informācija par virzieniem un laikapstākļiem palīdz saprast, kā dažādi faktori maina braucēju skaitu. Šie dati ļauj pilsētplānotājiem noteikt vietas, kur nepieciešami jauni veloceļi un drošības uzlabojumi. Rūpīga piezīmju veikšana nodrošina, ka katrs mērījums ir salīdzināms un izmantojams ilgtermiņa stratēģijās.',
+        heading: 'Virzieni un laikapstākļi',
+        body: 'Skaitīšanas laikā mēs uzskaitām velobraucēju kustības virzienu (uz centru/ no centra).\n' +
+            'Precīza informācija par virzieniem un laikapstākļiem palīdz saprast, kā dažādi faktori maina\n' +
+            'braucēju skaitu. Šie dati ļauj pilsētplānotājiem noteikt velobraucēju kustības tendences un \n' +
+            'virzienus, kur nepieciešama jauna veloinfrastruktūra. Rūpīga piezīmju veikšana nodrošina, ka\n' +
+            'katrs mērījums ir salīdzināms un izmantojams ilgtermiņa stratēģijās.',
         points: [
-            { icon: '🧭', text: 'Fiksējam, no kura virziena velobraucēji ierodas: ziemeļi, austrumi, dienvidi, rietumi. Šie dati atklāj populārākos maršrutus un palīdz plānot jaunus veloceļus.' },
-            { icon: '🌦️', text: 'Pierakstām laikapstākļus, redzamību un īpašus notikumus, kas ietekmē plūsmu. Šī informācija palīdz precīzāk salīdzināt datus dažādos gadalaikos un situācijās.' },
+            { icon: '🧭', text: 'Fiksējam, kurā virzienā velobraucēji dodas – uz centru vai no centra. Šie dati atklāj populārākos\n' +
+                    'maršrutus un palīdz plānot jaunus veloceļus.' },
+            { icon: '🌦️', text: 'Pierakstām laikapstākļus un īpašus notikumus, kas var ietekmēt plūsmu. Šī informācija palīdz\n' +
+                    'precīzāk salīdzināt datus dažādos gadalaikos un situācijās.' },
         ],
     }
 ]

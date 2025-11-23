@@ -14,18 +14,20 @@
             <!-- 3-column value grid -->
             <div class="mt-16 grid md:grid-cols-3 gap-10">
                 <div class="rounded-3xl bg-emerald-50 p-6 ring-1 ring-emerald-200 shadow">
-                    <h3 class="text-xl font-bold text-emerald-800">Straujš pieaugums</h3>
+                    <h3 class="text-xl font-bold text-emerald-800">Svārstību monitorings</h3>
                     <p class="mt-3 text-gray-700">
-                        Uz Rīgas tiltiem velobraucēju skaits 4 gados pieauga par <strong>40 %</strong>,
-                        ~9 % gadā. Vanšu tiltā 10 gados – teju <strong>5× vairāk</strong>.
+                        Laika posmā starp 2014. un 2018. gadu velobraucēju skaits vidēji pieauga par <strong>40%</strong>, savukārt,
+                        pēdējo gadu laikā situācija ir stabilizējusies, skaits ir atkarīgs arī no laikapstākļiem.
+                        Pēc velojoslu ieviešanas uz Zemitāna tilta, velobraucēju skaits pieauga vidēji <strong>1.5 reizes</strong>, bet
+                        nākotnē varēs novērtēt, vai tas būs mainījies pēc veloceļa izbūves.
                     </p>
                 </div>
 
                 <div class="rounded-3xl bg-emerald-50 p-6 ring-1 ring-emerald-200 shadow">
-                    <h3 class="text-xl font-bold text-emerald-800">Drošība & plānošana</h3>
+                    <h3 class="text-xl font-bold text-emerald-800">Plānošana & sistemātiski dati</h3>
                     <p class="mt-3 text-gray-700">
-                        Rīgas vadība sola, bet neveic automatizētu uzskaiti. Mūsu dati rāda,
-                        kur satiksme kļūst bīstama un kur vajadzīgas joslas, luksofori, platāki veloceļi.
+                        Rīgas vadība sola, bet neveic sistemātisku automatizētu uzskaiti. Mūsu dati rāda, kur ir lielāka
+                        velosatiksme un kur nepieciešama labāka veloinfrastruktūra.
                     </p>
                 </div>
 
@@ -46,7 +48,9 @@
                 <div>
                     <h3 class="text-2xl font-bold text-green-800">Mūsu misija</h3>
                     <p class="mt-4 text-gray-700">
-                        Kad pilsēta nerūpējas par datiem, mēs – brīvprātīgie – to darām. Skaitām krustojumos, tiltos un mikrorajonos, lai publiski parādītu, ka veloinfrastruktūra ir pieprasīta un nepieciešama.
+                        Kad pilsēta nerūpējas par datiem, mēs – brīvprātīgie – to darām. Skaitām nozīmīgākajos
+                        krustojumos un uz tiltiem, lai publiski parādītu, ka veloinfrastruktūra ir pieprasīta un
+                        nepieciešama
                     </p>
                     <div class="mt-6 flex flex-wrap gap-4">
                         <a href="/join"
