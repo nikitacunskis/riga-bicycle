@@ -38,6 +38,7 @@ Route::post('/apis/request', [ApiController::class, 'requestStore'])
     ->middleware('throttle:8,1')
     ->name('apis.request.store');
 Route::get('/apis/documentation', [ApiController::class, 'documentation'])->name('page.apis.documentation');
+Route::get('/events/{event}/image', [EventController::class, 'image'])->name('events.image');
 
 Route::middleware([
     'auth:sanctum',
@@ -58,13 +59,15 @@ Route::middleware([
         });
 
         Route::prefix("/events")->name('events.')->group(function () {
-            Route::get('/', [EventController::class, 'index'])->name('events');
+            Route::get('/', [EventController::class, 'index'])->name('index');
             Route::get('/create', [EventController::class, 'create'])->name('create');
             Route::get('/edit/{id}', [EventController::class, 'edit'])->name('edit');
             Route::post('/store', [EventController::class, 'store'])->name('store');
             Route::patch('/update/{id}', [EventController::class, 'update'])->name('update');
             Route::delete('/destroy/{id}', [EventController::class, 'destroy'])->name('destroy');
-            Route::post('/{event}/generate', [EventController::class, 'generate'])->name('generate');
+            Route::get('/{event}/generate', [EventController::class, 'generate'])->name('generate');
+            // 👉 NEW ENDPOINT: Generate + Post to X.com
+            Route::post('/{event}/share-post', [EventController::class, 'shareAndPost'])->name('share-post');
         });
 
         Route::prefix("/reports")->name('reports.')->group(function () {

@@ -24,9 +24,8 @@ function loadMore() {
     visibleCount.value = Math.min(visibleCount.value + pageSize, props.reports.length)
 }
 
-/* --- NEW: place truncation / expansion --- */
+/* Place truncation / expansion */
 const expandedPlaces = ref(new Set())
-
 function keyFor(r) {
     return `${r.event}_${r.place_id}`
 }
@@ -40,8 +39,27 @@ function togglePlace(key) {
     if (expandedPlaces.value.has(key)) expandedPlaces.value.delete(key)
     else expandedPlaces.value.add(key)
 }
-</script>
 
+/* --- Tooltip for SUM --- */
+const tooltip = ref({
+    visible: false,
+    sum: 0,
+})
+
+function showTooltip(r) {
+    tooltip.value.sum =
+        Number(r.womens || 0) +
+        Number(r.man || 0) +
+        Number(r.children_self || 0) +
+        Number(r.children_passanger || 0)
+
+    tooltip.value.visible = true
+}
+
+function hideTooltip() {
+    tooltip.value.visible = false
+}
+</script>
 <template>
     <div class="overflow-x-auto relative rounded-2xl ring-1 ring-emerald-200 bg-white/80 backdrop-blur shadow">
         <table class="w-full text-xs text-left text-emerald-900">
@@ -55,10 +73,11 @@ function togglePlace(key) {
                     </button>
                 </th>
                 <th class="p-1">Vieta</th>
-                <th class="p-1">Sievietes</th>
-                <th class="p-1">Vīrieši</th>
-                <th class="p-1">Bērni (paši)</th>
-                <th class="p-1">Bērni (pasažieri)</th>
+                <th class="p-1">Kopā</th>
+                <th class="p-1 sum-cell">Sievietes</th>
+                <th class="p-1 sum-cell">Vīrieši</th>
+                <th class="p-1 sum-cell">Bērni (paši)</th>
+                <th class="p-1 sum-cell">Bērni (pasažieri)</th>
                 <th class="p-1">Ceļš</th>
                 <th class="p-1">Ietve</th>
                 <th class="p-1">Veloceļš/josla</th>
@@ -70,8 +89,13 @@ function togglePlace(key) {
             </thead>
 
             <tbody class="text-[11px]">
-            <tr v-for="r in visibleRows" :key="r.event + '_' + r.place_id"
-                class="border-b last:border-0 hover:bg-emerald-50/50">
+            <tr v-for="r in visibleRows"
+                :key="r.event + '_' + r.place_id"
+                class="border-b last:border-0 hover:bg-emerald-50/50"
+                @mouseenter="showTooltip(r)"
+                @mouseleave="hideTooltip"
+                :class="{ 'highlight': tooltip.visible }"
+            >
                 <td class="p-1">{{ r.event }}</td>
                 <td class="p-1">
                     <button type="button"
@@ -83,7 +107,6 @@ function togglePlace(key) {
                     <span class="hidden hidden_weather" :id="r.event + '_' + r.place_id">{{ r.weather }}</span>
                 </td>
 
-                <!-- UPDATED PLACE CELL -->
                 <td class="p-1">
                     <template v-if="isLongPlace(r.place)">
                         <button
@@ -98,11 +121,11 @@ function togglePlace(key) {
                         {{ r.place }}
                     </template>
                 </td>
-
-                <td class="p-1">{{ r.womens }}</td>
-                <td class="p-1">{{ r.man }}</td>
-                <td class="p-1">{{ r.children_self }}</td>
-                <td class="p-1">{{ r.children_passanger }}</td>
+                <td class="p1">{{ r.womens + r.man + r.children_self + r.children_passanger }}</td>
+                <td class="p-1 sum-cell">{{ r.womens }}</td>
+                <td class="p-1 sum-cell">{{ r.man }}</td>
+                <td class="p-1 sum-cell">{{ r.children_self }}</td>
+                <td class="p-1 sum-cell">{{ r.children_passanger }}</td>
                 <td class="p-1">{{ r.radway }}</td>
                 <td class="p-1">{{ r.pavement }}</td>
                 <td class="p-1">{{ r.biekpath }}</td>
@@ -120,9 +143,37 @@ function togglePlace(key) {
                     class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-medium shadow
                      hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300
                      transition transform hover:-translate-y-0.5">
-                Ielādēt vēl ({{ Math.min(pageSize, props.reports.length - visibleCount) }})
+                Rādīt vēl ({{ Math.min(pageSize, props.reports.length - visibleCount) }})
             </button>
             <p v-else class="text-sm text-gray-500">Viss ielādēts.</p>
         </div>
+
+        <!-- Fixed Bottom Tooltip -->
+        <div v-if="tooltip.visible" class="sum-tooltip">
+            <b>Kopā:</b> {{ tooltip.sum }}
+        </div>
     </div>
 </template>
+
+<style scoped>
+tr.highlight td.sum-cell {
+    background-color: #d1fae5 !important;
+    font-weight: 600;
+    color: #059669;
+}
+
+.sum-tooltip {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 999999;
+    background: white;
+    border: 1px solid #a7f3d0;
+    padding: 1rem 10rem ;
+    border-radius: 8px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+    font-size: 12pt;
+    pointer-events: none;
+}
+</style>
+

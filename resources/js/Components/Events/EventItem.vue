@@ -12,7 +12,7 @@ const props = defineProps({
 })
 
 const generateImage = () => {
-    router.post(route('dashboard.events.generate', props.event.id))
+    router.get(route('dashboard.events.generate', props.event.id))
 }
 </script>
 

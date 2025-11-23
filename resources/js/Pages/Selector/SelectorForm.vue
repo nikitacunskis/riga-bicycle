@@ -85,8 +85,6 @@ function donate() {
 function redirectApiRequest() {
     window.open('/apis/request', '_blank', 'noopener,noreferrer')
 }
-
-const breadcrumbs = [{ text: 'Atskaites', href: '/report' }]
 </script>
 <template>
     <FrontLayout title="Atskaites" :breadcrumbs="breadcrumbs">
@@ -130,8 +128,8 @@ const breadcrumbs = [{ text: 'Atskaites', href: '/report' }]
                                 <div class="flex items-center justify-center gap-2">
                                     <span>{{ props.fields.options.objects.label }}</span>
                                     <span class="inline-block rounded-full bg-emerald-500/30 px-2 py-0.5 text-xs">
-                      {{ countSelected(objects.map(o=>o.id)) }}
-                    </span>
+                                      {{ countSelected(objects.map(o=>o.id)) }}
+                                    </span>
                                 </div>
                                 <button
                                     type="button"
