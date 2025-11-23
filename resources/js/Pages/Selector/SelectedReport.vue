@@ -7,39 +7,23 @@ import RawTable from '../../Components/RawTable.vue'
 const props = defineProps({
     dataset: { type: Array,  default: () => [] },
     report:  { type: Object, default: () => ({ places: [], objects: [], method: '' }) },
-    raw:     { type: Array,  default: () => [] },
-    e:       { type: Array,  default: () => [] }
+    raw:     { type: Array,  default: () => [] }
 })
 
 /* ===========================================================
    🎨 COLOR MODE
-   emerald mode (default)  ||  high-contrast mode (toggle)
 =========================================================== */
 const colorful = ref(false)
-
-/* Emerald palette with depth */
 const emeralds = ['#047857','#059669','#10B981','#34D399','#6EE7B7','#A7F3D0','#D1FAE5']
+const highContrasts = ['#0072B2','#D55E00','#009E73','#CC79A7','#F0E442','#56B4E9','#E69F00','#000000']
 
-/* High-contrast preset palette (colorblind-safe) */
-const highContrasts = [
-    '#0072B2','#D55E00','#009E73','#CC79A7','#F0E442',
-    '#56B4E9','#E69F00','#000000','#0099A8','#9C179E'
-]
-
-/* Pick colors based on mode */
 function pickColor(i) {
-    return colorful.value
-        ? highContrasts[i % highContrasts.length]
-        : emeralds[i % emeralds.length]
+    return colorful.value ? highContrasts[i % highContrasts.length] : emeralds[i % emeralds.length]
 }
-
-/* Toggle button */
-function toggleColors() {
-    colorful.value = !colorful.value
-}
+function toggleColors() { colorful.value = !colorful.value }
 
 /* ===========================================================
-   📈 CHART DATA (opacity + hover behavior)
+   📈 CHART DATA
 =========================================================== */
 const chartData = computed(() => ({
     labels: [
@@ -48,18 +32,13 @@ const chartData = computed(() => ({
     ],
     datasets: (props.dataset || []).map((d, i) => {
         const c = pickColor(i)
-        const base = c
         return {
             ...d,
             tension: 0.35,
             borderWidth: 3,
             pointRadius: 0,
-
-            // ✨ DEFAULT — transparent
-            borderColor: base,
-            backgroundColor: base,
-
-            // ✨ HOVER — full color
+            borderColor: c,
+            backgroundColor: c,
             hoverBorderColor: c,
             hoverBackgroundColor: c,
             pointHoverRadius: 6
@@ -68,15 +47,12 @@ const chartData = computed(() => ({
 }))
 
 /* ===========================================================
-   ⚙️ CHART OPTIONS (enable highlight hover)
+   ⚙️ CHART OPTIONS
 =========================================================== */
 const chartOptions = {
     responsive: true,
     interaction: { mode: 'nearest', intersect: false },
-    elements: {
-        line: { hoverBorderWidth: 4 },
-        point: { hoverRadius: 8 }
-    },
+    elements: { line: { hoverBorderWidth: 4 }, point: { hoverRadius: 8 } },
     plugins: {
         legend: { position: 'bottom', labels: { color: '#064e3b', usePointStyle: true, padding: 20 } },
         tooltip: { mode: 'index', intersect: false }
@@ -87,9 +63,7 @@ const chartOptions = {
     }
 }
 
-/* ===========================================================
-   🧾 RAW TABLE PAGINATION
-=========================================================== */
+/* 🔢 RAW TABLE PAGINATION */
 const pageSize = 25
 const visibleCount = ref(pageSize)
 const canLoadMore = computed(() => visibleCount.value < props.raw.length)
@@ -101,15 +75,32 @@ const breadcrumbs = [{ text: 'Atskaites', href: '/report' }]
 
 <template>
     <FrontLayout title="Atskaites" :breadcrumbs="breadcrumbs">
+
+        <!-- 🧡 DONATION CTA -->
         <section
-            class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-white/60
-             backdrop-blur-2xl ring-1 ring-emerald-200 shadow-2xl p-6 md:p-10">
+            class="w-full mx-auto mt-10 mb-4 rounded-2xl bg-white/80 backdrop-blur-xl
+           p-8 text-center ring-1 ring-emerald-200 shadow-lg"
+        >
+            <h2 class="text-2xl font-bold text-emerald-900 mb-2">Datu publicēšana ir bez maksas</h2>
+            <p class="text-emerald-800 mb-6">Ja vari, atbalsti “Pilsēta cilvēkiem” ar ziedojumu</p>
+            <a
+                href="https://www.pilsetacilvekiem.lv/ziedot/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block px-6 py-3 rounded-xl bg-emerald-600 text-white font-semibold shadow-lg hover:bg-emerald-700"
+            >
+                Ziedot ❤️
+            </a>
+        </section>
+
+
+        <!-- 📊 REPORT CONTENT -->
+        <section class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-white/60 backdrop-blur-2xl ring-1 ring-emerald-200 shadow-2xl p-6 md:p-10">
 
             <div aria-hidden="true" class="pointer-events-none absolute inset-0">
                 <div
                     class="absolute -top-40 -left-1/2 w-[200%] h-[200%] bg-gradient-to-tr
-                 from-emerald-300/20 via-emerald-500/10 to-emerald-300/20
-                 blur-3xl animate-pulse-slow">
+                    from-emerald-300/20 via-emerald-500/10 to-emerald-300/20 blur-3xl animate-pulse-slow">
                 </div>
             </div>
 
@@ -117,9 +108,6 @@ const breadcrumbs = [{ text: 'Atskaites', href: '/report' }]
                 <h1 class="text-center text-4xl md:text-5xl font-extrabold tracking-tight text-emerald-900 drop-shadow-sm">
                     Rīgas Veloskaitīšanas Atskaites
                 </h1>
-                <p class="mt-3 text-center max-w-2xl mx-auto text-emerald-800/80 text-lg">
-                    Mēs skaitām katra mēneša 15. datumam tuvākajā piektdienā, lai parādītu pilsētas kustības spēku.
-                </p>
 
                 <!-- Info card -->
                 <div class="mt-10 bg-white/80 backdrop-blur ring-1 ring-emerald-100 rounded-2xl shadow-md p-6 md:p-8">
@@ -144,20 +132,18 @@ const breadcrumbs = [{ text: 'Atskaites', href: '/report' }]
 
                 <!-- Chart + button -->
                 <div class="mt-10 rounded-3xl bg-white ring-1 ring-emerald-100 p-4 shadow-lg">
-
                     <div class="flex justify-end mb-3">
                         <button
                             @click="toggleColors"
-                            class="px-4 py-1.5 text-sm rounded-md font-semibold
-                                   bg-emerald-700 text-white hover:bg-emerald-800 transition"
+                            class="px-4 py-1.5 text-sm rounded-md font-semibold bg-emerald-700 text-white hover:bg-emerald-800"
                         >
                             Krāsains grafiks
                         </button>
                     </div>
-
                     <LineChart :chartData="chartData" :chartOptions="chartOptions" />
                 </div>
 
+                <!-- RAW TABLE -->
                 <div class="pt-4">
                     <RawTable :reports="props.raw" />
                 </div>
