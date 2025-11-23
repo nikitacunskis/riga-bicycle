@@ -22,11 +22,6 @@ class SelectorController extends Controller
         /** #### CHANGED: accept Request so we can read flashed payload after redirect (PRG). */
     )
     {
-        /** #### ADDED: if a payload was flashed by report(), render SelectedReport immediately. */
-        if ($payload = $request->session()->pull('report_payload')) {
-            return Inertia::render('Selector/SelectedReport', $payload);
-        }
-
         $events = Event::all()->toArray();
         $years = [];
         foreach($events as $event)
@@ -94,18 +89,6 @@ class SelectorController extends Controller
         $form['fields'] = $fields;
 
         return Inertia::render('Selector/SelectorForm', ['fields' => $form]);
-    }
-
-    /**
-     * POST /report
-     * Redirects to GET /report-result with query parameters
-     */
-    public function redirectToResult(Request $request): \Illuminate\Http\RedirectResponse
-    {
-        return redirect()->route('page.report.result', [
-            'selected' => $request->input('selected', []),
-            'method'   => $request->input('method'),
-        ]);
     }
 
     /**
