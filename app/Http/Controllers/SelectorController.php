@@ -14,12 +14,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SelectorController extends Controller
 {
-    /**
-     * Renders Page with info about project variables to select for graph
-     */
     public function index(
         Request $request
-        /** #### CHANGED: accept Request so we can read flashed payload after redirect (PRG). */
     )
     {
         $events = Event::all()->toArray();
