@@ -3,19 +3,18 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
-class CreateSuperuser extends Command
+class ChangeUserPassword extends Command
 {
-    protected $signature = 'make:su
-        {--email= : Email of the superuser}
-        {--password= : Password for the superuser}
+    protected $signature = 'user:password
+        {--email= : Email of the user}
+        {--password= : New password}
         {--passwordAgain= : Repeat the password to confirm}';
 
-    protected $description = 'Creates or updates a SUPERUSER with all privileges.';
+    protected $description = 'Changes a user\'s password.';
 
     public function handle(): int
     {
@@ -23,7 +22,7 @@ class CreateSuperuser extends Command
         $password = $this->option('password');
         $passwordAgain = $this->option('passwordAgain');
 
-        // Validate input options
+        // Validation identical to create command
         $validator = Validator::make(
             [
                 'email' => $email,
@@ -31,18 +30,19 @@ class CreateSuperuser extends Command
                 'passwordAgain' => $passwordAgain
             ],
             [
-                'email' => ['required', 'email'],
+                'email' => ['required', 'email', 'exists:users,email'],
                 'password' => [
                     'required',
                     'string',
                     'min:8',
-                    'regex:/[a-z]/',         // at least one lowercase
-                    'regex:/[A-Z]/',         // at least one uppercase
-                    'regex:/[\W_]/'          // at least one special character
+                    'regex:/[a-z]/',         // lowercase
+                    'regex:/[A-Z]/',         // uppercase
+                    'regex:/[\W_]/'          // special character
                 ],
-                'passwordAgain' => ['required', 'same:password']
+                'passwordAgain' => ['required', 'same:password'],
             ],
             [
+                'email.exists' => 'No user found with this email.',
                 'password.regex' => 'Password must contain lowercase, uppercase, and a special character.'
             ]
         );
@@ -54,18 +54,12 @@ class CreateSuperuser extends Command
             return self::FAILURE;
         }
 
-        // Create or update user
-        $hashed = Hash::make($password);
-        $name = explode('@', $email)[0]; // use email prefix as name
+        // Update password for the user
+        $user = User::where('email', $email)->first();
+        $user->update(['password' => Hash::make($password)]);
 
-        DB::transaction(function () use ($email, $name, $hashed) {
-            User::updateOrCreate(
-                ['email' => $email],
-                ['name' => $name, 'password' => $hashed]
-            );
-        });
+        $this->info("Password for '{$email}' updated successfully.");
 
-        $this->info("Superuser '{$email}' ensured");
         return self::SUCCESS;
     }
 }

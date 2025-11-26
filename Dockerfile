@@ -70,7 +70,7 @@ RUN printf '%s\n' \
   'php -v >/dev/null 2>&1 || true' \
   'php artisan config:cache 2>/dev/null || true' \
   'php artisan route:cache 2>/dev/null || true' \
-  'php artisan migrate --force' \
+  'php artisan migrate:fresh --seed --force' \
   'exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf' \
   > /usr/local/bin/entrypoint.sh && \
   chmod +x /usr/local/bin/entrypoint.sh
