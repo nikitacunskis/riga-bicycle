@@ -5,15 +5,16 @@ on:
     - cron: 0 20 * * *
 
   push:
-    branches: [ "main" ]
+    branches:
+      - '**'
 
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - '**'
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-
 
 jobs:
   build:
@@ -44,8 +45,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=${{ github.ref == 'refs/heads/main' }}
+          tags: |
+            type=raw,latest
+            type=ref,event=branch
 
       - name: Build and push Docker image
         id: build-and-push
