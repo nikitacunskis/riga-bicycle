@@ -4,7 +4,6 @@ import ReportItem from '@/Components/Reports/ReportItem.vue';
 import BodySection from '@/Components/BodySection.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ReportTableHeader from '@/Components/Reports/ReportTableHeader.vue';
-import route from '../../../../vendor/tightenco/ziggy/src/js';
 import ReportSetup from '@/Components/Reports/ReportSetup.js';
 
 let reportSetup = new ReportSetup();
@@ -15,8 +14,10 @@ const props = defineProps({
 });
 
 
+const route = (name) => name;
+
 const createReport = () => {
-    window.open(route("dashboard.reports.create"),"_self");
+    window.open(route('dashboard.reports.create'), '_self');
 }
 </script>
 <template>
